@@ -9,52 +9,50 @@ public class Veterinario {
     String especializacao;
     String nome;
 
-
-    public Veterinario(){
+    public Veterinario() {
 
     }
-    
-        private ArrayList<Animal> animais = new ArrayList<Animal>();
 
+    private ArrayList<Animal> animais = new ArrayList<Animal>();
 
-        public String getCpf() {
-            return cpf;
-        }
+    public String getCpf() {
+        return cpf;
+    }
 
-        public void setCpf(String cpf) {
-            this.cpf = cpf;
-        }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-        public String getEmail() {
-            return email;
-        }
+    public String getEmail() {
+        return email;
+    }
 
-        public void setEmail(String email) {
-            this.email = email;
-        }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        public String getEspecializacao() {
-            return especializacao;
-        }
+    public String getEspecializacao() {
+        return especializacao;
+    }
 
-        public void setEspecializacao(String especializacao) {
-            this.especializacao = especializacao;
-        }
+    public void setEspecializacao(String especializacao) {
+        this.especializacao = especializacao;
+    }
 
-        public String getNome() {
-            return nome;
-        }
+    public String getNome() {
+        return nome;
+    }
 
-        public void setNome(String nome) {
-            this.nome = nome;
-        }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-        public ArrayList<Animal> getAnimais() {
-            return animais;
-        }
+    public ArrayList<Animal> getAnimais() {
+        return animais;
+    }
 
-        public void setAnimais(ArrayList<Animal> animais) {
-            this.animais = animais;
-        }
+    public void setAnimais(ArrayList<Animal> animais) {
+        this.animais = animais;
+    }
 
 }
