@@ -1,4 +1,4 @@
-package br.edu.ifpr.zoologico.model.dao;
+package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
