@@ -8,6 +8,7 @@ public class RotinaAlimentar {
     String hora;
     String quantidadeAlimento;
     AgendaAnimal agendaAnimal;
+    
         private ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
 
     
