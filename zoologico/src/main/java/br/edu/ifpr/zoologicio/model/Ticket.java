@@ -2,10 +2,10 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Ticket {
 
-    String data;
-    String hora;
-    String preco;
-    Compra compra;
+   private  String data;
+   private  String hora;
+    private String preco;
+   private  Compra compra;
     
     public Ticket (){
 

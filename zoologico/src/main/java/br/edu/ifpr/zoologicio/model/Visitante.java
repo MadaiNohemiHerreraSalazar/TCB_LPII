@@ -2,11 +2,11 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Visitante {
 
-    String cpf;
-    String nome;
-    String telefone;
-    String email;
-    Compra compra;
+    private String cpf;
+    private String nome;
+    private String telefone;
+    private String email;
+    private Compra compra;
 
     public Visitante (){
 

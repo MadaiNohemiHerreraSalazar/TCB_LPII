@@ -2,12 +2,12 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Funcionario {
 
-    String nome;
-    String cpf;
-    String email;
-    String telefone;
-    AgendaFuncionario agendaFuncionario;
-    Cargo cargo;
+  private   String nome;
+  private   String cpf;
+   private  String email;
+  private   String telefone;
+   private  AgendaFuncionario agendaFuncionario;
+  private   Cargo cargo;
 
     public Funcionario() {
 

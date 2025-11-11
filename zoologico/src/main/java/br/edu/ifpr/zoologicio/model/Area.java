@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Area {
 
-    Funcionario funcionario;
+   private  Funcionario funcionario;
     private ArrayList<Habitat> habitats = new ArrayList<Habitat>();
-    String nome;
-    String descricao;
+   private  String nome;
+   private  String descricao;
 
     public Area() {
 

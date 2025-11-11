@@ -3,10 +3,10 @@ package br.edu.ifpr.zoologicio.model;
 import java.util.ArrayList;
 
 public class Fornecedor {
-String nome;
-String cpf;
-String telefone;
-String email;
+private String nome;
+private String cpf;
+private String telefone;
+private String email;
     private ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
 
 

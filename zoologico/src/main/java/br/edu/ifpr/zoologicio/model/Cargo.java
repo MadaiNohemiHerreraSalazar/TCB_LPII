@@ -2,11 +2,11 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Cargo {
 
-    String salario;
-    String cargaHoraroia;
-    String sennha;
-    String nome;
-    Funcionario funcionario;
+   private  String salario;
+   private  String cargaHoraroia;
+   private  String sennha;
+   private  String nome;
+   private  Funcionario funcionario;
 
     public Cargo() {
 

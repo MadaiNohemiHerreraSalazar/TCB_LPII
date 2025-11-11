@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Habitat {
 
-    String nome;
-    String descricao;
-    String capacidade;
-    Area area;
+   private  String nome;
+   private  String descricao;
+   private  String capacidade;
+  private   Area area;
 
     public Habitat() {
 

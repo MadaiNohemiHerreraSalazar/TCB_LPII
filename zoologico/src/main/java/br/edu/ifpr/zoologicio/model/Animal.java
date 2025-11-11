@@ -2,15 +2,15 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Animal {
     
-    String Nome;
-    String Descricao;
-    String Especie;
-    String Genero;
-    String Peso;
-    String Altura;
-    String Saude;
-    Veterinario veterinario; 
-    Habitat habitat;
+   private  String Nome;
+   private  String Descricao;
+   private  String Especie;
+  private   String Genero;
+   private  String Peso;
+   private  String Altura;
+  private   String Saude;
+   private  Veterinario veterinario; 
+   private  Habitat habitat;
     
 
     public Animal(){

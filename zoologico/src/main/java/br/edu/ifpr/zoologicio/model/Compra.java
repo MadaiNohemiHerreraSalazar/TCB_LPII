@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Compra {
 
-    String data;
-    String hora;
-    String quantidade;
-    String meioPagamento;
-    String precoTotal;
-    Visitante visitante;
-    Funcionario funcionario;
+   private  String data;
+   private  String hora;
+   private  String quantidade;
+   private  String meioPagamento;
+   private  String precoTotal;
+   private  Visitante visitante;
+  private   Funcionario funcionario;
         private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     public Compra (){

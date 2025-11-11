@@ -2,11 +2,11 @@ package br.edu.ifpr.zoologicio.model;
 
 public class AgendaFuncionario {
     
-   String criadoPor;
-   String ultimaAtualizacao;
-   String atividade;
-   Cargo cargo;
-   Funcionario funcionario;
+ private   String criadoPor;
+ private   String ultimaAtualizacao;
+ private   String atividade;
+ private   Cargo cargo;
+private    Funcionario funcionario;
 
     public AgendaFuncionario(){
 

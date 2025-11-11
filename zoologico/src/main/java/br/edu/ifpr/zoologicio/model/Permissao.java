@@ -2,9 +2,9 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Permissao {
 
-    String nome;
-    String descricao;
-    CargoPermissao cargoPermissao;
+   private  String nome;
+  private   String descricao;
+   private  CargoPermissao cargoPermissao;
     
     public Permissao (){
 

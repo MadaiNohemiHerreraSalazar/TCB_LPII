@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Alimento{
 
         private ArrayList<RotinaAlimentar> rotinaAlimentares = new ArrayList<RotinaAlimentar>();
-        Fornecedor fornecedor;
-        String nome;
-        String validade;
-        String estoque;
+    private     Fornecedor fornecedor;
+    private     String nome;
+   private      String validade;
+   private      String estoque;
 
 
 public Alimento (){

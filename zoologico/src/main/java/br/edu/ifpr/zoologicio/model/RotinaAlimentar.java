@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class RotinaAlimentar {
 
-    String data;
-    String hora;
-    String quantidadeAlimento;
-    AgendaAnimal agendaAnimal;
+  private   String data;
+   private  String hora;
+   private  String quantidadeAlimento;
+   private  AgendaAnimal agendaAnimal;
     
         private ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
 

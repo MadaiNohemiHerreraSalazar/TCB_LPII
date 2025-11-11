@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Veterinario {
 
-    String cpf;
-    String email;
-    String especializacao;
-    String nome;
+    private String cpf;
+    private String email;
+   private  String especializacao;
+    private String nome;
 
     public Veterinario() {
 

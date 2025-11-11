@@ -3,10 +3,10 @@ package br.edu.ifpr.zoologicio.model;
 import java.util.ArrayList;
 
 public class CargoPermissao {
-Cargo cargo;
+private Cargo cargo;
     private ArrayList<Permissao> permissoes = new ArrayList<Permissao>();
-    String nome;
-    String descricao;
+  private   String nome;
+   private  String descricao;
 
 
     public CargoPermissao(){
