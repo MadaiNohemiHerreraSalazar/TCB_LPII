@@ -5,10 +5,10 @@ public class Animal {
    private  String Nome;
    private  String Descricao;
    private  String Especie;
-  private   String Genero;
+   private  String Genero;
    private  String Peso;
    private  String Altura;
-  private   String Saude;
+   private  String Saude;
    private  Veterinario veterinario; 
    private  Habitat habitat;
     
