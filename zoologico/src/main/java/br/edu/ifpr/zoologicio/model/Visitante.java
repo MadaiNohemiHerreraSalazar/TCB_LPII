@@ -2,6 +2,7 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Visitante {
 
+    private int id;
     private String cpf;
     private String nome;
     private String telefone;
@@ -10,6 +11,14 @@ public class Visitante {
 
     public Visitante (){
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCpf() {

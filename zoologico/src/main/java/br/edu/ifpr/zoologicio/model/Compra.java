@@ -10,8 +10,8 @@ public class Compra {
    private  String meioPagamento;
    private  String precoTotal;
    private  Visitante visitante;
-  private   Funcionario funcionario;
-        private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+   private   Funcionario funcionario;
+   private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     public Compra (){
 

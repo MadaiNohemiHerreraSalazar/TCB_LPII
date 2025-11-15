@@ -2,15 +2,24 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Funcionario {
 
-  private   String nome;
-  private   String cpf;
-   private  String email;
-  private   String telefone;
-   private  AgendaFuncionario agendaFuncionario;
-  private   Cargo cargo;
+    private int id;
+    private  String nome;
+    private  String cpf;
+    private  String email;
+    private  String telefone;
+    private  AgendaFuncionario agendaFuncionario;
+    private  Cargo cargo;
 
     public Funcionario() {
 
+    }
+
+     public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {

@@ -2,14 +2,23 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Cargo {
 
-   private  String salario;
-   private  String cargaHoraroia;
-   private  String sennha;
-   private  String nome;
-   private  Funcionario funcionario;
+    private int id;
+    private String nome;
+    private String salario;
+    private String cargaHoraroia;
+    private String senha;
+    private Funcionario funcionario;
 
     public Cargo() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSalario() {
@@ -28,12 +37,12 @@ public class Cargo {
         this.cargaHoraroia = cargaHoraroia;
     }
 
-    public String getSennha() {
-        return sennha;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setSennha(String sennha) {
-        this.sennha = sennha;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getNome() {

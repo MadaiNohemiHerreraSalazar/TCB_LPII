@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class Alimento{
 
-        private ArrayList<RotinaAlimentar> rotinaAlimentares = new ArrayList<RotinaAlimentar>();
-    private     Fornecedor fornecedor;
-    private     String nome;
-   private      String validade;
-   private      String estoque;
+    private int id;
+    private String nome;
+    private Fornecedor fornecedor;
+    private String validade;
+    private String estoque;
+    private ArrayList<RotinaAlimentar> rotinaAlimentares = new ArrayList<RotinaAlimentar>();
 
 
 public Alimento (){
