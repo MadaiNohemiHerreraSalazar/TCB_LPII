@@ -4,16 +4,25 @@ import java.util.ArrayList;
 
 public class Habitat {
 
-   private  String nome;
-   private  String descricao;
-   private  String capacidade;
-  private   Area area;
+    private int id;
+    private String nome;
+    private String descricao;
+    private String capacidade;
+    private Area area;
+
+    private ArrayList<Animal> animais = new ArrayList<Animal>();
 
     public Habitat() {
 
     }
 
-    private ArrayList<Animal> animais = new ArrayList<Animal>();
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;

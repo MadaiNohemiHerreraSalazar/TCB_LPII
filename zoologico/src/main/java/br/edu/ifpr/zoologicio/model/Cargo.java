@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.model;
 
+import java.util.ArrayList;
+
 public class Cargo {
 
     private int id;
@@ -7,7 +9,8 @@ public class Cargo {
     private String salario;
     private String cargaHoraroia;
     private String senha;
-    private Funcionario funcionario;
+
+    private ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
     public Cargo() {
 
@@ -53,11 +56,12 @@ public class Cargo {
         this.nome = nome;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setFuncionarios(ArrayList<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
     }
+
 }
