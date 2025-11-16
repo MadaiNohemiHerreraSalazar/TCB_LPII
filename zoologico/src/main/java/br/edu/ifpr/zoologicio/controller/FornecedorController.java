@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.util.ArrayList;
+
 import br.edu.ifpr.zoologicio.model.Fornecedor;
 import br.edu.ifpr.zoologicio.model.dao.FornecedorDAO;
 
@@ -57,6 +59,8 @@ public class FornecedorController {
         dao.select(id);
     }
 
-    //public void listarFornecedor()
+    public ArrayList<Fornecedor> listarFornecedores() {
+        return dao.listar();
+    }
     
 }

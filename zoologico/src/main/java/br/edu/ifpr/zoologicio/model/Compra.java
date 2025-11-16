@@ -4,17 +4,26 @@ import java.util.ArrayList;
 
 public class Compra {
 
-   private  String data;
-   private  String hora;
-   private  String quantidade;
-   private  String meioPagamento;
-   private  String precoTotal;
-   private  Visitante visitante;
-   private  Funcionario funcionario;
-   private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+    private int id;
+    private String data;
+    private String hora;
+    private String quantidade;
+    private String meioPagamento;
+    private String precoTotal;
+    private Visitante visitante;
+    private Funcionario funcionario;
+    private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
-    public Compra (){
+    public Compra() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getData() {
@@ -80,5 +89,5 @@ public class Compra {
     public void setTickets(ArrayList<Ticket> tickets) {
         this.tickets = tickets;
     }
-    
+
 }

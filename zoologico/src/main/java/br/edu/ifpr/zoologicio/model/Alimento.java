@@ -6,15 +6,24 @@ public class Alimento{
 
     private int id;
     private String nome;
-    private Fornecedor fornecedor;
     private String validade;
     private String estoque;
+    private Fornecedor fornecedor;
     private ArrayList<RotinaAlimentar> rotinaAlimentares = new ArrayList<RotinaAlimentar>();
 
 
 public Alimento (){
 
 }
+
+ public int getId() {
+        return id;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
 public ArrayList<RotinaAlimentar> getRotinaAlimentares() {

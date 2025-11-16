@@ -1,3 +1,5 @@
+//Habitat e Veterinario precisam ser cadastrados con antecedencia
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -57,6 +59,7 @@ public class AnimalDAO {
             pst.setString(6, animal.getPeso());
             pst.setString(7, animal.getAltura());
             pst.setString(8, animal.getSaude());
+            pst.setInt(9, animal.getId());
 
             pst.executeUpdate();
             System.out.println("Animal atualizado com sucesso");

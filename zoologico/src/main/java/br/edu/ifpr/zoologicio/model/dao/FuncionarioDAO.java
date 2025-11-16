@@ -1,3 +1,7 @@
+// O funcionario não precisa de ter uma agenda para ser cadastrado.
+// Ele precisa de ter um cargo previamente cadastrado
+// Arrumar cadastro para poder cadastrar cargo.
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;

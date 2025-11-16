@@ -1,3 +1,5 @@
+// O veterinario não precisa dos os animais para ser cadastrados. 
+// Isso se faz quando se cadastre o a agendaAnimal
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;

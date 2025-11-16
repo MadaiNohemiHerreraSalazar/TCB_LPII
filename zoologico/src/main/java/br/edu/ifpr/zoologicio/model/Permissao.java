@@ -2,12 +2,21 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Permissao {
 
-   private  String nome;
-  private   String descricao;
-   private  CargoPermissao cargoPermissao;
-    
-    public Permissao (){
+    private int id;
+    private String nome;
+    private String descricao;
+    private CargoPermissao cargoPermissao;
 
+    public Permissao() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -33,5 +42,5 @@ public class Permissao {
     public void setCargoPermissao(CargoPermissao cargoPermissao) {
         this.cargoPermissao = cargoPermissao;
     }
-    
+
 }

@@ -4,23 +4,32 @@ import java.util.ArrayList;
 
 public class Area {
 
-    private Funcionario funcionario;
-    private ArrayList<Habitat> habitats = new ArrayList<Habitat>();
+    private int id;
     private String nome;
     private String descricao;
+    private ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
+    private ArrayList<Habitat> habitats = new ArrayList<Habitat>();
 
     public Area() {
 
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public int getId() {
+        return id;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(ArrayList<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+    
     public ArrayList<Habitat> getHabitats() {
         return habitats;
     }

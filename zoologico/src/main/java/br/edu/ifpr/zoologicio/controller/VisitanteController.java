@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.util.ArrayList;
+
 import br.edu.ifpr.zoologicio.model.Visitante;
 import br.edu.ifpr.zoologicio.model.dao.VisitanteDAO;
 
@@ -56,6 +58,8 @@ public class VisitanteController {
         dao.select(id);
     }
 
-    // public void listarVisitante()
+    public ArrayList<Visitante> listarVisitantes() {
+        return dao.listar();
+    }
 
 }

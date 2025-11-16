@@ -1,3 +1,7 @@
+// A habitat precisa ter a Area cadastrada con antecedencia ou na hora. 
+// - Arrumar cadastro para cadastrar a area também.
+// Não precisa ter animais, pode ser cadastrada sem.
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -47,6 +51,7 @@ public class HabitatDAO {
             pst.setString(1, habitat.getNome());
             pst.setString(2, habitat.getDescricao());
             pst.setString(3, habitat.getCapacidade());
+            pst.setInt(4, habitat.getId());
 
             pst.executeUpdate();
             System.out.println("Habitat atualizado com sucesso");

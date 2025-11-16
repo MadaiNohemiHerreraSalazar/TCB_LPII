@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.util.ArrayList;
+
 import br.edu.ifpr.zoologicio.model.Animal;
 import br.edu.ifpr.zoologicio.model.dao.AnimalDAO;
 
@@ -57,7 +59,9 @@ public class AnimalController {
         dao.select(id);
     }
 
-    //public void listarAnimal()
+    public ArrayList<Animal> listarAnimais() {
+        return dao.listar();
+    }
     
     
 }

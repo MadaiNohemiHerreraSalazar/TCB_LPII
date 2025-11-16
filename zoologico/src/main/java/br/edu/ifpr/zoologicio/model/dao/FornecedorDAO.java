@@ -1,3 +1,6 @@
+//Um fornecedor não pode ter nenhum alimento em sua lista
+// arrumar cadastro para cadastrar alimentos também
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;

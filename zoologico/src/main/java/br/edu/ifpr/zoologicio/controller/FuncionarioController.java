@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.util.ArrayList;
+
 import br.edu.ifpr.zoologicio.model.Funcionario;
 import br.edu.ifpr.zoologicio.model.dao.FuncionarioDAO;
 
@@ -57,6 +59,8 @@ public class FuncionarioController {
         dao.select(id);
     }
 
-    //public void listarFuncionario()
+    public ArrayList<Funcionario> listarFuncionarios() {
+        return dao.listar();
+    }
     
 }

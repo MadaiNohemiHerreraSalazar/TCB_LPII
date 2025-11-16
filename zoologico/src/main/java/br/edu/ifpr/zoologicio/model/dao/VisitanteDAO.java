@@ -1,3 +1,7 @@
+// Falta "Compra" como atributo
+// O visitante não pode ser cadastrado sem sua compra 
+// - Arrumar cadastro para que se cadastre a compra também
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -48,6 +52,7 @@ public class VisitanteDAO {
             pst.setString(2, visitante.getCpf());
             pst.setString(3, visitante.getEmail());
             pst.setString(4, visitante.getTelefone());
+            pst.setInt(5, visitante.getId());
             pst.executeUpdate();
             System.out.println("Visitante atualizado com sucesso");
 

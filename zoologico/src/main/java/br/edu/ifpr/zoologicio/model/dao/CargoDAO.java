@@ -1,3 +1,5 @@
+//Se pode cadastrar o cargo sem ter funcionarios
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -49,6 +51,7 @@ public class CargoDAO {
             pst.setString(2, cargo.getSalario());
             pst.setString(3, cargo.getCargaHoraroia());
             pst.setString(4, cargo.getSenha());
+            pst.setInt(5, cargo.getId());
 
             pst.executeUpdate();
             System.out.println("Cargo atualizado com sucesso");

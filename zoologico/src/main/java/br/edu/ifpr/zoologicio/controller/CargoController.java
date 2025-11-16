@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.util.ArrayList;
+
 import br.edu.ifpr.zoologicio.model.Cargo;
 import br.edu.ifpr.zoologicio.model.dao.CargoDAO;
 
@@ -57,7 +59,9 @@ public class CargoController {
         dao.select(id);
     }
 
-    //public void listarCargo()
+    public ArrayList<Cargo> listarCargos() {
+        return dao.listar();
+    }
     
     
 }

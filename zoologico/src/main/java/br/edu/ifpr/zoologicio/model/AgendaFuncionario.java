@@ -1,16 +1,25 @@
 package br.edu.ifpr.zoologicio.model;
 
 public class AgendaFuncionario {
-    
- private   String criadoPor;
- private   String ultimaAtualizacao;
- private   String atividade;
- private   Cargo cargo;
-private    Funcionario funcionario;
 
-    public AgendaFuncionario(){
+    private int id;
+    private String criadoPor;
+    private String ultimaAtualizacao;
+    private String atividade;
+    private Cargo cargo;
+    private Funcionario funcionario;
 
-   }
+    public AgendaFuncionario() {
+
+    }
+
+     public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCriadoPor() {
         return criadoPor;
@@ -50,5 +59,5 @@ private    Funcionario funcionario;
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
-    } 
+    }
 }

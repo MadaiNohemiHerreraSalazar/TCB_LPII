@@ -1,3 +1,6 @@
+// O ticket tem que ter uma "compra" que já foi cadastrada anteriormente ou na hora (arrumar)
+// Não se pode cadastrar um ticket sem sua compra.
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -47,6 +50,7 @@ public class TicketDAO {
             pst.setString(1, ticket.getData());
             pst.setString(2, ticket.getHora());
             pst.setString(3, ticket.getPreco());
+            pst.setInt(4, ticket.getId());
 
             pst.executeUpdate();
             System.out.println("Ticket atualizado com sucesso");

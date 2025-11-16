@@ -1,18 +1,34 @@
 package br.edu.ifpr.zoologicio.model;
 
-public class AgendaAnimal{
+public class AgendaAnimal {
 
-   private  Animal animal;
-  private   Veterinario veterinario;
-   private  RotinaAlimentar rotinaAlimentar;
-  private   String consultaData;
-  private   String conultaHorario;
-  private   String banho;
-  private   String medicacao;
-  private   String atividade;
-    
-    public AgendaAnimal(){
+    private int id;
+    private String consulta;
+    private String banho;
+    private String medicacao;
+    private String atividade;
+    private Animal animal;
+    private Veterinario veterinario;
+    private RotinaAlimentar rotinaAlimentar;
 
+    public AgendaAnimal() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(String consulta) {
+        this.consulta = consulta;
     }
 
     public Animal getAnimal() {
@@ -37,22 +53,6 @@ public class AgendaAnimal{
 
     public void setRotinaAlimentar(RotinaAlimentar rotinaAlimentar) {
         this.rotinaAlimentar = rotinaAlimentar;
-    }
-
-    public String getConsultaData() {
-        return consultaData;
-    }
-
-    public void setConsultaData(String consultaData) {
-        this.consultaData = consultaData;
-    }
-
-    public String getConultaHorario() {
-        return conultaHorario;
-    }
-
-    public void setConultaHorario(String conultaHorario) {
-        this.conultaHorario = conultaHorario;
     }
 
     public String getBanho() {

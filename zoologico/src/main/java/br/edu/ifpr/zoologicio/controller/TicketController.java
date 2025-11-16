@@ -1,5 +1,7 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.util.ArrayList;
+
 import br.edu.ifpr.zoologicio.model.Ticket;
 import br.edu.ifpr.zoologicio.model.dao.TicketDAO;
 
@@ -57,6 +59,8 @@ public class TicketController {
         dao.select(id);
     }
 
-    //public void listarTicket()
+    public ArrayList<Ticket> listarTickets() {
+        return dao.listar();
+    }
     
 }
