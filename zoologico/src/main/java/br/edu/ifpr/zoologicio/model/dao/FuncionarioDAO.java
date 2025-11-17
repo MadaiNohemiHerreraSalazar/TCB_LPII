@@ -1,6 +1,6 @@
-// O funcionario não precisa de ter uma agenda para ser cadastrado.
-// Ele precisa de ter um cargo previamente cadastrado
-// Arrumar cadastro para poder cadastrar cargo.
+// O funcionario não precisa de ter uma agenda para ser cadastrado.✅
+// Ele precisa de ter um cargo cadastrado no momento de seu cadastro
+// Arrumar cadastro para poder cadastrar cargo.✅
 
 package br.edu.ifpr.zoologicio.model.dao;
 
@@ -13,13 +13,25 @@ import br.edu.ifpr.zoologicio.model.Funcionario;
 
 public class FuncionarioDAO {
 
-    public static void cadastrar(Funcionario funcionario){
+    public static void cadastrar(Funcionario funcionario) {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlFuncionario = "INSERT INTO funcionarios(nome, cpf, email) VALUES (?,?,?)";
+        String sqlCargos = "INSERT INTO cargos(nome, salario, cargaHoraria, senha) VALUES (?,?,?,?)";
 
         try {
+
+            PreparedStatement psCargo = con.prepareStatement(sqlCargos);
+
+            psCargo.setString(1, funcionario.getCargo().getNome());
+            psCargo.setString(2, funcionario.getCargo().getSalario());
+            psCargo.setString(3, funcionario.getCargo().getCargaHoraroia());
+            psCargo.setString(4, funcionario.getCargo().getSenha());
+
+            psCargo.executeUpdate();
+            System.out.println("Cargo inserido com sucesso");
+
+            String sqlFuncionario = "INSERT INTO funcionarios(nome, cpf, email) VALUES (?,?,?)";
 
             PreparedStatement psFuncionario = con.prepareStatement(sqlFuncionario);
 
@@ -28,7 +40,7 @@ public class FuncionarioDAO {
             psFuncionario.setString(3, funcionario.getEmail());
             psFuncionario.executeUpdate();
             System.out.println("Funcionario inserido com sucesso");
-            
+
         } catch (Exception e) {
 
             // TODO: handle exception
@@ -38,7 +50,7 @@ public class FuncionarioDAO {
 
     }
 
-    public static void editar(Funcionario funcionario){
+    public static void editar(Funcionario funcionario) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -54,7 +66,6 @@ public class FuncionarioDAO {
             pst.executeUpdate();
             System.out.println("Funcionario atualizado com sucesso");
 
-            
         } catch (Exception e) {
 
             // TODO: handle exception
@@ -64,13 +75,13 @@ public class FuncionarioDAO {
 
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         Connection con = ConnectionFactory.getConnection();
 
         try {
 
             String sql = "DELETE FROM funcionarios WHERE id= ?";
-            PreparedStatement pst =  con.prepareStatement(sql);
+            PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, id);
             pst.executeUpdate();
             System.out.println("Funcionario excluido com sucesso");
@@ -83,7 +94,7 @@ public class FuncionarioDAO {
         }
     }
 
-     public ArrayList<Funcionario> select(int id){
+    public ArrayList<Funcionario> select(int id) {
 
         Connection con = ConnectionFactory.getConnection();
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
@@ -94,7 +105,7 @@ public class FuncionarioDAO {
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 Funcionario funcionario = new Funcionario();
                 funcionario.setId(rs.getInt("id"));
@@ -104,7 +115,7 @@ public class FuncionarioDAO {
                 funcionarios.add(funcionario);
 
             }
-            
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println(e.getMessage());
@@ -112,8 +123,8 @@ public class FuncionarioDAO {
 
         return funcionarios;
     }
-    
-     public ArrayList<Funcionario> listar(){
+
+    public ArrayList<Funcionario> listar() {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -125,7 +136,7 @@ public class FuncionarioDAO {
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 Funcionario funcionario = new Funcionario();
                 funcionario.setId(rs.getInt("id"));
@@ -135,7 +146,7 @@ public class FuncionarioDAO {
                 funcionarios.add(funcionario);
 
             }
-            
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println(e.getMessage());

@@ -1,4 +1,4 @@
-//Precisa ter seu fornecedor o ser cadastrado na hora (arrumar cadastro)
+//Precisa ter seu fornecedor cadastrado✅
 // não precisa ter a rotinaAlimentar para ser cadastrado
 
 package br.edu.ifpr.zoologicio.model.dao;
@@ -11,6 +11,31 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.Alimento;
 
 public class AlimentoDAO {
+    
+
+     public static int buscaFornecedor_ID(String nomeFornecedor) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlFornecedor = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlFornecedor);
+            ps.setString(1, nomeFornecedor);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
 
     public static void cadastrar(Alimento alimento) {
 

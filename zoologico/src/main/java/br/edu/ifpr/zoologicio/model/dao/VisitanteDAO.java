@@ -1,4 +1,4 @@
-// Falta "Compra" como atributo
+// Falta "Compra" como atributo✅
 // O visitante não pode ser cadastrado sem sua compra 
 // - Arrumar cadastro para que se cadastre a compra também
 
@@ -11,7 +11,31 @@ import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Visitante;
 
-public class VisitanteDAO { 
+public class VisitanteDAO {
+
+    public static int buscaCompra_ID(String nomeCompra) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlCOmpra = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlCOmpra);
+            ps.setString(1, nomeCompra);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
 
     public static void cadastrar(Visitante visitante) {
 

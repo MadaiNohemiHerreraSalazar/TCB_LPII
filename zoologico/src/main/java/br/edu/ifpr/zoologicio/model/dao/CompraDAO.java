@@ -1,6 +1,6 @@
-// A o visitante precisa ser cadastrado na compra
-// O funcionario precisa estar cadastrado previamente
-// Não sei como se faz com o ticket
+// A o visitante precisa ser cadastrado na compra✅
+// O funcionario precisa estar cadastrado previamente✅
+// ticket -> main 
 
 
 package br.edu.ifpr.zoologicio.model.dao;
@@ -13,6 +13,56 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.Compra;
 
 public class CompraDAO {
+
+       public static int buscaFuncionario_ID(String nomeFuncionario) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlFuncionario);
+            ps.setString(1, nomeFuncionario);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+
+   public static int buscaVisitante_ID(String nomeVisitante) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlVisitante = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlVisitante);
+            ps.setString(1, nomeVisitante);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
 
     public static void cadastrar(Compra compra) {
 

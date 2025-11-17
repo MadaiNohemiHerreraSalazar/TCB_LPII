@@ -8,8 +8,8 @@ public class Alimento{
     private String nome;
     private String validade;
     private String estoque;
-    //private Fornecedor fornecedor;
-    private int fornecedor_ID;
+    private Fornecedor fornecedor;
+    private RotinaAlimentar rotinaAlimentar;
 
     private ArrayList<RotinaAlimentar> rotinaAlimentares = new ArrayList<RotinaAlimentar>();
 
@@ -66,12 +66,21 @@ public void setEstoque(String estoque) {
     this.estoque = estoque;
 }
 
-public int getFornecedor_ID() {
-    return fornecedor_ID;
+public Fornecedor getFornecedor() {
+    return fornecedor;
 }
 
-public void setFornecedor_ID(int fornecedor_ID) {
-    this.fornecedor_ID = fornecedor_ID;
+public void setFornecedor(Fornecedor fornecedor) {
+    this.fornecedor = fornecedor;
+}
+
+
+public RotinaAlimentar getRotinaAlimentar() {
+    return rotinaAlimentar;
+}
+
+public void setRotinaAlimentar(RotinaAlimentar rotinaAlimentar) {
+    this.rotinaAlimentar = rotinaAlimentar;
 }
 
 

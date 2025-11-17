@@ -1,5 +1,6 @@
 //Um fornecedor não pode ter nenhum alimento em sua lista
-// arrumar cadastro para cadastrar alimentos também
+// arrumar cadastro para cadastrar alimentos também✅
+
 
 package br.edu.ifpr.zoologicio.model.dao;
 
@@ -8,11 +9,41 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.Fornecedor;
+import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class FornecedorDAO {
-    
-    public static void cadastrar(Fornecedor fornecedor){
+
+ public static void cadastroAlimentos(ArrayList<Alimento> alimentos, RotinaAlimentar rotinaAlimentar) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlAlimento = "INSERT INTO alimentos(nome, validade, estoque, rotina_id) VALUES (?,?,?)";
+
+        try {
+
+            for (Alimento a : alimentos) {
+                PreparedStatement pst = con.prepareStatement(sqlAlimento);
+                pst.setString(1, a.getNome());
+                pst.setString(2, a.getValidade());
+                pst.setString(3, a.getEstoque());
+                pst.setInt(4, rotinaAlimentar.getId()); // FK para a rotina
+
+                pst.executeUpdate();
+            }
+
+            System.out.println("Alimentos cadastrados com sucesso!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // _____________________________________________________________________________________________________
+
+    }
+
+    public static void cadastrar(Fornecedor fornecedor) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -27,7 +58,7 @@ public class FornecedorDAO {
             psFornecedor.setString(3, fornecedor.getEmail());
             psFornecedor.executeUpdate();
             System.out.println("Fornecedor inserido com sucesso");
-            
+
         } catch (Exception e) {
 
             // TODO: handle exception
@@ -37,7 +68,7 @@ public class FornecedorDAO {
 
     }
 
-    public static void editar(Fornecedor fornecedor){
+    public static void editar(Fornecedor fornecedor) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -53,7 +84,6 @@ public class FornecedorDAO {
             pst.executeUpdate();
             System.out.println("Fornecedor atualizado com sucesso");
 
-            
         } catch (Exception e) {
 
             // TODO: handle exception
@@ -63,13 +93,13 @@ public class FornecedorDAO {
 
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         Connection con = ConnectionFactory.getConnection();
 
         try {
 
             String sql = "DELETE FROM fornecedores WHERE id= ?";
-            PreparedStatement pst =  con.prepareStatement(sql);
+            PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, id);
             pst.executeUpdate();
             System.out.println("Fornecedor excluido com sucesso");
@@ -82,7 +112,7 @@ public class FornecedorDAO {
         }
     }
 
-     public ArrayList<Fornecedor> select(int id){
+    public ArrayList<Fornecedor> select(int id) {
 
         Connection con = ConnectionFactory.getConnection();
         ArrayList<Fornecedor> fornecedores = new ArrayList<>();
@@ -93,7 +123,7 @@ public class FornecedorDAO {
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 Fornecedor fornecedor = new Fornecedor();
                 fornecedor.setId(rs.getInt("id"));
@@ -104,7 +134,7 @@ public class FornecedorDAO {
                 fornecedores.add(fornecedor);
 
             }
-            
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println(e.getMessage());
@@ -112,8 +142,8 @@ public class FornecedorDAO {
 
         return fornecedores;
     }
-    
-     public ArrayList<Fornecedor> listar(){
+
+    public ArrayList<Fornecedor> listar() {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -125,7 +155,7 @@ public class FornecedorDAO {
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
 
                 Fornecedor fornecedor = new Fornecedor();
                 fornecedor.setId(rs.getInt("id"));
@@ -136,7 +166,7 @@ public class FornecedorDAO {
                 fornecedores.add(fornecedor);
 
             }
-            
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println(e.getMessage());

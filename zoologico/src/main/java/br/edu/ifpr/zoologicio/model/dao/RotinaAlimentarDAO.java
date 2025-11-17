@@ -8,17 +8,49 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class RotinaAlimentarDAO {
 
-    //Cadastro da RotinaAlimentar ______________________________________________________
+    // Cadastro da RotinaAlimentar
+    // ______________________________________________________
 
-    public static buscaIDAgendAnimal_ID
-
-     public static void cadastrar(RotinaAlimentar rotinaAlimentar) {
+    public static int buscarAgendaAnimal_ID(String nomeAnimal) {
 
         Connection con = ConnectionFactory.getConnection();
+
+        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal);
+            ps.setString(1, nomeAnimal);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    public static void cadastrar(RotinaAlimentar rotinaAlimentar) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        // 1. Buscar o id do animal já cadastrado
+        int idAgendaAnimal = buscarAgendaAnimal_ID(rotinaAlimentar.getAgendaAnimal().getAnimal().getNome());
+
+        if (idAgendaAnimal == -1) {
+            System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
+            return;
+        }
 
         String sqlRotinaAlimentar = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento) VALUES (?,?,?)";
 
@@ -41,6 +73,59 @@ public class RotinaAlimentarDAO {
         }
 
     }
+
+    public static void cadastroAlimentos(ArrayList<Alimento> alimentos, RotinaAlimentar rotinaAlimentar) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlAlimento = "INSERT INTO alimentos(nome, validade, estoque, rotina_id) VALUES (?,?,?)";
+
+        try {
+
+            for (Alimento a : alimentos) {
+                PreparedStatement pst = con.prepareStatement(sqlAlimento);
+                pst.setString(1, a.getNome());
+                pst.setString(2, a.getValidade());
+                pst.setString(3, a.getEstoque());
+                pst.setInt(4, rotinaAlimentar.getId()); // FK para a rotina
+
+                pst.executeUpdate();
+            }
+
+            System.out.println("Alimentos cadastrados com sucesso!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int buscarFornecedor_ID(String nomeFornecedor) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlAgendaAnimal = "SELECT from fornecedores WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal);
+            ps.setString(1, nomeFornecedor);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    }
+
+    // _____________________________________________________________________________________________________
 
     public static void editar(RotinaAlimentar rotinaAlimentar) {
 
@@ -147,5 +232,5 @@ public class RotinaAlimentarDAO {
 
         return rotinasAlimentares;
     }
-    
+
 }

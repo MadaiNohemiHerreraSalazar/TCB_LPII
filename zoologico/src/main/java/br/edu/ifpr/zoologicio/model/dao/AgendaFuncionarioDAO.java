@@ -1,4 +1,4 @@
-//precisa ter o funcionario já cadatrado
+//precisa ter o funcionario já cadatrado✅ 
 //Eu acho que o Cargo no Objeto AgendaFuncionario é meio obvio, já que o funcionario tem seu cargo.
 //Arrumar AgendaFuncionario
 
@@ -12,6 +12,30 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
 
 public class AgendaFuncionarioDAO {
+
+     public static int buscaFuncionario_ID(String nomeFuncionario) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlFuncionario);
+            ps.setString(1, nomeFuncionario);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
 
     public static void cadastrar(AgendaFuncionario agendaFuncionario) {
 

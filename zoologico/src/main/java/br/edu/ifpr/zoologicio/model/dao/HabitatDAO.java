@@ -1,4 +1,4 @@
-// A habitat precisa ter a Area cadastrada con antecedencia ou na hora. 
+// A habitat precisa ter a Area cadastrada con antecedencia.✅
 // - Arrumar cadastro para cadastrar a area também.
 // Não precisa ter animais, pode ser cadastrada sem.
 
@@ -12,6 +12,31 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.Habitat;
 
 public class HabitatDAO {
+
+      public static int buscaHabitat_ID(String nomeHabitat) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlHabitat = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlHabitat);
+            ps.setString(1, nomeHabitat);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
 
     public static void cadastrar(Habitat habitat) {
 

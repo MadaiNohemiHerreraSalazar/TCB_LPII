@@ -1,4 +1,4 @@
-//Habitat e Veterinario precisam ser cadastrados con antecedencia
+//Habitat e Veterinario precisam ser cadastrados con antecedencia✅
 
 package br.edu.ifpr.zoologicio.model.dao;
 
@@ -11,12 +11,59 @@ import br.edu.ifpr.zoologicio.model.Animal;
 
 public class AnimalDAO {
 
+    public static int buscaHabitat_ID(String nomeHabitat) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlHabitat = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlHabitat);
+            ps.setString(1, nomeHabitat);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    public static int buscaVeterinario_ID(String nomeVeterinario) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlVeterinario);
+            ps.setString(1, nomeVeterinario);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
     public static void cadastrar(Animal animal) {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String 
-        sqlAnimal = "INSERT INTO animais(nome, descricao, historia, idade, genero, peso, altura, saude) VALUES (?,?,?,?,?,?,?,?)";
+        String sqlAnimal = "INSERT INTO animais(nome, descricao, historia, idade, genero, peso, altura, saude) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
 

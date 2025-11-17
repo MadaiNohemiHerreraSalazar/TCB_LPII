@@ -1,6 +1,6 @@
-//O animal precisa estar cadastrado
-//O veterinario precisa estar cadastrdo ou ser cadastrado na hora
-//A rotinaAlimentar precisa estar cadastrdo ou ser cadastrado na hora
+//O animal precisa estar cadastrado✅ 
+//O veterinario precisa estar cadastrdo ou ser cadastrado na hora✅ 
+//A rotinaAlimentar precisa estar cadastrdo ou ser cadastrado na hora✅ 
 
 package br.edu.ifpr.zoologicio.model.dao;
 
@@ -13,10 +13,81 @@ import br.edu.ifpr.zoologicio.model.AgendaAnimal;
 
 public class AgendaAnimalDAO {
 
-    public static void cadastrar(AgendaAnimal agendaAnimal) {
+    public static int buscaAnimal_ID(String nomeAnimal) {
 
         Connection con = ConnectionFactory.getConnection();
 
+        String sqlAnimal = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlAnimal);
+            ps.setString(1, nomeAnimal);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    public static int buscaVeterinario_ID(String nomeVeterinario) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlVeterinario);
+            ps.setString(1, nomeVeterinario);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    public static int buscaRotinaAlimentar_ID(String nomeRotinaALimentar) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal);
+            ps.setString(1, nomeRotinaALimentar);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    public static void cadastrar(AgendaAnimal agendaAnimal) {
+
+        Connection con = ConnectionFactory.getConnection();
 
         try {
 

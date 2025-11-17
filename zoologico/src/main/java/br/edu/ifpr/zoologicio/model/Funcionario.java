@@ -9,7 +9,7 @@ public class Funcionario {
     private String telefone;
     // private AgendaFuncionario agendaFuncionario;
     private int agendaFuncionario_ID;
-    // private Cargo cargo;
+    private Cargo cargo;
     private int cargo_ID;
 
     public Funcionario() {
@@ -70,6 +70,14 @@ public class Funcionario {
 
     public void setCargo_ID(int cargo_ID) {
         this.cargo_ID = cargo_ID;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 
 
