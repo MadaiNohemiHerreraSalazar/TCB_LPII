@@ -1,6 +1,3 @@
-// A rotina alimentar precisa de sua agendaAnimal cadastrada Previamente
-// E Alimentos cadastrados previamente
-
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -13,23 +10,22 @@ import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class RotinaAlimentarDAO {
 
-    // Cadastro da RotinaAlimentar
+    // BUSCAR AGENDA ANIMAL
     // ______________________________________________________
 
     public static int buscarAgendaAnimal_ID(String nomeAnimal) {
 
-        Connection con = ConnectionFactory.getConnection();
-
-        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE nome= ?";
+        String sqlAgendaAnimal = "SELECT * FROM agendaAnimais WHERE nome = ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal);
-            ps.setString(1, nomeAnimal);
-            ResultSet rs = ps.executeQuery();
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlAgendaAnimal)) {
 
-            if (rs.next()) {
-                id = rs.getInt("id");
+            pst.setString(1, nomeAnimal);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
             }
 
         } catch (Exception e) {
@@ -37,82 +33,110 @@ public class RotinaAlimentarDAO {
         }
 
         return id;
-
     }
+
+    // CADASTRAR ROTINA ALIMENTAR
+    // ______________________________________________________
 
     public static void cadastrar(RotinaAlimentar rotinaAlimentar) {
 
-        Connection con = ConnectionFactory.getConnection();
+        String sqlRotinaAlimentar = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento, agendaAnimal_id) VALUES (?,?,?,?)";
 
-        // 1. Buscar o id do animal já cadastrado
-        int idAgendaAnimal = buscarAgendaAnimal_ID(rotinaAlimentar.getAgendaAnimal().getAnimal().getNome());
+        try (
 
-        if (idAgendaAnimal == -1) {
-            System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
-            return;
-        }
+            Connection con = ConnectionFactory.getConnection();
 
-        String sqlRotinaAlimentar = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento) VALUES (?,?,?)";
+            PreparedStatement pst = con.prepareStatement(sqlRotinaAlimentar, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-        try {
+            int idAgendaAnimal = buscarAgendaAnimal_ID(
+                    rotinaAlimentar.getAgendaAnimal().getAnimal().getNome());
 
-            PreparedStatement psRotinaAlimentar = con.prepareStatement(sqlRotinaAlimentar);
+            if (idAgendaAnimal == -1) {
+                System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
+                return;
+            }
 
-            psRotinaAlimentar.setString(1, rotinaAlimentar.getData());
-            psRotinaAlimentar.setString(2, rotinaAlimentar.getHora());
-            psRotinaAlimentar.setString(3, rotinaAlimentar.getQuantidadeAlimento());
+            pst.setString(1, rotinaAlimentar.getData());
+            pst.setString(2, rotinaAlimentar.getHora());
+            pst.setString(3, rotinaAlimentar.getQuantidadeAlimento());
+            pst.setInt(4, idAgendaAnimal);
 
-            psRotinaAlimentar.executeUpdate();
-            System.out.println("rotinaAlimentar inserida com sucesso");
+            pst.executeUpdate();
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    rotinaAlimentar.setId(rs.getInt(1));
+                }
+            }
+
+            if (!cadastroAlimentos(con, rotinaAlimentar.getAlimentos(), rotinaAlimentar)) {
+                System.out.println("Rotina NÃO cadastrada. Erro ao cadastrar alimentos.");
+                return;
+            }
+
+            System.out.println("RotinaAlimentar cadastrada com sucesso!");
 
         } catch (Exception e) {
-
-            // TODO: handle exception
             e.printStackTrace();
-
         }
-
     }
 
-    public static void cadastroAlimentos(ArrayList<Alimento> alimentos, RotinaAlimentar rotinaAlimentar) {
+    // CADASTRAR ALIMENTOS
+    // ______________________________________________________
 
-        Connection con = ConnectionFactory.getConnection();
+    public static boolean cadastroAlimentos(Connection con, ArrayList<Alimento> alimentos,
+            RotinaAlimentar rotinaAlimentar) {
 
-        String sqlAlimento = "INSERT INTO alimentos(nome, validade, estoque, rotina_id) VALUES (?,?,?)";
+        String sqlAlimento = "INSERT INTO alimentos(nome, validade, estoque, fornecedor_id, rotina_id) VALUES (?,?,?,?,?)";
 
         try {
 
-            for (Alimento a : alimentos) {
-                PreparedStatement pst = con.prepareStatement(sqlAlimento);
-                pst.setString(1, a.getNome());
-                pst.setString(2, a.getValidade());
-                pst.setString(3, a.getEstoque());
-                pst.setInt(4, rotinaAlimentar.getId()); // FK para a rotina
+            for (Alimento alimento : alimentos) {
 
-                pst.executeUpdate();
+                int fornecedor_id = buscarFornecedor_ID(alimento.getFornecedor().getNome());
+
+                if (fornecedor_id == -1) {
+                    System.out.println("Fornecedor '" + alimento.getFornecedor().getNome()
+                            + "' não encontrado! Alimento NÃO cadastrado.");
+                    return false;
+                }
+
+                try (PreparedStatement pst = con.prepareStatement(sqlAlimento)) {
+                    pst.setString(1, alimento.getNome());
+                    pst.setString(2, alimento.getValidade());
+                    pst.setString(3, alimento.getEstoque());
+                    pst.setInt(4, fornecedor_id);
+                    pst.setInt(5, rotinaAlimentar.getId());
+                    pst.executeUpdate();
+                }
             }
 
             System.out.println("Alimentos cadastrados com sucesso!");
+            return true;
 
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
+    // BUSCAR FORNECEDOR
+    // ______________________________________________________
+
     public static int buscarFornecedor_ID(String nomeFornecedor) {
 
-        Connection con = ConnectionFactory.getConnection();
-
-        String sqlAgendaAnimal = "SELECT from fornecedores WHERE nome= ?";
+        String sqlFornecedor = "SELECT * from fornecedores WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal);
-            ps.setString(1, nomeFornecedor);
-            ResultSet rs = ps.executeQuery();
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlFornecedor)) {
 
-            if (rs.next()) {
-                id = rs.getInt("id");
+            pst.setString(1, nomeFornecedor);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
             }
 
         } catch (Exception e) {
@@ -120,21 +144,17 @@ public class RotinaAlimentarDAO {
         }
 
         return id;
-
     }
 
-    }
-
-    // _____________________________________________________________________________________________________
+    // EDITAR
+    // ______________________________________________________
 
     public static void editar(RotinaAlimentar rotinaAlimentar) {
 
-        Connection con = ConnectionFactory.getConnection();
+        String sql = "UPDATE rotinasAlimentares SET data=?, Hora=?, quantidadeAlimento=? WHERE id=?";
 
-        try {
-
-            String sql = "UPDATE rotinasAlimentares SET data=?, Hora=?, quantidadeAlimento=?, WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, rotinaAlimentar.getData());
             pst.setString(2, rotinaAlimentar.getHora());
@@ -142,95 +162,95 @@ public class RotinaAlimentarDAO {
             pst.setInt(4, rotinaAlimentar.getId());
 
             pst.executeUpdate();
-            System.out.println("rotinaAlimentar atualizado com sucesso");
+            System.out.println("rotinaAlimentar atualizada com sucesso");
 
         } catch (Exception e) {
-
-            // TODO: handle exception
             System.out.println(e.getMessage());
-
         }
-
     }
+
+    // DELETE
+    // ______________________________________________________
 
     public void delete(int id) {
-        Connection con = ConnectionFactory.getConnection();
 
-        try {
+        String sql = "DELETE FROM rotinasAlimentares WHERE id= ?";
 
-            String sql = "DELETE FROM rotinasAlimentares WHERE id= ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setInt(1, id);
             pst.executeUpdate();
-            System.out.println("RotinaAlimentar excluida com sucesso");
+            System.out.println("RotinaAlimentar excluída com sucesso");
 
         } catch (Exception e) {
-
-            // TODO: handle exception
             e.printStackTrace();
-
         }
     }
+
+    // SELECT
+    // ______________________________________________________
 
     public ArrayList<RotinaAlimentar> select(int id) {
 
-        Connection con = ConnectionFactory.getConnection();
+        String sql = "SELECT * FROM rotinasAlimentares WHERE id=?";
+
         ArrayList<RotinaAlimentar> rotinasAlimentares = new ArrayList<>();
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-            String sql = "SELECT * FROM rotinasAlimentares WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
+            pst.setInt(1, id);
 
-            while (rs.next()) {
+            try (ResultSet rs = pst.executeQuery()) {
 
-                RotinaAlimentar rotinaAlimentar = new RotinaAlimentar();
-                rotinaAlimentar.setId(rs.getInt("id"));
-                rotinaAlimentar.setData("data");
-                rotinaAlimentar.setHora("hora");
-                rotinaAlimentar.setQuantidadeAlimento("quantidadeAlimento");
-                rotinasAlimentares.add(rotinaAlimentar);
+                while (rs.next()) {
 
+                    RotinaAlimentar rotinaAlimentar = new RotinaAlimentar();
+                    rotinaAlimentar.setId(rs.getInt("id"));
+                    rotinaAlimentar.setData(rs.getString("data"));
+                    rotinaAlimentar.setHora(rs.getString("hora"));
+                    rotinaAlimentar.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
+
+                    rotinasAlimentares.add(rotinaAlimentar);
+                }
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
         }
 
         return rotinasAlimentares;
     }
+
+    // LISTAR
+    // ______________________________________________________
 
     public ArrayList<RotinaAlimentar> listar() {
 
-        Connection con = ConnectionFactory.getConnection();
+        String sql = "SELECT * FROM rotinasAlimentares";
 
         ArrayList<RotinaAlimentar> rotinasAlimentares = new ArrayList<>();
 
-        try {
-
-            String sql = "SELECT * FROM rotinasAlimentares";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
 
                 RotinaAlimentar rotinaAlimentar = new RotinaAlimentar();
                 rotinaAlimentar.setId(rs.getInt("id"));
-                rotinaAlimentar.setData("data");
-                rotinaAlimentar.setHora("hora");
-                rotinaAlimentar.setQuantidadeAlimento("quantidadeAlimento");
-                rotinasAlimentares.add(rotinaAlimentar);
+                rotinaAlimentar.setData(rs.getString("data"));
+                rotinaAlimentar.setHora(rs.getString("hora"));
+                rotinaAlimentar.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
 
+                rotinasAlimentares.add(rotinaAlimentar);
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
         }
 
         return rotinasAlimentares;
     }
-
 }
