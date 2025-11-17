@@ -5,7 +5,8 @@ public class Permissao {
     private int id;
     private String nome;
     private String descricao;
-    private CargoPermissao cargoPermissao;
+   // private CargoPermissao cargoPermissao;
+    private int cargoPermissao_ID;
 
     public Permissao() {
 
@@ -35,12 +36,13 @@ public class Permissao {
         this.descricao = descricao;
     }
 
-    public CargoPermissao getCargoPermissao() {
-        return cargoPermissao;
+    public int getCargoPermissao_ID() {
+        return cargoPermissao_ID;
     }
 
-    public void setCargoPermissao(CargoPermissao cargoPermissao) {
-        this.cargoPermissao = cargoPermissao;
+    public void setCargoPermissao_ID(int cargoPermissao_ID) {
+        this.cargoPermissao_ID = cargoPermissao_ID;
     }
+
 
 }

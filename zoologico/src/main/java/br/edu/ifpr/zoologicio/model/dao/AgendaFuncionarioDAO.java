@@ -17,11 +17,12 @@ public class AgendaFuncionarioDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO agendaFuncionarios(criadorPor, ultimaAtualizacao, atividade) VALUES (?,?,?)";
 
         try {
 
-            PreparedStatement psFuncionarioAgenda = con.prepareStatement(sqlEndereco);
+            String sqlFuncionarioAgenda = "INSERT INTO agendaFuncionarios(criadorPor, ultimaAtualizacao, atividade) VALUES (?,?,?)";
+
+            PreparedStatement psFuncionarioAgenda = con.prepareStatement(sqlFuncionarioAgenda);
 
             psFuncionarioAgenda.setString(1, agendaFuncionario.getCriadoPor());
             psFuncionarioAgenda.setString(2, agendaFuncionario.getUltimaAtualizacao());

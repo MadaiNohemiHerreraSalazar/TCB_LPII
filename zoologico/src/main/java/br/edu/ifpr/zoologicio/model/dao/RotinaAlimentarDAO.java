@@ -12,15 +12,19 @@ import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class RotinaAlimentarDAO {
 
+    //Cadastro da RotinaAlimentar ______________________________________________________
+
+    public static buscaIDAgendAnimal_ID
+
      public static void cadastrar(RotinaAlimentar rotinaAlimentar) {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento) VALUES (?,?,?)";
+        String sqlRotinaAlimentar = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento) VALUES (?,?,?)";
 
         try {
 
-            PreparedStatement psRotinaAlimentar = con.prepareStatement(sqlEndereco);
+            PreparedStatement psRotinaAlimentar = con.prepareStatement(sqlRotinaAlimentar);
 
             psRotinaAlimentar.setString(1, rotinaAlimentar.getData());
             psRotinaAlimentar.setString(2, rotinaAlimentar.getHora());

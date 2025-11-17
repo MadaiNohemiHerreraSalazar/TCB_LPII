@@ -6,14 +6,16 @@ public class AgendaFuncionario {
     private String criadoPor;
     private String ultimaAtualizacao;
     private String atividade;
-    private Cargo cargo;
-    private Funcionario funcionario;
+    // private Cargo cargo;
+    private int cargo_ID;
+    // private Funcionario funcionario;
+    private int funcionario_ID;
 
     public AgendaFuncionario() {
 
     }
 
-     public int getId() {
+    public int getId() {
         return id;
     }
 
@@ -45,19 +47,21 @@ public class AgendaFuncionario {
         this.atividade = atividade;
     }
 
-    public Cargo getCargo() {
-        return cargo;
+    public int getCargo_ID() {
+        return cargo_ID;
     }
 
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
+    public void setCargo_ID(int cargo_ID) {
+        this.cargo_ID = cargo_ID;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public int getFuncionario_ID() {
+        return funcionario_ID;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setFuncionario_ID(int funcionario_ID) {
+        this.funcionario_ID = funcionario_ID;
     }
+
+
 }

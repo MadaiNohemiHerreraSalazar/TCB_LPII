@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.Area;
 
 public class AreaDAO {
@@ -16,11 +15,11 @@ public class AreaDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO areas(nome, descricao) VALUES (?,?)";
+        String sqlArea = "INSERT INTO areas(nome, descricao) VALUES (?,?)";
 
         try {
 
-            PreparedStatement psArea = con.prepareStatement(sqlEndereco);
+            PreparedStatement psArea = con.prepareStatement(sqlArea);
 
             psArea.setString(1, area.getNome());
             psArea.setString(2, area.getDescricao());

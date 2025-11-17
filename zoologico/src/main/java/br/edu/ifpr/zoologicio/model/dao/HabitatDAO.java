@@ -17,11 +17,11 @@ public class HabitatDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO habitats(nome, descricao, capacidade) VALUES (?,?,?)";
+        String sqlHabitat = "INSERT INTO habitats(nome, descricao, capacidade) VALUES (?,?,?)";
 
         try {
 
-            PreparedStatement psVeterinario = con.prepareStatement(sqlEndereco);
+            PreparedStatement psVeterinario = con.prepareStatement(sqlHabitat);
 
             psVeterinario.setString(1, habitat.getNome());
             psVeterinario.setString(2, habitat.getDescricao());

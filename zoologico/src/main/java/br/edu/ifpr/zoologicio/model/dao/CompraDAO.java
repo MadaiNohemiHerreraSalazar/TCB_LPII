@@ -18,11 +18,11 @@ public class CompraDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO compras(data, hora, quantidade, meioPago, precioTotal ) VALUES (?,?,?,?,?)";
+        String sqlCompra = "INSERT INTO compras(data, hora, quantidade, meioPago, precioTotal ) VALUES (?,?,?,?,?)";
 
         try {
 
-            PreparedStatement psCompra = con.prepareStatement(sqlEndereco);
+            PreparedStatement psCompra = con.prepareStatement(sqlCompra);
 
             psCompra.setString(1, compra.getData());
             psCompra.setString(2, compra.getHora());

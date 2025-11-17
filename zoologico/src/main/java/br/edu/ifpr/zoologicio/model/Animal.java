@@ -12,8 +12,10 @@ public class Animal {
     private String peso;
     private String altura;
     private String saude;
-    private Veterinario veterinario;
-    private Habitat habitat;
+    // private Veterinario veterinario;
+    private int veterinario_ID;
+    // private Habitat habitat;
+    private int habitat_ID;
 
     public Animal() {
 
@@ -27,21 +29,6 @@ public class Animal {
         this.id = id;
     }
 
-    public Veterinario getVeterinario() {
-        return veterinario;
-    }
-
-    public void setVeterinario(Veterinario veterinario) {
-        this.veterinario = veterinario;
-    }
-
-    public Habitat getHabitat() {
-        return habitat;
-    }
-
-    public void setHabitat(Habitat habitat) {
-        this.habitat = habitat;
-    }
 
     public String getNome() {
         return nome;
@@ -113,5 +100,21 @@ public class Animal {
 
     public void setSaude(String saude) {
         this.saude = saude;
+    }
+
+    public int getVeterinario_ID() {
+        return veterinario_ID;
+    }
+
+    public void setVeterinario_ID(int veterinario_ID) {
+        this.veterinario_ID = veterinario_ID;
+    }
+
+    public int getHabitat_ID() {
+        return habitat_ID;
+    }
+
+    public void setHabitat_ID(int habitat_ID) {
+        this.habitat_ID = habitat_ID;
     }
 }

@@ -16,11 +16,11 @@ public class AlimentoDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO alimentos(nome, validade, estoque) VALUES (?,?,?)";
+        String sqlAlimento = "INSERT INTO alimentos(nome, validade, estoque) VALUES (?,?,?)";
 
         try {
 
-            PreparedStatement psAlimento = con.prepareStatement(sqlEndereco);
+            PreparedStatement psAlimento = con.prepareStatement(sqlAlimento);
 
             psAlimento.setString(1, alimento.getNome());
             psAlimento.setString(2, alimento.getValidade());

@@ -17,11 +17,11 @@ public class FuncionarioDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO funcionarios(nome, cpf, email) VALUES (?,?,?)";
+        String sqlFuncionario = "INSERT INTO funcionarios(nome, cpf, email) VALUES (?,?,?)";
 
         try {
 
-            PreparedStatement psFuncionario = con.prepareStatement(sqlEndereco);
+            PreparedStatement psFuncionario = con.prepareStatement(sqlFuncionario);
 
             psFuncionario.setString(1, funcionario.getNome());
             psFuncionario.setString(2, funcionario.getCpf());

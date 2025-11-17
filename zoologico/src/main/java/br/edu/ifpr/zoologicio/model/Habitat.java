@@ -8,7 +8,8 @@ public class Habitat {
     private String nome;
     private String descricao;
     private String capacidade;
-    private Area area;
+    //private Area area;
+    private int area;
 
     private ArrayList<Animal> animais = new ArrayList<Animal>();
 
@@ -48,13 +49,6 @@ public class Habitat {
         this.capacidade = capacidade;
     }
 
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
-    }
 
     public ArrayList<Animal> getAnimais() {
         return animais;
@@ -62,6 +56,14 @@ public class Habitat {
 
     public void setAnimais(ArrayList<Animal> animais) {
         this.animais = animais;
+    }
+
+    public int getArea() {
+        return area;
+    }
+
+    public void setArea(int area) {
+        this.area = area;
     }
 
 }

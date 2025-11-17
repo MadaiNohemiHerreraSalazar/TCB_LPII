@@ -15,11 +15,11 @@ public class CargoDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO cargos(nome, salario, cargaHoraria, senha) VALUES (?,?,?,?)";
+        String sqlCargos = "INSERT INTO cargos(nome, salario, cargaHoraria, senha) VALUES (?,?,?,?)";
 
         try {
 
-            PreparedStatement psCargo = con.prepareStatement(sqlEndereco);
+            PreparedStatement psCargo = con.prepareStatement(sqlCargos);
 
             psCargo.setString(1, cargo.getNome());
             psCargo.setString(2, cargo.getSalario());

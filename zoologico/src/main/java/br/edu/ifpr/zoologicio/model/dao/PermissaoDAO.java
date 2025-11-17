@@ -13,16 +13,16 @@ public class PermissaoDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sql = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
+        String sqlPermissao = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
 
         try {
 
-            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement pst = con.prepareStatement(sqlPermissao);
 
-            ps.setString(1, permissao.getNome());
-            ps.setString(2, permissao.getDescricao());
+            pst.setString(1, permissao.getNome());
+            pst.setString(2, permissao.getDescricao());
 
-            ps.executeUpdate();
+            pst.executeUpdate();
             System.out.println("Permissão inserida com sucesso");
 
         } catch (Exception e) {
@@ -36,8 +36,8 @@ public class PermissaoDAO {
 
         try {
 
-            String sql = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+            String sqlPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
+            PreparedStatement pst = con.prepareStatement(sqlPermissao);
 
             pst.setString(1, permissao.getNome());
             pst.setString(2, permissao.getDescricao());
@@ -58,8 +58,8 @@ public class PermissaoDAO {
 
         try {
 
-            String sql = "DELETE FROM permissoes WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+            String sqlPermissao = "DELETE FROM permissoes WHERE id=?";
+            PreparedStatement pst = con.prepareStatement(sqlPermissao);
             pst.setInt(1, id);
 
             pst.executeUpdate();
@@ -77,8 +77,8 @@ public class PermissaoDAO {
 
         try {
 
-            String sql = "SELECT * FROM permissoes WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+            String sqlPermissao = "SELECT * FROM permissoes WHERE id=?";
+            PreparedStatement pst = con.prepareStatement(sqlPermissao);
             pst.setInt(1, id);
 
             ResultSet rs = pst.executeQuery();
@@ -107,8 +107,8 @@ public class PermissaoDAO {
 
         try {
 
-            String sql = "SELECT * FROM permissoes";
-            PreparedStatement pst = con.prepareStatement(sql);
+            String sqlPermissao = "SELECT * FROM permissoes";
+            PreparedStatement pst = con.prepareStatement(sqlPermissao);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {

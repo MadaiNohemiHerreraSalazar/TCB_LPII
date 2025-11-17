@@ -11,17 +11,17 @@ import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Visitante;
 
-public class VisitanteDAO {
+public class VisitanteDAO { 
 
     public static void cadastrar(Visitante visitante) {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO visitantes(nome, cpf, telefone, email) VALUES (?,?,?,?)";
+        String sqlVisitante = "INSERT INTO visitantes(nome, cpf, telefone, email) VALUES (?,?,?,?)";
 
         try {
 
-            PreparedStatement psVisitante = con.prepareStatement(sqlEndereco);
+            PreparedStatement psVisitante = con.prepareStatement(sqlVisitante);
 
             psVisitante.setString(1, visitante.getNome());
             psVisitante.setString(2, visitante.getCpf());

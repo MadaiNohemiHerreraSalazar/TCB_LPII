@@ -16,11 +16,11 @@ public class FornecedorDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO Fornecedores(nome, cpf, telefone, email) VALUES (?,?,?,?)";
+        String sqlFornecedor = "INSERT INTO Fornecedores(nome, cpf, telefone, email) VALUES (?,?,?,?)";
 
         try {
 
-            PreparedStatement psFornecedor = con.prepareStatement(sqlEndereco);
+            PreparedStatement psFornecedor = con.prepareStatement(sqlFornecedor);
 
             psFornecedor.setString(1, fornecedor.getNome());
             psFornecedor.setString(2, fornecedor.getCpf());

@@ -1,5 +1,5 @@
-// O veterinario não precisa dos os animais para ser cadastrados. 
-// Isso se faz quando se cadastre o a agendaAnimal
+//Os animais serão cadastrados na lista depois.
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -15,11 +15,11 @@ public class VeterinarioDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO veterinarios(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
+        String sqlVeterinario = "INSERT INTO veterinarios(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
 
         try {
 
-            PreparedStatement psVeterinario = con.prepareStatement(sqlEndereco);
+            PreparedStatement psVeterinario = con.prepareStatement(sqlVeterinario);
 
             psVeterinario.setString(1, veterinario.getNome());
             psVeterinario.setString(2, veterinario.getCpf());

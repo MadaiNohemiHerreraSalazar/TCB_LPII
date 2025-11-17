@@ -2,7 +2,6 @@
 //O veterinario precisa estar cadastrdo ou ser cadastrado na hora
 //A rotinaAlimentar precisa estar cadastrdo ou ser cadastrado na hora
 
-
 package br.edu.ifpr.zoologicio.model.dao;
 
 import java.sql.Connection;
@@ -18,11 +17,12 @@ public class AgendaAnimalDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO agendaAnimais(consulta, banho, medicacao, atividade) VALUES (?,?,?,?)";
 
         try {
 
-            PreparedStatement psAnimalAgenda = con.prepareStatement(sqlEndereco);
+            String sqlAnimalAgenda = "INSERT INTO agendaAnimais(consulta, banho, medicacao, atividade) VALUES (?,?,?,?)";
+
+            PreparedStatement psAnimalAgenda = con.prepareStatement(sqlAnimalAgenda);
 
             psAnimalAgenda.setString(1, agendaAnimal.getConsulta());
             psAnimalAgenda.setString(2, agendaAnimal.getBanho());

@@ -2,12 +2,12 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Ticket {
 
-
     private int id;
     private String data;
     private String hora;
     private String preco;
-    private Compra compra;
+    // private Compra compra;
+    private int compra;
 
     public Ticket() {
 
@@ -45,12 +45,13 @@ public class Ticket {
         this.preco = preco;
     }
 
-    public Compra getCompra() {
+    public int getCompra() {
         return compra;
     }
 
-    public void setCompra(Compra compra) {
+    public void setCompra(int compra) {
         this.compra = compra;
     }
+
 
 }

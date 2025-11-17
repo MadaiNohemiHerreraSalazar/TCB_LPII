@@ -15,11 +15,12 @@ public class AnimalDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlEndereco = "INSERT INTO animais(nome, descricao, historia, idade, genero, peso, altura, saude) VALUES (?,?,?,?,?,?,?,?)";
+        String 
+        sqlAnimal = "INSERT INTO animais(nome, descricao, historia, idade, genero, peso, altura, saude) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
 
-            PreparedStatement psAnimal = con.prepareStatement(sqlEndereco);
+            PreparedStatement psAnimal = con.prepareStatement(sqlAnimal);
 
             psAnimal.setString(1, animal.getNome());
             psAnimal.setString(2, animal.getDescricao());
