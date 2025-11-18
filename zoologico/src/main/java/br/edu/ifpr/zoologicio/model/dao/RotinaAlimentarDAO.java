@@ -1,12 +1,13 @@
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.Alimento;
+import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
+import br.edu.ifpr.zoologicio.model.dao.FornecedorDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
-import br.edu.ifpr.zoologicio.model.Alimento;
-import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class RotinaAlimentarDAO {
 
@@ -44,34 +45,34 @@ public class RotinaAlimentarDAO {
 
         try (
 
-            Connection con = ConnectionFactory.getConnection();
+                Connection con = ConnectionFactory.getConnection();
 
-            PreparedStatement pst = con.prepareStatement(sqlRotinaAlimentar, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pst = con.prepareStatement(sqlRotinaAlimentar,
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             int idAgendaAnimal = buscarAgendaAnimal_ID(
                     rotinaAlimentar.getAgendaAnimal().getAnimal().getNome());
 
             if (idAgendaAnimal == -1) {
-                System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
-                return;
+                throw new SQLException("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
             }
 
             pst.setString(1, rotinaAlimentar.getData());
             pst.setString(2, rotinaAlimentar.getHora());
             pst.setString(3, rotinaAlimentar.getQuantidadeAlimento());
             pst.setInt(4, idAgendaAnimal);
-
             pst.executeUpdate();
 
             try (ResultSet rs = pst.getGeneratedKeys()) {
                 if (rs.next()) {
                     rotinaAlimentar.setId(rs.getInt(1));
+                } else {
+                    throw new SQLException("Falha ao obter id gerado para RotinaAlimentar");
                 }
             }
 
             if (!cadastroAlimentos(con, rotinaAlimentar.getAlimentos(), rotinaAlimentar)) {
-                System.out.println("Rotina NÃO cadastrada. Erro ao cadastrar alimentos.");
-                return;
+                throw new SQLException("Rotina NÃO cadastrada. Erro ao cadastrar alimentos.");
             }
 
             System.out.println("RotinaAlimentar cadastrada com sucesso!");
@@ -87,26 +88,28 @@ public class RotinaAlimentarDAO {
     public static boolean cadastroAlimentos(Connection con, ArrayList<Alimento> alimentos,
             RotinaAlimentar rotinaAlimentar) {
 
-        String sqlAlimento = "INSERT INTO alimentos(nome, validade, estoque, fornecedor_id, rotina_id) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO alimentos(nome, validade, estoque, fornecedor_id, rotina_id) VALUES (?,?,?,?,?)";
 
         try {
 
             for (Alimento alimento : alimentos) {
 
-                int fornecedor_id = buscarFornecedor_ID(alimento.getFornecedor().getNome());
+                // pega ID direto do objeto
+                Integer fornecedorId = alimento.getFornecedor().getId();
 
-                if (fornecedor_id == -1) {
-                    System.out.println("Fornecedor '" + alimento.getFornecedor().getNome()
-                            + "' não encontrado! Alimento NÃO cadastrado.");
-                    return false;
+                if (fornecedorId == null) {
+                    throw new Exception("Fornecedor não possui ID! Nome: " +
+                            alimento.getFornecedor().getNome());
                 }
 
-                try (PreparedStatement pst = con.prepareStatement(sqlAlimento)) {
+                try (PreparedStatement pst = con.prepareStatement(sql)) {
+
                     pst.setString(1, alimento.getNome());
                     pst.setString(2, alimento.getValidade());
                     pst.setString(3, alimento.getEstoque());
-                    pst.setInt(4, fornecedor_id);
+                    pst.setInt(4, fornecedorId);
                     pst.setInt(5, rotinaAlimentar.getId());
+
                     pst.executeUpdate();
                 }
             }
@@ -118,18 +121,18 @@ public class RotinaAlimentarDAO {
             e.printStackTrace();
             return false;
         }
+
     }
 
     // BUSCAR FORNECEDOR
     // ______________________________________________________
 
-    public static int buscarFornecedor_ID(String nomeFornecedor) {
+    public static int buscarFornecedor_ID(Connection con, String nomeFornecedor) {
 
         String sqlFornecedor = "SELECT * from fornecedores WHERE nome= ?";
         int id = -1;
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sqlFornecedor)) {
+        try (PreparedStatement pst = con.prepareStatement(sqlFornecedor)) {
 
             pst.setString(1, nomeFornecedor);
 

@@ -1,27 +1,22 @@
-//precisa ter o funcionario já cadatrado✅ 
-//Eu acho que o Cargo no Objeto AgendaFuncionario é meio obvio, já que o funcionario tem seu cargo.
-//Arrumar AgendaFuncionario
+//precisa ter o funcionario já cadatrado
 
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
-
 public class AgendaFuncionarioDAO {
 
-     public static int buscaFuncionario_ID(String nomeFuncionario) {
-
-        Connection con = ConnectionFactory.getConnection();
+    public static int buscaFuncionario_ID(String nomeFuncionario) {
 
         String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlFuncionario);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlFuncionario);) {
             ps.setString(1, nomeFuncionario);
             ResultSet rs = ps.executeQuery();
 
@@ -40,7 +35,6 @@ public class AgendaFuncionarioDAO {
     public static void cadastrar(AgendaFuncionario agendaFuncionario) {
 
         Connection con = ConnectionFactory.getConnection();
-
 
         try {
 
@@ -139,35 +133,37 @@ public class AgendaFuncionarioDAO {
         return agendaFuncionarios;
     }
 
-    public ArrayList<AgendaFuncionario> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        ArrayList<AgendaFuncionario> agendaFuncionarios = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM agendaFuncionarios";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                AgendaFuncionario agendaFuncionario = new AgendaFuncionario();
-                agendaFuncionario.setId(rs.getInt("id"));
-                agendaFuncionario.setCriadoPor("criadoPor");
-                agendaFuncionario.setUltimaAtualizacao("ultimaAtualizacao");
-                agendaFuncionario.setAtividade("atividade");
-                agendaFuncionarios.add(agendaFuncionario);
-
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-
-        return agendaFuncionarios;
-    }
+    /*
+     * public ArrayList<AgendaFuncionario> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * 
+     * ArrayList<AgendaFuncionario> agendaFuncionarios = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM agendaFuncionarios";
+     * PreparedStatement pst = con.prepareStatement(sql);
+     * ResultSet rs = pst.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * AgendaFuncionario agendaFuncionario = new AgendaFuncionario();
+     * agendaFuncionario.setId(rs.getInt("id"));
+     * agendaFuncionario.setCriadoPor("criadoPor");
+     * agendaFuncionario.setUltimaAtualizacao("ultimaAtualizacao");
+     * agendaFuncionario.setAtividade("atividade");
+     * agendaFuncionarios.add(agendaFuncionario);
+     * 
+     * }
+     * 
+     * } catch (Exception e) {
+     * // TODO: handle exception
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return agendaFuncionarios;
+     * }
+     */
 
 }

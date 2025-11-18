@@ -1,27 +1,27 @@
-//O animal precisa estar cadastrado✅ 
-//O veterinario precisa estar cadastrdo ou ser cadastrado na hora✅ 
-//A rotinaAlimentar precisa estar cadastrdo ou ser cadastrado na hora✅ 
+/*
+O animal precisa estar cadastrado
+O veterinario precisa estar cadastrado
+A rotinaAlimentar precisa estar cadastrada
+*/
 
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.AgendaAnimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.AgendaAnimal;
-
 public class AgendaAnimalDAO {
 
     public static int buscaAnimal_ID(String nomeAnimal) {
 
-        Connection con = ConnectionFactory.getConnection();
-
         String sqlAnimal = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlAnimal);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlAnimal)) {
+
             ps.setString(1, nomeAnimal);
             ResultSet rs = ps.executeQuery();
 
@@ -39,13 +39,12 @@ public class AgendaAnimalDAO {
 
     public static int buscaVeterinario_ID(String nomeVeterinario) {
 
-        Connection con = ConnectionFactory.getConnection();
-
         String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlVeterinario);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlVeterinario)) {
+
             ps.setString(1, nomeVeterinario);
             ResultSet rs = ps.executeQuery();
 
@@ -63,13 +62,12 @@ public class AgendaAnimalDAO {
 
     public static int buscaRotinaAlimentar_ID(String nomeRotinaALimentar) {
 
-        Connection con = ConnectionFactory.getConnection();
-
         String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal)) {
+
             ps.setString(1, nomeRotinaALimentar);
             ResultSet rs = ps.executeQuery();
 
@@ -189,36 +187,38 @@ public class AgendaAnimalDAO {
         return agendaAnimais;
     }
 
-    public ArrayList<AgendaAnimal> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        ArrayList<AgendaAnimal> agendaAnimais = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM agendaAnimais";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                AgendaAnimal agendaAnimal = new AgendaAnimal();
-                agendaAnimal.setId(rs.getInt("id"));
-                agendaAnimal.setConsulta("consulta");
-                agendaAnimal.setBanho("banho");
-                agendaAnimal.setMedicacao("medicacao");
-                agendaAnimal.setAtividade("atividade");
-                agendaAnimais.add(agendaAnimal);
-
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-
-        return agendaAnimais;
-    }
+    /*
+     * public ArrayList<AgendaAnimal> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * 
+     * ArrayList<AgendaAnimal> agendaAnimais = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM agendaAnimais";
+     * PreparedStatement pst = con.prepareStatement(sql);
+     * ResultSet rs = pst.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * AgendaAnimal agendaAnimal = new AgendaAnimal();
+     * agendaAnimal.setId(rs.getInt("id"));
+     * agendaAnimal.setConsulta("consulta");
+     * agendaAnimal.setBanho("banho");
+     * agendaAnimal.setMedicacao("medicacao");
+     * agendaAnimal.setAtividade("atividade");
+     * agendaAnimais.add(agendaAnimal);
+     * 
+     * }
+     * 
+     * } catch (Exception e) {
+     * // TODO: handle exception
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return agendaAnimais;
+     * }
+     */
 
 }

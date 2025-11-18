@@ -1,27 +1,23 @@
-//Precisa ter seu fornecedor cadastrado✅
-// não precisa ter a rotinaAlimentar para ser cadastrado
+//Precisa ter seu fornecedor cadastrado
+//não depende da rotinaAlimentar estar cadastrada
 
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.Alimento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.Alimento;
-
 public class AlimentoDAO {
-    
 
-     public static int buscaFornecedor_ID(String nomeFornecedor) {
-
-        Connection con = ConnectionFactory.getConnection();
+    public static int buscaFornecedor_ID(String nomeFornecedor) {
 
         String sqlFornecedor = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlFornecedor);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlFornecedor)) {
             ps.setString(1, nomeFornecedor);
             ResultSet rs = ps.executeQuery();
 
@@ -138,35 +134,37 @@ public class AlimentoDAO {
         return alimentos;
     }
 
-    public ArrayList<Alimento> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        ArrayList<Alimento> alimentos = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM alimentos";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
-                alimento.setNome("nome");
-                alimento.setValidade("validade");
-                alimento.setEstoque("estoque");
-                alimentos.add(alimento);
-
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-
-        return alimentos;
-    }
+    /*
+     * public ArrayList<Alimento> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * 
+     * ArrayList<Alimento> alimentos = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM alimentos";
+     * PreparedStatement pst = con.prepareStatement(sql);
+     * ResultSet rs = pst.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * Alimento alimento = new Alimento();
+     * alimento.setId(rs.getInt("id"));
+     * alimento.setNome("nome");
+     * alimento.setValidade("validade");
+     * alimento.setEstoque("estoque");
+     * alimentos.add(alimento);
+     * 
+     * }
+     * 
+     * } catch (Exception e) {
+     * // TODO: handle exception
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return alimentos;
+     * }
+     */
 
 }

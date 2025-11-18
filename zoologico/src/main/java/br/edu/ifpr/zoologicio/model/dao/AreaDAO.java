@@ -2,12 +2,11 @@
 
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.Area;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import br.edu.ifpr.zoologicio.model.Area;
 
 public class AreaDAO {
 
@@ -109,34 +108,36 @@ public class AreaDAO {
         return areas;
     }
 
-    public ArrayList<Area> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        ArrayList<Area> areas = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM areas";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                Area area = new Area();
-                area.setId(rs.getInt("id"));
-                area.setNome("nome");
-                area.setDescricao("descricao");
-                areas.add(area);
-
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-
-        return areas;
-    }
+    /*
+     * public ArrayList<Area> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * 
+     * ArrayList<Area> areas = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM areas";
+     * PreparedStatement pst = con.prepareStatement(sql);
+     * ResultSet rs = pst.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * Area area = new Area();
+     * area.setId(rs.getInt("id"));
+     * area.setNome("nome");
+     * area.setDescricao("descricao");
+     * areas.add(area);
+     * 
+     * }
+     * 
+     * } catch (Exception e) {
+     * // TODO: handle exception
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return areas;
+     * }
+     */
 
 }

@@ -115,36 +115,38 @@ public class CargoDAO {
         return cargos;
     }
 
-    public ArrayList<Cargo> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        ArrayList<Cargo> cargos = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM cargos";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                Cargo cargo = new Cargo();
-                cargo.setId(rs.getInt("id"));
-                cargo.setNome("nome");
-                cargo.setSalario("salario");
-                cargo.setCargaHoraroia("cargaHoraria");
-                cargo.setSenha("senha");
-                cargos.add(cargo);
-
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-
-        return cargos;
-    }
+    /*
+     * public ArrayList<Cargo> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * 
+     * ArrayList<Cargo> cargos = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM cargos";
+     * PreparedStatement pst = con.prepareStatement(sql);
+     * ResultSet rs = pst.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * Cargo cargo = new Cargo();
+     * cargo.setId(rs.getInt("id"));
+     * cargo.setNome("nome");
+     * cargo.setSalario("salario");
+     * cargo.setCargaHoraroia("cargaHoraria");
+     * cargo.setSenha("senha");
+     * cargos.add(cargo);
+     * 
+     * }
+     * 
+     * } catch (Exception e) {
+     * // TODO: handle exception
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return cargos;
+     * }
+     */
 
 }

@@ -1,28 +1,24 @@
-// A o visitante precisa ser cadastrado na compra✅
-// O funcionario precisa estar cadastrado previamente✅
+// A o visitante precisa ser cadastrado na compra
+// O funcionario precisa estar cadastrado previamente
 // ticket -> main 
-
 
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.Compra;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.Compra;
-
 public class CompraDAO {
 
-       public static int buscaFuncionario_ID(String nomeFuncionario) {
-
-        Connection con = ConnectionFactory.getConnection();
+    public static int buscaFuncionario_ID(String nomeFuncionario) {
 
         String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlFuncionario);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlFuncionario)) {
             ps.setString(1, nomeFuncionario);
             ResultSet rs = ps.executeQuery();
 
@@ -38,16 +34,14 @@ public class CompraDAO {
 
     }
 
-
    public static int buscaVisitante_ID(String nomeVisitante) {
 
-        Connection con = ConnectionFactory.getConnection();
 
         String sqlVisitante = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlVisitante);
+        try (Connection con = ConnectionFactory.getConnection();
+                    PreparedStatement ps = con.prepareStatement(sqlVisitante)0){
             ps.setString(1, nomeVisitante);
             ResultSet rs = ps.executeQuery();
 
@@ -62,7 +56,6 @@ public class CompraDAO {
         return id;
 
     }
-
 
     public static void cadastrar(Compra compra) {
 

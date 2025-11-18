@@ -1,11 +1,10 @@
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.CargoPermissao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import br.edu.ifpr.zoologicio.model.CargoPermissao;
 
 public class CargoPermissaoDAO {
 
@@ -97,31 +96,32 @@ public class CargoPermissaoDAO {
         return cargoPermissoes;
     }
 
-    public ArrayList<CargoPermissao> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-        ArrayList<CargoPermissao> cargoPermissoes = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM cargoPermissoes";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-
-                CargoPermissao cargoPermissao = new CargoPermissao();
-                cargoPermissao.setNome(rs.getString("nome"));
-                cargoPermissao.setDescricao(rs.getString("descricao"));
-
-                cargoPermissoes.add(cargoPermissao);
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        return cargoPermissoes;
-    }
+    /*
+     * public ArrayList<CargoPermissao> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * ArrayList<CargoPermissao> cargoPermissoes = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM cargoPermissoes";
+     * PreparedStatement ps = con.prepareStatement(sql);
+     * ResultSet rs = ps.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * CargoPermissao cargoPermissao = new CargoPermissao();
+     * cargoPermissao.setNome(rs.getString("nome"));
+     * cargoPermissao.setDescricao(rs.getString("descricao"));
+     * 
+     * cargoPermissoes.add(cargoPermissao);
+     * }
+     * 
+     * } catch (Exception e) {
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return cargoPermissoes;
+     * }
+     */
 }
-

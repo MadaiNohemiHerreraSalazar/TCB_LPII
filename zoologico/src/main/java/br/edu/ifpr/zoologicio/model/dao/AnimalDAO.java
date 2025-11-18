@@ -2,24 +2,21 @@
 
 package br.edu.ifpr.zoologicio.model.dao;
 
+import br.edu.ifpr.zoologicio.model.Animal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.Animal;
-
 public class AnimalDAO {
 
     public static int buscaHabitat_ID(String nomeHabitat) {
 
-        Connection con = ConnectionFactory.getConnection();
-
         String sqlHabitat = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlHabitat);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlHabitat)) {
             ps.setString(1, nomeHabitat);
             ResultSet rs = ps.executeQuery();
 
@@ -37,13 +34,11 @@ public class AnimalDAO {
 
     public static int buscaVeterinario_ID(String nomeVeterinario) {
 
-        Connection con = ConnectionFactory.getConnection();
-
         String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlVeterinario);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlVeterinario)) {
             ps.setString(1, nomeVeterinario);
             ResultSet rs = ps.executeQuery();
 
@@ -175,39 +170,41 @@ public class AnimalDAO {
         return animais;
     }
 
-    public ArrayList<Animal> listar() {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        ArrayList<Animal> animais = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM animais";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
-                animal.setNome("nome");
-                animal.setDescricao("descricao");
-                animal.setHistoria("historia");
-                animal.setIdade("idade");
-                animal.setGenero("genero");
-                animal.setPeso("peso");
-                animal.setAltura("altura");
-                animal.setSaude("saude");
-
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-
-        return animais;
-    }
+    /*
+     * public ArrayList<Animal> listar() {
+     * 
+     * Connection con = ConnectionFactory.getConnection();
+     * 
+     * ArrayList<Animal> animais = new ArrayList<>();
+     * 
+     * try {
+     * 
+     * String sql = "SELECT * FROM animais";
+     * PreparedStatement pst = con.prepareStatement(sql);
+     * ResultSet rs = pst.executeQuery();
+     * 
+     * while (rs.next()) {
+     * 
+     * Animal animal = new Animal();
+     * animal.setId(rs.getInt("id"));
+     * animal.setNome("nome");
+     * animal.setDescricao("descricao");
+     * animal.setHistoria("historia");
+     * animal.setIdade("idade");
+     * animal.setGenero("genero");
+     * animal.setPeso("peso");
+     * animal.setAltura("altura");
+     * animal.setSaude("saude");
+     * 
+     * }
+     * 
+     * } catch (Exception e) {
+     * // TODO: handle exception
+     * System.out.println(e.getMessage());
+     * }
+     * 
+     * return animais;
+     * }
+     */
 
 }
