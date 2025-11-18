@@ -10,7 +10,6 @@ public class Veterinario {
     private String especializacao;
     private String nome;
     private ArrayList<Animal> animais = new ArrayList<Animal>();
-    private int veterinario_id;
 
     public Veterinario() {
 
