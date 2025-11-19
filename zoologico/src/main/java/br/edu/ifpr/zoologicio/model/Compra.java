@@ -4,27 +4,27 @@ import java.util.ArrayList;
 
 public class Compra {
 
-    private int id;
+    private Integer id;
     private String data;
     private String hora;
     private String quantidade;
     private String meioPagamento;
     private String precoTotal;
-    //private Visitante visitante;
+    // private Visitante visitante;
     private int visitante_ID;
-   // private Funcionario funcionario;
- private int funcionario_ID;
+    // private Funcionario funcionario;
+    private int funcionario_ID;
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     public Compra() {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

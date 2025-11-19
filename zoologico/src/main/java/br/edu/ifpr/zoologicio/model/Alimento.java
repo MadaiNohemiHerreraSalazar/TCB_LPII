@@ -1,87 +1,48 @@
 package br.edu.ifpr.zoologicio.model;
 
-import java.util.ArrayList;
+public class Alimento {
 
-public class Alimento{
-
-    private int id;
+    private Integer  id;
     private String nome;
     private String validade;
     private String estoque;
-    private Fornecedor fornecedor;
-    private RotinaAlimentar rotinaAlimentar;
+   
 
-    private ArrayList<RotinaAlimentar> rotinaAlimentares = new ArrayList<RotinaAlimentar>();
+    public Alimento() {
 
+    }
 
-public Alimento (){
-
-}
-
- public int getId() {
+    public Integer getId() {
         return id;
     }
 
-
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
+    public String getNome() {
+        return nome;
+    }
 
-public ArrayList<RotinaAlimentar> getRotinaAlimentares() {
-    return rotinaAlimentares;
-}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
+    public String getValidade() {
+        return validade;
+    }
 
-public void setRotinaAlimentares(ArrayList<RotinaAlimentar> rotinaAlimentares) {
-    this.rotinaAlimentares = rotinaAlimentares;
-}
+    public void setValidade(String validade) {
+        this.validade = validade;
+    }
 
-public String getNome() {
-    return nome;
-}
+    public String getEstoque() {
+        return estoque;
+    }
 
+    public void setEstoque(String estoque) {
+        this.estoque = estoque;
+    }
 
-public void setNome(String nome) {
-    this.nome = nome;
-}
-
-
-public String getValidade() {
-    return validade;
-}
-
-
-public void setValidade(String validade) {
-    this.validade = validade;
-}
-
-
-public String getEstoque() {
-    return estoque;
-}
-
-
-public void setEstoque(String estoque) {
-    this.estoque = estoque;
-}
-
-public Fornecedor getFornecedor() {
-    return fornecedor;
-}
-
-public void setFornecedor(Fornecedor fornecedor) {
-    this.fornecedor = fornecedor;
-}
-
-
-public RotinaAlimentar getRotinaAlimentar() {
-    return rotinaAlimentar;
-}
-
-public void setRotinaAlimentar(RotinaAlimentar rotinaAlimentar) {
-    this.rotinaAlimentar = rotinaAlimentar;
-}
-
-
+  
 }

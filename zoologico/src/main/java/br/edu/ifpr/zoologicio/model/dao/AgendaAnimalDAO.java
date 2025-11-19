@@ -14,29 +14,7 @@ import java.util.ArrayList;
 
 public class AgendaAnimalDAO {
 
-    public static int buscaAnimal_ID(String nomeAnimal) {
-
-        String sqlAnimal = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlAnimal)) {
-
-            ps.setString(1, nomeAnimal);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
-
+    
     public static int buscaVeterinario_ID(String nomeVeterinario) {
 
         String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";

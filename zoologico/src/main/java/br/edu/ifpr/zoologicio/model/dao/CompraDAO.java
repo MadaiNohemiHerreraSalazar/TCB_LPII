@@ -41,7 +41,7 @@ public class CompraDAO {
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
-                    PreparedStatement ps = con.prepareStatement(sqlVisitante)0){
+                    PreparedStatement ps = con.prepareStatement(sqlVisitante)){
             ps.setString(1, nomeVisitante);
             ResultSet rs = ps.executeQuery();
 

@@ -2,26 +2,32 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Funcionario {
 
-    private int id;
+    private Integer  id;
     private String nome;
     private String cpf;
     private String email;
     private String telefone;
-    // private AgendaFuncionario agendaFuncionario;
-    private int agendaFuncionario_ID;
+    private AgendaFuncionario agendaFuncionario; 
     private Cargo cargo;
-    private int cargo_ID;
 
     public Funcionario() {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public AgendaFuncionario getAgendaFuncionario() {
+        return agendaFuncionario;
+    }
+
+    public void setAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+        this.agendaFuncionario = agendaFuncionario;
     }
 
     public String getNome() {
@@ -54,22 +60,6 @@ public class Funcionario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public int getAgendaFuncionario_ID() {
-        return agendaFuncionario_ID;
-    }
-
-    public void setAgendaFuncionario_ID(int agendaFuncionario_ID) {
-        this.agendaFuncionario_ID = agendaFuncionario_ID;
-    }
-
-    public int getCargo_ID() {
-        return cargo_ID;
-    }
-
-    public void setCargo_ID(int cargo_ID) {
-        this.cargo_ID = cargo_ID;
     }
 
     public Cargo getCargo() {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Veterinario {
 
-    private int id;
+    private Integer  id;
     private String cpf;
     private String email;
     private String especializacao;
@@ -15,11 +15,11 @@ public class Veterinario {
 
     }
 
-    public int getId() {
+    public Integer  getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer  id) {
         this.id = id;
     }
 

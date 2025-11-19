@@ -59,9 +59,9 @@ public class AnimalController {
         dao.select(id);
     }
 
-    public ArrayList<Animal> listarAnimais() {
-        return dao.listar();
-    }
+    // public ArrayList<Animal> listarAnimais() {
+    //     return dao.listar();
+    // }
     
     
 }

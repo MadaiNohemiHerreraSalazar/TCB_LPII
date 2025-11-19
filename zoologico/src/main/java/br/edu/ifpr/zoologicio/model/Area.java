@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Area {
 
-    private int id;
+    private Integer  id;
     private String nome;
     private String descricao;
     private ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
@@ -14,11 +14,11 @@ public class Area {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

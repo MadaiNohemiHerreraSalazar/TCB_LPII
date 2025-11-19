@@ -2,7 +2,7 @@ package br.edu.ifpr.zoologicio.model;
 
 public class AgendaAnimal {
 
-    private int id;
+    private Integer  id;
     private String consulta;
     private String banho;
     private String medicacao;
@@ -15,11 +15,11 @@ public class AgendaAnimal {
 
     }
 
-    public int getId() {
+    public Integer  getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer  id) {
         this.id = id;
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Fornecedor {
 
-    private int id;
+    private Integer  id;
     private String nome;
     private String cpf;
     private String telefone;
@@ -15,11 +15,11 @@ public class Fornecedor {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

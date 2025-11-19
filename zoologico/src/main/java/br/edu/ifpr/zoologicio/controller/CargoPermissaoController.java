@@ -60,8 +60,8 @@ public class CargoPermissaoController {
         dao.select(id);
     }
 
-    public ArrayList<CargoPermissao> listarCargoPermissoes() {
-        return dao.listar();
-    }
+    // public ArrayList<CargoPermissao> listarCargoPermissoes() {
+    //     return dao.listar();
+    // }
     
 }

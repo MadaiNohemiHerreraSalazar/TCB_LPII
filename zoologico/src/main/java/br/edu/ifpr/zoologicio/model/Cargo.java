@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Cargo {
 
-    private int id;
+    private Integer  id;
     private String nome;
     private String salario;
     private String cargaHoraroia;
@@ -16,11 +16,11 @@ public class Cargo {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

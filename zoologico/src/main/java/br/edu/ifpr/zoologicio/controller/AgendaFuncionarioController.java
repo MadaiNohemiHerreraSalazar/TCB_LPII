@@ -60,9 +60,9 @@ public class AgendaFuncionarioController {
         dao.select(id);
     }
 
-    public ArrayList<AgendaFuncionario> listarAgendaFuncionario() {
-        return dao.listar();
-    }
+    // public ArrayList<AgendaFuncionario> listarAgendaFuncionario() {
+    //     return dao.listar();
+    // }
     
 }
     

@@ -1,8 +1,12 @@
 package br.edu.ifpr.zoologicio.controller;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.AgendaAnimal;
 import br.edu.ifpr.zoologicio.model.dao.AgendaAnimalDAO;
+import br.edu.ifpr.zoologicio.model.dao.ConnectionFactory;
 
 public class AgendaAnimalController {
 
@@ -23,6 +27,31 @@ public class AgendaAnimalController {
         }
 
         dao.cadastrar(agendaAnimal);
+    }
+
+    // BUSCAR AGENDA ANIMAL
+    // ______________________________________________________
+
+    public static int buscarAgendaAnimal(int animal_id) {
+
+        String sqlAgendaAnimal = "SELECT * FROM agendaAnimais WHERE id = ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlAgendaAnimal)) {
+
+            pst.setInt(1, animal_id);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
     }
 
     public void editarAgendaAnimal(AgendaAnimal agendaAnimal){
@@ -61,8 +90,8 @@ public class AgendaAnimalController {
         dao.select(id);
     }
 
-    public ArrayList<AgendaAnimal> listarAgendaAnimais() {
-        return dao.listar();
-    }
+    // public ArrayList<AgendaAnimal> listarAgendaAnimais() {
+    //     return dao.listar();
+    // }
     
 }

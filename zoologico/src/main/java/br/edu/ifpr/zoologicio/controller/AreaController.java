@@ -59,8 +59,8 @@ public class AreaController {
         dao.select(id);
     }
 
-    public ArrayList<Area> listarAreas() {
-        return dao.listar();
-    }
+    // public ArrayList<Area> listarAreas() {
+    //     return dao.listar();
+    // }
     
 }
