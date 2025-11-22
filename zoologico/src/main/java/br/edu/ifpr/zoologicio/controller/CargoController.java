@@ -62,6 +62,10 @@ public class CargoController {
     public ArrayList<Cargo> listarCargos() {
         return dao.listar();
     }
+
+    public ArrayList<Cargo> listarCargosCompleto() {
+        return dao.listarCompleto();
+    }
     
     
 }

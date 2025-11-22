@@ -183,7 +183,7 @@ public class CompraDAO {
 
     // LISTAR COMPLETO COM TICKETS
     // ______________________________________________________
-    public ArrayList<Compra> listarCompleto() {
+    public ArrayList<Compra> listar() {
         ArrayList<Compra> compras = new ArrayList<>();
         String sql = "SELECT id, data, hora, quantidade, meioPagamento, precoTotal FROM compras";
 

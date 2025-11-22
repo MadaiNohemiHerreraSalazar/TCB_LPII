@@ -4,14 +4,14 @@ package br.edu.ifpr.zoologicio.controller;
 import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Cargo_Permissao;
-import br.edu.ifpr.zoologicio.model.dao.CargoPermissao_DAO;
+import br.edu.ifpr.zoologicio.model.dao.Cargo_PermissaoDAO;
 
-public class CargoPermissaoController {
+public class Cargo_PermissaoController {
 
-    private CargoPermissao_DAO dao;
+    private Cargo_PermissaoDAO dao;
 
-    public CargoPermissaoController(){
-        this.dao = new CargoPermissao_DAO();
+    public Cargo_PermissaoController(){
+        this.dao = new Cargo_PermissaoDAO();
     }
 
 
@@ -60,8 +60,9 @@ public class CargoPermissaoController {
         dao.select(id);
     }
 
-    // public ArrayList<CargoPermissao> listarCargoPermissoes() {
-    //     return dao.listar();
-    // }
+    public ArrayList<Cargo_Permissao> listarCargoPermissoes() {
+        return dao.listar();
+    }
+    
     
 }

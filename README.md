@@ -23,8 +23,6 @@ faltam 11 dias para dia 3/12
     - Ticket
     - Permissao
     - CargoPermissao
-    - AgendaFuncionario
-    - AgendaAnimal
 
 -> verficiar objetos que tem permissão para editar outros objetos
 -> arrumar connection con 

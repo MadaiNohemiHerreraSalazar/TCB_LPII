@@ -59,11 +59,6 @@ public class FornecedorDAO {
                 }
             }
 
-            // Cadastra os alimentos vinculados
-            if (!cadastrarAlimentos(con, fornecedor.getAlimentos(), fornecedor.getId())) {
-                throw new SQLException("Fornecedor NÃO cadastrado. Erro ao cadastrar alimentos vinculados.");
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,8 +95,7 @@ public class FornecedorDAO {
 
         String sqlUpdateFornecedor = "UPDATE fornecedores SET nome=?, cpf=?, telefone=?, email=? WHERE id=?";
         String sqlDeleteAlimentos = "DELETE FROM fornecedor_alimento WHERE fornecedor_id=?";
-        String sqlInsertAlimento = "INSERT INTO fornecedor_alimento(fornecedor_id, alimento_id) VALUES (?,?)";
-
+    
         try (Connection con = ConnectionFactory.getConnection()) {
 
             // Atualiza dados principais
@@ -121,14 +115,9 @@ public class FornecedorDAO {
             }
 
             // Insere os alimentos atualizados
-            try (PreparedStatement pst = con.prepareStatement(sqlInsertAlimento)) {
-                for (Alimento alimento : fornecedor.getAlimentos()) {
-                    pst.setInt(1, fornecedor.getId());
-                    pst.setInt(2, alimento.getId());
-                    pst.executeUpdate();
-                }
+            if (!cadastrarAlimentos(con, fornecedor.getAlimentos(), fornecedor.getId())) {
+                throw new SQLException("Fornecedor NÃO cadastrado. Erro ao cadastrar alimentos vinculados.");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,13 +171,10 @@ public class FornecedorDAO {
                 fornecedor.setCpf(rs.getString("cpf"));
                 fornecedor.setTelefone(rs.getString("telefone"));
                 fornecedor.setEmail(rs.getString("email"));
-            }
 
-            // Busca os alimentos desse fornecedor
-            if (fornecedor != null) {
-                fornecedor.setAlimentos(buscarAlimentosPorFornecedor(fornecedor.getId()));
+                 fornecedor.setAlimentos(buscarAlimentosPorFornecedor(fornecedor.getId()));
             }
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -196,10 +182,10 @@ public class FornecedorDAO {
         return fornecedor;
     }
 
-    // LISTAR TODOS OS FORNECEDORES COM SEUS ALIMENTOS
+    // LISTAR COMPLETO COM TODOS OS FORNECEDORES COM SEUS ALIMENTOS
     // ______________________________________________________
 
-    public ArrayList<Fornecedor> listarComAlimentos() {
+    public ArrayList<Fornecedor> listar() {
         ArrayList<Fornecedor> fornecedores = new ArrayList<>();
         String sql = "SELECT id, nome, cpf, telefone, email FROM fornecedores ORDER BY nome";
 

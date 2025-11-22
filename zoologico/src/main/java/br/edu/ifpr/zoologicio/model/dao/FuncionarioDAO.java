@@ -11,92 +11,6 @@ import java.sql.SQLException;
 
 public class FuncionarioDAO {
 
-    // BUSCAR FUNCIONÁRIOS PELO CARGO
-    // ______________________________________________________
-
-    public static ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
-        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE cargo_id = ?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, cargoId);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                Funcionario f = new Funcionario();
-                f.setId(rs.getInt("id"));
-                f.setNome(rs.getString("nome"));
-                f.setCpf(rs.getString("cpf"));
-                f.setEmail(rs.getString("email"));
-                f.setTelefone(rs.getString("telefone"));
-                // Não carrego agendaFuncionario e cargo para evitar ciclo; carregue se precisar
-                funcionarios.add(f);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return funcionarios;
-    }
-
-    // BUSCAR FUNCIONÁRIOS POR ÁREA
-    // ______________________________________________________
-    public static ArrayList<Funcionario> buscarFuncionariosPorArea(int areaId) {
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
-
-        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE area_id=?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, areaId);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                Funcionario f = new Funcionario();
-                f.setId(rs.getInt("id"));
-                f.setNome(rs.getString("nome"));
-                f.setCpf(rs.getString("cpf"));
-                f.setEmail(rs.getString("email"));
-                f.setTelefone(rs.getString("telefone"));
-                funcionarios.add(f);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return funcionarios;
-    }
-
-    // BUSCAR FUNCIONARIO POR ID
-    public static Funcionario buscarFuncionarioPor_ID(int id) {
-        Funcionario funcionario = null;
-        String sql = "SELECT id, nome, cpf, telefone, email FROM funcionarios WHERE id=?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
-                funcionario.setNome(rs.getString("nome"));
-                funcionario.setCpf(rs.getString("cpf"));
-                funcionario.setTelefone(rs.getString("telefone"));
-                funcionario.setEmail(rs.getString("email"));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return funcionario;
-    }
 
     // CADASTRAR FUNCIONÁRIO COM CARGO E AGENDAFUNCIONARIO
     // ______________________________________________________
@@ -250,6 +164,35 @@ public class FuncionarioDAO {
         return funcionario;
     }
 
+    // LISTAR SIMPLES
+    //_____________________________________________________________________________
+
+    public ArrayList<Funcionario> listarSimples() {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+
+        String sql = "SELECT id, nome, cpf, telefone FROM funcionarios ORDER BY nome";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setTelefone(rs.getString("telefone"));
+
+                funcionarios.add(funcionario);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar Funcionários: " + e.getMessage());
+        }
+
+        return funcionarios;
+    }
+
     // LISTAR COMPLETO
     // ______________________________________________________
 
@@ -305,32 +248,96 @@ public class FuncionarioDAO {
         return funcionarios;
     }
 
-    // LISTAR SIMPLES
+    
 
-    public ArrayList<Funcionario> listarSimples() {
+    //METODOS AUXILIARES
+    //-----------------------------------------------------------------
+
+     // BUSCAR FUNCIONÁRIOS PELO CARGO
+    // ______________________________________________________
+
+    public static ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
-
-        String sql = "SELECT id, nome, cpf, telefone FROM funcionarios ORDER BY nome";
+        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE cargo_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql);
-                ResultSet rs = pst.executeQuery()) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, cargoId);
+            ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                Funcionario funcionario = new Funcionario();
+                Funcionario f = new Funcionario();
+                f.setId(rs.getInt("id"));
+                f.setNome(rs.getString("nome"));
+                f.setCpf(rs.getString("cpf"));
+                f.setEmail(rs.getString("email"));
+                f.setTelefone(rs.getString("telefone"));
+                // Não carrego agendaFuncionario e cargo para evitar ciclo; carregue se precisar
+                funcionarios.add(f);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return funcionarios;
+    }
+
+    // BUSCAR FUNCIONÁRIOS POR ÁREA
+    // ______________________________________________________
+    public static ArrayList<Funcionario> buscarFuncionariosPorArea(int areaId) {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+
+        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE area_id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, areaId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Funcionario f = new Funcionario();
+                f.setId(rs.getInt("id"));
+                f.setNome(rs.getString("nome"));
+                f.setCpf(rs.getString("cpf"));
+                f.setEmail(rs.getString("email"));
+                f.setTelefone(rs.getString("telefone"));
+                funcionarios.add(f);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return funcionarios;
+    }
+
+    // BUSCAR FUNCIONARIO POR ID
+    public static Funcionario buscarFuncionarioPor_ID(int id) {
+        Funcionario funcionario = null;
+        String sql = "SELECT id, nome, cpf, telefone, email FROM funcionarios WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                funcionario = new Funcionario();
                 funcionario.setId(rs.getInt("id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setTelefone(rs.getString("telefone"));
-
-                funcionarios.add(funcionario);
+                funcionario.setEmail(rs.getString("email"));
             }
 
-        } catch (SQLException e) {
-            System.err.println("Erro ao listar Funcionários: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return funcionarios;
+        return funcionario;
     }
 
 }

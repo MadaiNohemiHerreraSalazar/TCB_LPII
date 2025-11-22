@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class CargoPermissao_DAO {
+public class Cargo_PermissaoDAO {
 
     public static void cadastrar(Cargo_Permissao cargoPermissao) {
 

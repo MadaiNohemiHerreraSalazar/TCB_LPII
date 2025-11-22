@@ -67,7 +67,6 @@ public class AnimalDAO {
         String sqlUpdateAnimal = "UPDATE animais SET nome=?, descricao=?, historia=?, especie=?, idade=?, " +
                 "genero=?, peso=?, altura=?, saude=?, habitat_id=? WHERE id=?";
         String sqlDeleteAV = "DELETE FROM animal_veterinario WHERE animal_id=?";
-        String sqlInsertAV = "INSERT INTO animal_veterinario (animal_id, veterinario_id) VALUES (?,?)";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -94,11 +93,7 @@ public class AnimalDAO {
             }
 
             // Cria o novo vínculo com veterinário
-            try (PreparedStatement pst = con.prepareStatement(sqlInsertAV)) {
-                pst.setInt(1, animal.getId());
-                pst.setInt(2, veterinarioId);
-                pst.executeUpdate();
-            }
+           cadastrarAnimalVeterinario(con, animal.getId(), veterinarioId);
 
         } catch (SQLException e) {
             e.printStackTrace();

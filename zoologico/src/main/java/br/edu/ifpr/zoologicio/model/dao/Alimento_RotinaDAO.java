@@ -134,8 +134,7 @@ public class Alimento_RotinaDAO {
 
     //METODOS AUXILIARES
     //---------------------------------------------------------------
-
-   
+    
     // BUSCAR ALIMENTOS POR ROTINA
     // ________________________________________________________
 

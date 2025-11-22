@@ -1,7 +1,6 @@
 package br.edu.ifpr.zoologicio.model.dao;
 
 import br.edu.ifpr.zoologicio.model.Cargo;
-import br.edu.ifpr.zoologicio.model.Funcionario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -76,9 +75,7 @@ public class CargoDAO {
     public static void editar(Cargo cargo) {
 
         String sqlUpdateCargo = "UPDATE cargos SET nome=?, salario=?, cargaHoraroia=?, senha=? WHERE id=?";
-        String sqlRemoveFuncionarios = "UPDATE funcionarios SET cargo_id = NULL WHERE cargo_id = ?";
-        String sqlInsertFuncionarios = "UPDATE funcionarios SET cargo_id = ? WHERE id = ?";
-
+      
         try (Connection con = ConnectionFactory.getConnection()) {
 
             // Atualizar dados do Cargo
@@ -89,21 +86,6 @@ public class CargoDAO {
                 pst.setString(4, cargo.getSenha());
                 pst.setInt(5, cargo.getId());
                 pst.executeUpdate();
-            }
-
-            // Remover todos os funcionários antigos vinculados a este cargo
-            try (PreparedStatement pst = con.prepareStatement(sqlRemoveFuncionarios)) {
-                pst.setInt(1, cargo.getId());
-                pst.executeUpdate();
-            }
-
-            // Vincular os novos funcionários selecionados ao cargo
-            try (PreparedStatement pst = con.prepareStatement(sqlInsertFuncionarios)) {
-                for (Funcionario funcionario : cargo.getFuncionarios()) {
-                    pst.setInt(1, cargo.getId()); // Novo cargo_id
-                    pst.setInt(2, funcionario.getId()); // Funcionário específico
-                    pst.executeUpdate();
-                }
             }
 
             System.out.println("Cargo atualizado com funcionários editados com sucesso!");

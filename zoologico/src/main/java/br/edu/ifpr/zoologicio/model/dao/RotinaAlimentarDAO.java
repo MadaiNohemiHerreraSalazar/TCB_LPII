@@ -212,7 +212,7 @@ public class RotinaAlimentarDAO {
 
     public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
 
-        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE id= ?";
+        String sqlAgendaAnimal = "SELECT from rotinasAlimentares WHERE id= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
