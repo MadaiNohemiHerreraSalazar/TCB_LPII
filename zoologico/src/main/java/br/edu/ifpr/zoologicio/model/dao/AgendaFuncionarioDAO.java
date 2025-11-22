@@ -82,7 +82,7 @@ public class AgendaFuncionarioDAO {
 
     // SELECT COMPLETO AgendaFuncionario + Cargo + Funcionario
     // ______________________________________________________
-    public AgendaFuncionario selectCompleto(int id) {
+    public AgendaFuncionario select(int id) {
         String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, " +
                 "af.cargo_id, af.funcionario_id " +
                 "FROM agendaFuncionarios af " +

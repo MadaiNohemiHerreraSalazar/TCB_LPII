@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
+    
     private static Connection conexao;
 
     private ConnectionFactory() {

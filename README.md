@@ -1,6 +1,6 @@
 # TCB_LPII
 
-faltam 13 dias para dia 3/12
+faltam 11 dias para dia 3/12
 
 //requisitos
 -> terminar

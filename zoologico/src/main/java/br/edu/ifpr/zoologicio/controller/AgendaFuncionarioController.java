@@ -38,7 +38,7 @@ public class AgendaFuncionarioController {
         dao.editar(agendaFuncionario);
     }
 
-    public void deleteAgendaAnimal(int id){
+    public void deleteAgendaFuncionario(int id){
        
         if(id <= 0){
 
@@ -60,9 +60,9 @@ public class AgendaFuncionarioController {
         dao.select(id);
     }
 
-    // public ArrayList<AgendaFuncionario> listarAgendaFuncionario() {
-    //     return dao.listar();
-    // }
+    public ArrayList<AgendaFuncionario> listarAgendaFuncionario() {
+        return dao.listar();
+    }
     
 }
     

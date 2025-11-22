@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 
 import br.edu.ifpr.zoologicio.model.AgendaAnimal;
-import br.edu.ifpr.zoologicio.model.Animal;
-import br.edu.ifpr.zoologicio.model.Veterinario;
-import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class AgendaAnimalDAO {
 
@@ -17,10 +14,10 @@ public class AgendaAnimalDAO {
     // ______________________________________________________
     public static void cadastrar(AgendaAnimal agenda) {
         String sql = "INSERT INTO agendaAnimal(consulta, banho, medicacao, atividade, animal_id, veterinario_id, rotinaAlimentar_id) "
-                   + "VALUES (?,?,?,?,?,?,?)";
+                + "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, agenda.getConsulta());
             pst.setString(2, agenda.getBanho());
@@ -49,10 +46,10 @@ public class AgendaAnimalDAO {
     // ______________________________________________________
     public static void editar(AgendaAnimal agenda) {
         String sql = "UPDATE agendaAnimal SET consulta=?, banho=?, medicacao=?, atividade=?, "
-                   + "animal_id=?, veterinario_id=?, rotinaAlimentar_id=? WHERE id=?";
+                + "animal_id=?, veterinario_id=?, rotinaAlimentar_id=? WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, agenda.getConsulta());
             pst.setString(2, agenda.getBanho());
@@ -77,7 +74,7 @@ public class AgendaAnimalDAO {
         String sql = "DELETE FROM agendaAnimal WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             pst.executeUpdate();
@@ -91,14 +88,14 @@ public class AgendaAnimalDAO {
 
     // SELECT COMPLETO
     // ______________________________________________________
-    public AgendaAnimal selectCompleto(int id) {
+    public static AgendaAnimal select(int id) {
         String sql = "SELECT id, consulta, banho, medicacao, atividade, animal_id, veterinario_id, rotinaAlimentar_id "
-                   + "FROM agendaAnimal WHERE id=?";
+                + "FROM agendaAnimal WHERE id=?";
 
         AgendaAnimal agenda = null;
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -112,9 +109,9 @@ public class AgendaAnimalDAO {
                 agenda.setAtividade(rs.getString("atividade"));
 
                 // Buscar Animal, Veterinário e RotinaAlimentar
-                agenda.setAnimal(buscarAnimalPorId(rs.getInt("animal_id")));
-                agenda.setVeterinario(buscarVeterinarioPorId(rs.getInt("veterinario_id")));
-                agenda.setRotinaAlimentar(buscarRotinaPorId(rs.getInt("rotinaAlimentar_id")));
+                agenda.setAnimal(AnimalDAO.buscarAnimalPorId(rs.getInt("animal_id")));
+                agenda.setVeterinario(VeterinarioDAO.buscarVeterinarioPorId(rs.getInt("veterinario_id")));
+                agenda.setRotinaAlimentar(RotinaAlimentarDAO.buscarRotinaPorId(rs.getInt("rotinaAlimentar_id")));
             }
 
         } catch (SQLException e) {
@@ -126,13 +123,13 @@ public class AgendaAnimalDAO {
 
     // LISTAR COMPLETO
     // ______________________________________________________
-    public ArrayList<AgendaAnimal> listarCompleto() {
+    public static ArrayList<AgendaAnimal> listar() {
         ArrayList<AgendaAnimal> agendas = new ArrayList<>();
         String sql = "SELECT id, consulta, banho, medicacao, atividade, animal_id, veterinario_id, rotinaAlimentar_id FROM agendaAnimal";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 AgendaAnimal agenda = new AgendaAnimal();
@@ -142,9 +139,9 @@ public class AgendaAnimalDAO {
                 agenda.setMedicacao(rs.getString("medicacao"));
                 agenda.setAtividade(rs.getString("atividade"));
 
-                agenda.setAnimal(buscarAnimalPorId(rs.getInt("animal_id")));
-                agenda.setVeterinario(buscarVeterinarioPorId(rs.getInt("veterinario_id")));
-                agenda.setRotinaAlimentar(buscarRotinaPorId(rs.getInt("rotinaAlimentar_id")));
+                agenda.setAnimal(AnimalDAO.buscarAnimalPorId(rs.getInt("animal_id")));
+                agenda.setVeterinario(VeterinarioDAO.buscarVeterinarioPorId(rs.getInt("veterinario_id")));
+                agenda.setRotinaAlimentar(RotinaAlimentarDAO.buscarRotinaPorId(rs.getInt("rotinaAlimentar_id")));
 
                 agendas.add(agenda);
             }
@@ -156,78 +153,31 @@ public class AgendaAnimalDAO {
         return agendas;
     }
 
-    // MÉTODOS AUXILIARES
+    //METODOS AUXILIARES
+    //------------------------------------------------------------
+    // BUSCAR AGENDA ANIMAL POR ID - DEVOLVE ID
     // ______________________________________________________
-    private Animal buscarAnimalPorId(int id) {
-        Animal animal = null;
-        String sql = "SELECT id, nome FROM animais WHERE id=?";
+
+    public static int buscarAgendaAnimal_ID(int animal_id) {
+
+        String sqlAgendaAnimal = "SELECT * FROM agendaAnimais WHERE id = ?";
+        int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sqlAgendaAnimal)) {
 
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                animal = new Animal();
-                animal.setId(rs.getInt("id"));
-                animal.setNome(rs.getString("nome"));
+            pst.setInt(1, animal_id);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return animal;
-    }
-
-    private Veterinario buscarVeterinarioPorId(int id) {
-        Veterinario vet = null;
-        String sql = "SELECT id, nome, email FROM veterinarios WHERE id=?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                vet = new Veterinario();
-                vet.setId(rs.getInt("id"));
-                vet.setNome(rs.getString("nome"));
-                vet.setEmail(rs.getString("email"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return vet;
-    }
-
-    private RotinaAlimentar buscarRotinaPorId(int id) {
-        RotinaAlimentar rotina = null;
-        String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares WHERE id=?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                rotina = new RotinaAlimentar();
-                rotina.setId(rs.getInt("id"));
-                rotina.setData(rs.getString("data"));
-                rotina.setHora(rs.getString("hora"));
-                rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return rotina;
+        return id;
     }
 
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.Alimento_Rotina;
 
 public class Alimento_RotinaDAO {
@@ -116,28 +117,62 @@ public class Alimento_RotinaDAO {
         return rotinas;
     }
 
-    // // Buscar nome do alimento (opcional — caso queira mostrar no relatório)
-    // public Alimento buscarAlimento(int alimentoId) {
-    //     Connection con = ConnectionFactory.getConnection();
-    //     Alimento alimento = null;
+    //METODOS AUXILIARES
+    //---------------------------------------------------------------
 
-    //     try {
-    //         String sql = "SELECT * FROM alimentos WHERE id=?";
-    //         PreparedStatement pst = con.prepareStatement(sql);
-    //         pst.setInt(1, alimentoId);
-    //         ResultSet rs = pst.executeQuery();
+    // BUSCAR ALIMENTO NOME E ID POR ID
+    //_______________________________________________________________
+    public Alimento buscarAlimento(int alimentoId) {
+        Connection con = ConnectionFactory.getConnection();
+        Alimento alimento = null;
 
-    //         if (rs.next()) {
-    //             alimento = new Alimento();
-    //             alimento.setId(rs.getInt("id"));
-    //             alimento.setNome(rs.getString("nome"));
-    //         }
+        try {
+            String sql = "SELECT * FROM alimentos WHERE id=?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, alimentoId);
+            ResultSet rs = pst.executeQuery();
 
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
+            if (rs.next()) {
+                alimento = new Alimento();
+                alimento.setId(rs.getInt("id"));
+                alimento.setNome(rs.getString("nome"));
+            }
 
-    //     return alimento;
-    // }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alimento;
+    }
+
+    // BUSCAR ALIMENTOS POR ROTINA
+    // ________________________________________________________
+
+    public static ArrayList<Alimento> buscarAlimentosPorRotina(int rotinaId) {
+        ArrayList<Alimento> alimentos = new ArrayList<>();
+
+        String sql = "SELECT a.id, a.nome FROM alimentos a " +
+                "JOIN alimento_rotina ar ON a.id = ar.alimento_id " +
+                "WHERE ar.rotinaAlimentar_id = ?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, rotinaId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Alimento alimento = new Alimento();
+                alimento.setId(rs.getInt("id"));
+                alimento.setNome(rs.getString("nome"));
+                alimentos.add(alimento);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alimentos;
+    }
 
 }

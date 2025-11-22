@@ -10,32 +10,6 @@ import java.sql.SQLException;
 
 public class RotinaAlimentarDAO {
 
-    // BUSCAR ROTINA ALIMENTAR POR ID
-    //_____________________________________________________________________
-
-    public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
-
-        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal)) {
-
-            ps.setInt(1, rotinaAlimentar_id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
-
     // CADASTRAR ROTINA ALIMENTAR
     // ______________________________________________________
 
@@ -112,8 +86,7 @@ public class RotinaAlimentarDAO {
 
         String sqlUpdateRotina = "UPDATE rotinasAlimentares SET data=?, hora=?, quantidadeAlimento=? WHERE id=?";
         String sqlDeleteAlimentos = "DELETE FROM alimento_rotina WHERE rotinaAlimentar_id=?";
-        String sqlInsertAlimentos = "INSERT INTO alimento_rotina(alimento_id, fornecedor_id, rotinaAlimentar_id) VALUES (?,?,?)";
-
+    
         try (Connection con = ConnectionFactory.getConnection()) {
 
             // Atualiza a tabela principal
@@ -132,13 +105,8 @@ public class RotinaAlimentarDAO {
             }
 
             // Insere os alimentos atualizados
-            try (PreparedStatement pst = con.prepareStatement(sqlInsertAlimentos)) {
-                for (Alimento alimento : rotinaAlimentar.getAlimentos()) {
-                    pst.setInt(1, alimento.getId());
-                    pst.setInt(2, fornecedor_id);
-                    pst.setInt(3, rotinaAlimentar.getId());
-                    pst.executeUpdate();
-                }
+              if (!cadastroAlimentos(con, rotinaAlimentar.getAlimentos(), rotinaAlimentar, fornecedor_id)) {
+                throw new SQLException("Rotina NÃO cadastrada. Erro ao cadastrar alimentos.");
             }
 
         } catch (Exception e) {
@@ -200,7 +168,7 @@ public class RotinaAlimentarDAO {
 
             // Agora buscar os alimentos vinculados à rotina
             if (rotina != null) {
-                rotina.setAlimentos(buscarAlimentosPorRotina(rotina.getId()));
+                rotina.setAlimentos(Alimento_RotinaDAO.buscarAlimentosPorRotina(rotina.getId()));
             }
 
         } catch (Exception e) {
@@ -210,64 +178,90 @@ public class RotinaAlimentarDAO {
         return rotina;
     }
 
-    // BUACAR ALIMENTOS
-    // ________________________________________________________
+    // LISTAR
+    // ______________________________________________________
 
-    private ArrayList<Alimento> buscarAlimentosPorRotina(int rotinaId) {
-        ArrayList<Alimento> alimentos = new ArrayList<>();
-
-        String sql = "SELECT a.id, a.nome FROM alimentos a " +
-                "JOIN alimento_rotina ar ON a.id = ar.alimento_id " +
-                "WHERE ar.rotinaAlimentar_id = ?";
+    public ArrayList<RotinaAlimentar> listarComAlimentos() {
+        String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares ORDER BY data, hora";
+        ArrayList<RotinaAlimentar> rotinas = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, rotinaId);
-            ResultSet rs = pst.executeQuery();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
-                Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
-                alimento.setNome(rs.getString("nome"));
-                alimentos.add(alimento);
+                RotinaAlimentar rotina = new RotinaAlimentar();
+                rotina.setId(rs.getInt("id"));
+                rotina.setData(rs.getString("data"));
+                rotina.setHora(rs.getString("hora"));
+                rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
+                rotina.setAlimentos(Alimento_RotinaDAO.buscarAlimentosPorRotina(rotina.getId()));
+
+                rotinas.add(rotina);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar Rotinas Alimentares: " + e.getMessage());
+        }
+
+        return rotinas;
+    }
+
+    // METODOS AUXILIARES
+    // ----------------------------------------------------------------------
+
+    // BUSCAR ROTINA ALIMENTAR POR ID - DEVOLVE ID
+    // _____________________________________________________________________
+
+    public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
+
+        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE id= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal)) {
+
+            ps.setInt(1, rotinaAlimentar_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return alimentos;
+        return id;
+
     }
 
-    // LISTAR
-    // ______________________________________________________
+    // BUSCAR ROTINA POR ID - DEVOLVE ROTINA ALIMENTAR
+    // ______________________________________________________________________
 
-  public ArrayList<RotinaAlimentar> listarComAlimentos() {
-    String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares ORDER BY data, hora";
-    ArrayList<RotinaAlimentar> rotinas = new ArrayList<>();
+    public static RotinaAlimentar buscarRotinaPorId(int id) {
+        RotinaAlimentar rotina = null;
+        String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares WHERE id=?";
 
-    try (Connection con = ConnectionFactory.getConnection();
-         PreparedStatement pst = con.prepareStatement(sql);
-         ResultSet rs = pst.executeQuery()) {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-        while (rs.next()) {
-            RotinaAlimentar rotina = new RotinaAlimentar();
-            rotina.setId(rs.getInt("id"));
-            rotina.setData(rs.getString("data"));
-            rotina.setHora(rs.getString("hora"));
-            rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
-            rotina.setAlimentos(buscarAlimentosPorRotina(rotina.getId()));
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
 
-            rotinas.add(rotina);
+            if (rs.next()) {
+                rotina = new RotinaAlimentar();
+                rotina.setId(rs.getInt("id"));
+                rotina.setData(rs.getString("data"));
+                rotina.setHora(rs.getString("hora"));
+                rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-    } catch (SQLException e) {
-        System.err.println("Erro ao listar Rotinas Alimentares: " + e.getMessage());
+        return rotina;
     }
-
-    return rotinas;
-}
-
 
 }

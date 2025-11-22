@@ -69,6 +69,32 @@ public class AnimalDAO {
         return animais;
     }
 
+    // BUSCAR ANIMAL POR ID - DEVOLVE ANIMAL
+
+      public static Animal buscarAnimalPorId(int id) {
+        Animal animal = null;
+        String sql = "SELECT id, nome FROM animais WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                animal = new Animal();
+                animal.setId(rs.getInt("id"));
+                animal.setNome(rs.getString("nome"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return animal;
+    }
+
+
 
   
 
