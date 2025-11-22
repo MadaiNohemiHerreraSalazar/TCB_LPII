@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Alimento_Rotina;
 
-public class AlimentoRotinaDAO {
+public class Alimento_RotinaDAO {
 
     public static void cadastrar(Alimento_Rotina alimentoRotina) {
         Connection con = ConnectionFactory.getConnection();

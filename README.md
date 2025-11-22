@@ -1,6 +1,6 @@
 # TCB_LPII
 
-faltam 15 dias para dia 3/12
+faltam 13 dias para dia 3/12
 
 //requisitos
 -> terminar
@@ -16,9 +16,18 @@ faltam 15 dias para dia 3/12
 -> arrumar + ver se tem que adicionar alguma validação
 
 //contato DAO
+
+-DAOS por arrumar:
+
+    - Visitante
+    - Ticket
+    - Permissao
+    - CargoPermissao
+    - AgendaFuncionario
+    - AgendaAnimal
+
 -> verficiar objetos que tem permissão para editar outros objetos
 -> arrumar connection con 
--> arrumar: select ou listar?
 
 //classes
 -> para cada objeto que edita outro objeto, é necessario adicionar funções como: reduzir, aumentar, estoque, etc na classe

@@ -1,152 +1,232 @@
-//Se pode cadastrar o cargo sem ter funcionarios
-
 package br.edu.ifpr.zoologicio.model.dao;
+
+import br.edu.ifpr.zoologicio.model.Cargo;
+import br.edu.ifpr.zoologicio.model.Funcionario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
-import br.edu.ifpr.zoologicio.model.Cargo;
 
 public class CargoDAO {
 
-    public static void cadastrar(Cargo cargo) {
+    //BUSCAR CARGO POR ID
+    //______________________________________________________________________
 
-        Connection con = ConnectionFactory.getConnection();
+    public static Cargo buscarCargoPorId(int id) {
+        Cargo cargo = null;
+        String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos WHERE id = ?";
 
-        String sqlCargos = "INSERT INTO cargos(nome, salario, cargaHoraria, senha) VALUES (?,?,?,?)";
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
-        try {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
 
-            PreparedStatement psCargo = con.prepareStatement(sqlCargos);
+            if (rs.next()) {
+                cargo = new Cargo();
+                cargo.setId(rs.getInt("id"));
+                cargo.setNome(rs.getString("nome"));
+                cargo.setSalario(rs.getString("salario"));
+                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setSenha(rs.getString("senha"));
+                // não carrega lista de funcionarios aqui (evita recursão pesada)
+            }
 
-            psCargo.setString(1, cargo.getNome());
-            psCargo.setString(2, cargo.getSalario());
-            psCargo.setString(3, cargo.getCargaHoraroia());
-            psCargo.setString(4, cargo.getSenha());
-
-            psCargo.executeUpdate();
-            System.out.println("Cargo inserido com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
+        } catch (SQLException e) {
             e.printStackTrace();
-
         }
 
+        return cargo;
     }
 
-    public static void editar(Cargo cargo) {
+    // CADASTRAR CARGO
+    // ______________________________________________________
+    public static void cadastrar(Cargo cargo) {
+        String sql = "INSERT INTO cargos(nome, salario, cargaHoraroia, senha) VALUES (?,?,?,?)";
 
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "UPDATE cargos  SET nome=?, salario=?, cargaHoraria=?, senha=?, WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, cargo.getNome());
             pst.setString(2, cargo.getSalario());
             pst.setString(3, cargo.getCargaHoraroia());
             pst.setString(4, cargo.getSenha());
-            pst.setInt(5, cargo.getId());
-
             pst.executeUpdate();
-            System.out.println("Cargo atualizado com sucesso");
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    cargo.setId(rs.getInt(1));
+                } else {
+                    throw new SQLException("Falha ao obter id gerado para Cargo");
+                }
+            }
+
+            System.out.println("Cargo cadastrado com sucesso!");
 
         } catch (Exception e) {
-
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-
-        }
-
-    }
-
-    public void delete(int id) {
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "DELETE FROM cargos WHERE id= ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            System.out.println("Cargo excluido com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
             e.printStackTrace();
-
         }
     }
 
-    public ArrayList<Cargo> select(int id) {
+    // EDITAR
+    // __________________________________________________________________
 
-        Connection con = ConnectionFactory.getConnection();
-        ArrayList<Cargo> cargos = new ArrayList<>();
+    public static void editar(Cargo cargo) {
 
-        try {
+        String sqlUpdateCargo = "UPDATE cargos SET nome=?, salario=?, cargaHoraroia=?, senha=? WHERE id=?";
+        String sqlRemoveFuncionarios = "UPDATE funcionarios SET cargo_id = NULL WHERE cargo_id = ?";
+        String sqlInsertFuncionarios = "UPDATE funcionarios SET cargo_id = ? WHERE id = ?";
 
-            String sql = "SELECT * FROM cargos WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        try (Connection con = ConnectionFactory.getConnection()) {
+
+            // Atualizar dados do Cargo
+            try (PreparedStatement pst = con.prepareStatement(sqlUpdateCargo)) {
+                pst.setString(1, cargo.getNome());
+                pst.setString(2, cargo.getSalario());
+                pst.setString(3, cargo.getCargaHoraroia());
+                pst.setString(4, cargo.getSenha());
+                pst.setInt(5, cargo.getId());
+                pst.executeUpdate();
+            }
+
+            // Remover todos os funcionários antigos vinculados a este cargo
+            try (PreparedStatement pst = con.prepareStatement(sqlRemoveFuncionarios)) {
+                pst.setInt(1, cargo.getId());
+                pst.executeUpdate();
+            }
+
+            // Vincular os novos funcionários selecionados ao cargo
+            try (PreparedStatement pst = con.prepareStatement(sqlInsertFuncionarios)) {
+                for (Funcionario funcionario : cargo.getFuncionarios()) {
+                    pst.setInt(1, cargo.getId()); // Novo cargo_id
+                    pst.setInt(2, funcionario.getId()); // Funcionário específico
+                    pst.executeUpdate();
+                }
+            }
+
+            System.out.println("Cargo atualizado com funcionários editados com sucesso!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // DELETE CARGO
+    // ______________________________________________________
+    public static void delete(int id) {
+
+        String sqlDesvincular = "UPDATE funcionarios SET cargo_id = NULL WHERE cargo_id = ?";
+        String sqlDelete = "DELETE FROM cargos WHERE id = ?";
+
+        try (Connection con = ConnectionFactory.getConnection()) {
+
+            try (PreparedStatement pst = con.prepareStatement(sqlDesvincular)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
+            }
+
+            try (PreparedStatement pst = con.prepareStatement(sqlDelete)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
+            }
+
+            System.out.println("Cargo excluído com sucesso!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // SELECT COMPLETO (COM FUNCIONÁRIOS)
+    // ______________________________________________________
+    public Cargo select(int id) {
+        String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos WHERE id = ?";
+        Cargo cargo = null;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
 
-            while (rs.next()) {
-
-                Cargo cargo = new Cargo();
+            if (rs.next()) {
+                cargo = new Cargo();
                 cargo.setId(rs.getInt("id"));
-                cargo.setNome("nome");
-                cargo.setSalario("salario");
-                cargo.setCargaHoraroia("cargaHoraria");
-                cargo.setSenha("senha");
-                cargos.add(cargo);
+                cargo.setNome(rs.getString("nome"));
+                cargo.setSalario(rs.getString("salario"));
+                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setSenha(rs.getString("senha"));
+            }
 
+            if (cargo != null) {
+                cargo.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorCargo(cargo.getId()));
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return cargo;
+    }
+
+    // LISTAR SIMPLES
+    // ______________________________________________________________________
+
+    public ArrayList<Cargo> listarSimples() {
+        String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos";
+        ArrayList<Cargo> cargos = new ArrayList<>();
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Cargo cargo = new Cargo();
+                cargo.setId(rs.getInt("id"));
+                cargo.setNome(rs.getString("nome"));
+                cargo.setSalario(rs.getString("salario"));
+                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setSenha(rs.getString("senha"));
+
+                cargos.add(cargo);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar cargos: " + e.getMessage());
         }
 
         return cargos;
     }
 
-    /*
-     * public ArrayList<Cargo> listar() {
-     * 
-     * Connection con = ConnectionFactory.getConnection();
-     * 
-     * ArrayList<Cargo> cargos = new ArrayList<>();
-     * 
-     * try {
-     * 
-     * String sql = "SELECT * FROM cargos";
-     * PreparedStatement pst = con.prepareStatement(sql);
-     * ResultSet rs = pst.executeQuery();
-     * 
-     * while (rs.next()) {
-     * 
-     * Cargo cargo = new Cargo();
-     * cargo.setId(rs.getInt("id"));
-     * cargo.setNome("nome");
-     * cargo.setSalario("salario");
-     * cargo.setCargaHoraroia("cargaHoraria");
-     * cargo.setSenha("senha");
-     * cargos.add(cargo);
-     * 
-     * }
-     * 
-     * } catch (Exception e) {
-     * // TODO: handle exception
-     * System.out.println(e.getMessage());
-     * }
-     * 
-     * return cargos;
-     * }
-     */
+    // LISTAR COMPLETO (COM FUNCIONÁRIOS)
+    // ______________________________________________________
+    public ArrayList<Cargo> listarComFuncionarios() {
+        ArrayList<Cargo> cargos = new ArrayList<>();
+        String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Cargo cargo = new Cargo();
+                cargo.setId(rs.getInt("id"));
+                cargo.setNome(rs.getString("nome"));
+                cargo.setSalario(rs.getString("salario"));
+                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setSenha(rs.getString("senha"));
+                cargo.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorCargo(cargo.getId()));
+
+                cargos.add(cargo);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar cargos: " + e.getMessage());
+        }
+
+        return cargos;
+    }
 
 }

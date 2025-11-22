@@ -10,6 +10,32 @@ import java.sql.SQLException;
 
 public class RotinaAlimentarDAO {
 
+    // BUSCAR ROTINA ALIMENTAR POR ID
+    //_____________________________________________________________________
+
+    public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
+
+        String sqlAgendaAnimal = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlAgendaAnimal)) {
+
+            ps.setInt(1, rotinaAlimentar_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
     // CADASTRAR ROTINA ALIMENTAR
     // ______________________________________________________
 

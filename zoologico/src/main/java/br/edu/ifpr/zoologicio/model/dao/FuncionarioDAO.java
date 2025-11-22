@@ -11,6 +11,93 @@ import java.sql.SQLException;
 
 public class FuncionarioDAO {
 
+    // BUSCAR FUNCIONÁRIOS PELO CARGO
+    // ______________________________________________________
+
+    public static ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE cargo_id = ?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, cargoId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Funcionario f = new Funcionario();
+                f.setId(rs.getInt("id"));
+                f.setNome(rs.getString("nome"));
+                f.setCpf(rs.getString("cpf"));
+                f.setEmail(rs.getString("email"));
+                f.setTelefone(rs.getString("telefone"));
+                // Não carrego agendaFuncionario e cargo para evitar ciclo; carregue se precisar
+                funcionarios.add(f);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return funcionarios;
+    }
+
+    // BUSCAR FUNCIONÁRIOS POR ÁREA
+    // ______________________________________________________
+    public static ArrayList<Funcionario> buscarFuncionariosPorArea(int areaId) {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+
+        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE area_id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, areaId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Funcionario f = new Funcionario();
+                f.setId(rs.getInt("id"));
+                f.setNome(rs.getString("nome"));
+                f.setCpf(rs.getString("cpf"));
+                f.setEmail(rs.getString("email"));
+                f.setTelefone(rs.getString("telefone"));
+                funcionarios.add(f);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return funcionarios;
+    }
+
+    // BUSCAR FUNCIONARIO POR ID
+    public static Funcionario buscarFuncionarioPor_ID(int id) {
+        Funcionario funcionario = null;
+        String sql = "SELECT id, nome, cpf, telefone, email FROM funcionarios WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setTelefone(rs.getString("telefone"));
+                funcionario.setEmail(rs.getString("email"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return funcionario;
+    }
+
     // CADASTRAR FUNCIONÁRIO COM CARGO E AGENDAFUNCIONARIO
     // ______________________________________________________
 
@@ -20,7 +107,7 @@ public class FuncionarioDAO {
         String sqlAgenda = "INSERT INTO agendasFuncionario(criadoPor, ultimaAtualizacao, atividade, cargo_id, funcionario_id) VALUES (?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sqlFuncionario, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pst = con.prepareStatement(sqlFuncionario, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, funcionario.getNome());
             pst.setInt(2, funcionario.getCargo().getId());
@@ -108,23 +195,23 @@ public class FuncionarioDAO {
         }
     }
 
-    // SELECT COMPLETO 
+    // SELECT COMPLETO
     // ______________________________________________________
 
     public Funcionario select(int id) {
 
         String sql = "SELECT f.id, f.nome, " +
-                     "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
-                     "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
-                     "FROM funcionarios f " +
-                     "LEFT JOIN cargos c ON f.cargo_id = c.id " +
-                     "LEFT JOIN agendasFuncionario a ON f.id = a.funcionario_id " +
-                     "WHERE f.id = ?";
+                "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
+                "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
+                "FROM funcionarios f " +
+                "LEFT JOIN cargos c ON f.cargo_id = c.id " +
+                "LEFT JOIN agendasFuncionario a ON f.id = a.funcionario_id " +
+                "WHERE f.id = ?";
 
         Funcionario funcionario = null;
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -170,16 +257,16 @@ public class FuncionarioDAO {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
         String sql = "SELECT f.id, f.nome, " +
-                     "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
-                     "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
-                     "FROM funcionarios f " +
-                     "LEFT JOIN cargos c ON f.cargo_id = c.id " +
-                     "LEFT JOIN agendasFuncionario a ON f.id = a.funcionario_id " +
-                     "ORDER BY f.nome";
+                "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
+                "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
+                "FROM funcionarios f " +
+                "LEFT JOIN cargos c ON f.cargo_id = c.id " +
+                "LEFT JOIN agendasFuncionario a ON f.id = a.funcionario_id " +
+                "ORDER BY f.nome";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
@@ -221,29 +308,29 @@ public class FuncionarioDAO {
     // LISTAR SIMPLES
 
     public ArrayList<Funcionario> listarSimples() {
-    ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-    String sql = "SELECT id, nome, cpf, telefone FROM funcionarios ORDER BY nome";
+        String sql = "SELECT id, nome, cpf, telefone FROM funcionarios ORDER BY nome";
 
-    try (Connection con = ConnectionFactory.getConnection();
-         PreparedStatement pst = con.prepareStatement(sql);
-         ResultSet rs = pst.executeQuery()) {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
-        while (rs.next()) {
-            Funcionario funcionario = new Funcionario();
-            funcionario.setId(rs.getInt("id"));
-            funcionario.setNome(rs.getString("nome"));
-            funcionario.setCpf(rs.getString("cpf"));
-            funcionario.setTelefone(rs.getString("telefone"));
+            while (rs.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setTelefone(rs.getString("telefone"));
 
-            funcionarios.add(funcionario);
+                funcionarios.add(funcionario);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar Funcionários: " + e.getMessage());
         }
 
-    } catch (SQLException e) {
-        System.err.println("Erro ao listar Funcionários: " + e.getMessage());
+        return funcionarios;
     }
-
-    return funcionarios;
-}
 
 }

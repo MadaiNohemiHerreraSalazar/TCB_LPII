@@ -3,14 +3,14 @@ package br.edu.ifpr.zoologicio.controller;
 import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Alimento_Rotina;
-import br.edu.ifpr.zoologicio.model.dao.AlimentoRotinaDAO;
+import br.edu.ifpr.zoologicio.model.dao.Alimento_RotinaDAO;
 
 public class AlimentoRotinaController {
 
-    private AlimentoRotinaDAO dao;
+    private Alimento_RotinaDAO dao;
 
     public AlimentoRotinaController() {
-        this.dao = new AlimentoRotinaDAO();
+        this.dao = new Alimento_RotinaDAO();
     }
 
     public void cadastrarAlimentoRotina(Alimento_Rotina alimentoRotina, int fornecedor_id, int rotinaAlimentar_id) throws Exception {

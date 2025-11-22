@@ -9,7 +9,6 @@ public class Cargo {
     private String salario;
     private String cargaHoraroia;
     private String senha;
-
     private ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
     public Cargo() {

@@ -3,19 +3,19 @@ package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.CargoPermissao;
-import br.edu.ifpr.zoologicio.model.dao.CargoPermissaoDAO;
+import br.edu.ifpr.zoologicio.model.Cargo_Permissao;
+import br.edu.ifpr.zoologicio.model.dao.CargoPermissao_DAO;
 
 public class CargoPermissaoController {
 
-    private CargoPermissaoDAO dao;
+    private CargoPermissao_DAO dao;
 
     public CargoPermissaoController(){
-        this.dao = new CargoPermissaoDAO();
+        this.dao = new CargoPermissao_DAO();
     }
 
 
-    public void cadastrarCargoPermissao(CargoPermissao cargoPermissao){
+    public void cadastrarCargoPermissao(Cargo_Permissao cargoPermissao){
         if(cargoPermissao.getNome() == null){
             System.out.println("Data não pode ser vazio!");
             return;
@@ -24,7 +24,7 @@ public class CargoPermissaoController {
         dao.cadastrar(cargoPermissao);
     }
 
-    public void editarCargoPermissao(CargoPermissao cargoPermissao){
+    public void editarCargoPermissao(Cargo_Permissao cargoPermissao){
         if(cargoPermissao.getNome() == null || cargoPermissao.getNome().isEmpty()){
             System.out.println("Data não pode ser vazio!");
             return;

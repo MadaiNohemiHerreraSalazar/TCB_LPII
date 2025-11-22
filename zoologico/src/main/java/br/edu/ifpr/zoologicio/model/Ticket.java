@@ -6,8 +6,7 @@ public class Ticket {
     private String data;
     private String hora;
     private String preco;
-    // private Compra compra;
-    private int compra;
+    private Compra compra;
 
     public Ticket() {
 
@@ -45,11 +44,11 @@ public class Ticket {
         this.preco = preco;
     }
 
-    public int getCompra() {
+    public Compra getCompra() {
         return compra;
     }
 
-    public void setCompra(int compra) {
+    public void setCompra(Compra compra) {
         this.compra = compra;
     }
 

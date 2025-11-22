@@ -8,20 +8,25 @@ public class Habitat {
     private String nome;
     private String descricao;
     private String capacidade;
-    //private Area area;
-    private int area;
+    private Area area;
     private ArrayList<Animal> animais = new ArrayList<Animal>();
-
-    public Habitat() {
-
-    }
-
+    
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    
+
+    public Habitat() {
+
     }
 
     public String getNome() {
@@ -57,12 +62,7 @@ public class Habitat {
         this.animais = animais;
     }
 
-    public int getArea() {
+    public Area getArea() {
         return area;
     }
-
-    public void setArea(int area) {
-        this.area = area;
-    }
-
 }

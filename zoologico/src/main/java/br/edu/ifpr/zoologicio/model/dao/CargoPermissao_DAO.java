@@ -1,14 +1,14 @@
 package br.edu.ifpr.zoologicio.model.dao;
 
-import br.edu.ifpr.zoologicio.model.CargoPermissao;
+import br.edu.ifpr.zoologicio.model.Cargo_Permissao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class CargoPermissaoDAO {
+public class CargoPermissao_DAO {
 
-    public static void cadastrar(CargoPermissao cargoPermissao) {
+    public static void cadastrar(Cargo_Permissao cargoPermissao) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -28,7 +28,7 @@ public class CargoPermissaoDAO {
         }
     }
 
-    public static void editar(CargoPermissao cargoPermissao) {
+    public static void editar(Cargo_Permissao cargoPermissao) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -66,10 +66,10 @@ public class CargoPermissaoDAO {
         }
     }
 
-    public ArrayList<CargoPermissao> select(int id) {
+    public ArrayList<Cargo_Permissao> select(int id) {
 
         Connection con = ConnectionFactory.getConnection();
-        ArrayList<CargoPermissao> cargoPermissoes = new ArrayList<>();
+        ArrayList<Cargo_Permissao> cargoPermissoes = new ArrayList<>();
 
         try {
 
@@ -81,7 +81,7 @@ public class CargoPermissaoDAO {
 
             while (rs.next()) {
 
-                CargoPermissao cargoPermissao = new CargoPermissao();
+                Cargo_Permissao cargoPermissao = new Cargo_Permissao();
 
                 cargoPermissao.setNome(rs.getString("nome"));
                 cargoPermissao.setDescricao(rs.getString("descricao"));

@@ -1,196 +1,211 @@
-// A o visitante precisa ser cadastrado na compra
-// O funcionario precisa estar cadastrado previamente
-// ticket -> main 
-
 package br.edu.ifpr.zoologicio.model.dao;
 
-import br.edu.ifpr.zoologicio.model.Compra;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import br.edu.ifpr.zoologicio.model.*;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class CompraDAO {
 
-    public static int buscaFuncionario_ID(String nomeFuncionario) {
+    // CADASTRAR COMPRA
+    // ______________________________________________________
+    public static void cadastrar(Compra compra, int visitante_id, int funcionario_id) {
 
-        String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlFuncionario)) {
-            ps.setString(1, nomeFuncionario);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
-
-   public static int buscaVisitante_ID(String nomeVisitante) {
-
-
-        String sqlVisitante = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
+        String sqlCompra = "INSERT INTO compras(data, hora, quantidade, meioPagamento, precoTotal, visitante_id, funcionario_id) "
+                + "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-                    PreparedStatement ps = con.prepareStatement(sqlVisitante)){
-            ps.setString(1, nomeVisitante);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
-
-    public static void cadastrar(Compra compra) {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        String sqlCompra = "INSERT INTO compras(data, hora, quantidade, meioPago, precioTotal ) VALUES (?,?,?,?,?)";
-
-        try {
-
-            PreparedStatement psCompra = con.prepareStatement(sqlCompra);
-
-            psCompra.setString(1, compra.getData());
-            psCompra.setString(2, compra.getHora());
-            psCompra.setString(3, compra.getQuantidade());
-            psCompra.setString(3, compra.getMeioPagamento());
-            psCompra.setString(3, compra.getMeioPagamento());
-
-            psCompra.executeUpdate();
-            System.out.println("Compra inserida com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
-            e.printStackTrace();
-
-        }
-
-    }
-
-    public static void editar(Compra compra) {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "UPDATE compras SET data=?, hora?, quantidade=?, meioPago=?, precioTotal=?,  WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+             PreparedStatement pst = con.prepareStatement(sqlCompra, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, compra.getData());
             pst.setString(2, compra.getHora());
             pst.setString(3, compra.getQuantidade());
             pst.setString(4, compra.getMeioPagamento());
-            pst.setInt(5, compra.getId());
+            pst.setString(5, compra.getPrecoTotal());
+            pst.setInt(6, visitante_id);
+            pst.setInt(7, funcionario_id);
 
             pst.executeUpdate();
-            System.out.println("Compra atualizada com sucesso");
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    compra.setId(rs.getInt(1));
+                } else {
+                    throw new SQLException("Falha ao obter ID gerado para Compra");
+                }
+            }
+
+            if (!cadastroTickets(con, compra.getTickets(), compra.getId())) {
+                throw new SQLException("Compra NÃO cadastrada. Erro ao cadastrar tickets.");
+            }
 
         } catch (Exception e) {
-
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-
-        }
-
-    }
-
-    public void delete(int id) {
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "DELETE FROM compras WHERE id= ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            System.out.println("Compra excluida com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
             e.printStackTrace();
-
         }
     }
 
-    public ArrayList<Compra> select(int id) {
 
-        Connection con = ConnectionFactory.getConnection();
-        ArrayList<Compra> compras = new ArrayList<>();
+    // CADASTRAR TICKETS
+    // ______________________________________________________
+    public static boolean cadastroTickets(Connection con, ArrayList<Ticket> tickets, int compra_id) {
+
+        String sql = "INSERT INTO tickets(data, hora, preco, compra_id) VALUES (?,?,?,?)";
 
         try {
-
-            String sql = "SELECT * FROM compras WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                Compra compra = new Compra();
-                compra.setId(rs.getInt("id"));
-                compra.setData("data");
-                compra.setHora("hora");
-                compra.setQuantidade("quantidade");
-                compra.setMeioPagamento("meioPagamento");
-                compra.setPrecoTotal("precoTotal");
-                compras.add(compra);
-
+            for (Ticket ticket : tickets) {
+                try (PreparedStatement pst = con.prepareStatement(sql)) {
+                    pst.setString(1, ticket.getData());
+                    pst.setString(2, ticket.getHora());
+                    pst.setString(3, ticket.getPreco());
+                    pst.setInt(4, compra_id);
+                    pst.executeUpdate();
+                }
             }
 
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
+            System.out.println("Tickets cadastrados com sucesso!");
+            return true;
 
-        return compras;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public ArrayList<Compra> listar() {
 
-        Connection con = ConnectionFactory.getConnection();
+    // EDITAR COMPRA
+    // ______________________________________________________
+    public static void editar(Compra compra, int visitante_id, int funcionario_id) {
 
-        ArrayList<Compra> compras = new ArrayList<>();
+        String sqlUpdate = "UPDATE compras SET data=?, hora=?, quantidade=?, meioPagamento=?, precoTotal=?, "
+                + "visitante_id=?, funcionario_id=? WHERE id=?";
+        String sqlDeleteTickets = "DELETE FROM tickets WHERE compra_id=?";
+        String sqlInsertTicket = "INSERT INTO tickets(data, hora, preco, compra_id) VALUES (?,?,?,?)";
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection()) {
 
-            String sql = "SELECT * FROM compras";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
+            // Atualiza compra
+            try (PreparedStatement pst = con.prepareStatement(sqlUpdate)) {
+                pst.setString(1, compra.getData());
+                pst.setString(2, compra.getHora());
+                pst.setString(3, compra.getQuantidade());
+                pst.setString(4, compra.getMeioPagamento());
+                pst.setString(5, compra.getPrecoTotal());
+                pst.setInt(6, visitante_id);
+                pst.setInt(7, funcionario_id);
+                pst.setInt(8, compra.getId());
+                pst.executeUpdate();
+            }
 
-            while (rs.next()) {
+            // Remove tickets antigos
+            try (PreparedStatement pst = con.prepareStatement(sqlDeleteTickets)) {
+                pst.setInt(1, compra.getId());
+                pst.executeUpdate();
+            }
 
-                Compra compra = new Compra();
-                compra.setId(rs.getInt("id"));
-                compra.setData("data");
-                compra.setHora("hora");
-                compra.setQuantidade("quantidade");
-                compra.setMeioPagamento("meioPagamento");
-                compra.setPrecoTotal("precoTotal");
-                compras.add(compra);
-
+            // Insere novos tickets
+            try (PreparedStatement pst = con.prepareStatement(sqlInsertTicket)) {
+                for (Ticket ticket : compra.getTickets()) {
+                    pst.setString(1, ticket.getData());
+                    pst.setString(2, ticket.getHora());
+                    pst.setString(3, ticket.getPreco());
+                    pst.setInt(4, compra.getId());
+                    pst.executeUpdate();
+                }
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    // DELETE COMPRA
+    // ______________________________________________________
+    public static void delete(int id) {
+
+        String sqlDeleteTickets = "DELETE FROM tickets WHERE compra_id=?";
+        String sqlDeleteCompra = "DELETE FROM compras WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection()) {
+
+            try (PreparedStatement pst = con.prepareStatement(sqlDeleteTickets)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
+            }
+
+            try (PreparedStatement pst = con.prepareStatement(sqlDeleteCompra)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // SELECT SIMPLES
+    // ______________________________________________________
+    public Compra select(int id) {
+
+        String sql = "SELECT c.id, c.data, c.hora, c.quantidade, c.meioPagamento, c.precoTotal, "
+                + "c.visitante_id, c.funcionario_id "
+                + "FROM compras c WHERE c.id = ?";
+
+        Compra compra = null;
+
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                compra = new Compra();
+                compra.setId(rs.getInt("id"));
+                compra.setData(rs.getString("data"));
+                compra.setHora(rs.getString("hora"));
+                compra.setQuantidade(rs.getString("quantidade"));
+                compra.setMeioPagamento(rs.getString("meioPagamento"));
+                compra.setPrecoTotal(rs.getString("precoTotal"));
+
+                compra.setVisitante(VisitanteDAO.buscarVisitantePor_ID(rs.getInt("visitante_id")));
+                compra.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
+                compra.setTickets(TicketDAO.buscarTicketsPorCompra(id));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return compra;
+    }
+
+
+    // LISTAR COMPLETO COM TICKETS
+    // ______________________________________________________
+    public ArrayList<Compra> listarCompleto() {
+        ArrayList<Compra> compras = new ArrayList<>();
+        String sql = "SELECT id, data, hora, quantidade, meioPagamento, precoTotal FROM compras";
+
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Compra compra = new Compra();
+                compra.setId(rs.getInt("id"));
+                compra.setData(rs.getString("data"));
+                compra.setHora(rs.getString("hora"));
+                compra.setQuantidade(rs.getString("quantidade"));
+                compra.setMeioPagamento(rs.getString("meioPagamento"));
+                compra.setPrecoTotal(rs.getString("precoTotal"));
+
+                compra.setTickets(TicketDAO.buscarTicketsPorCompra(compra.getId()));
+                compras.add(compra);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar Compras: " + e.getMessage());
         }
 
         return compras;

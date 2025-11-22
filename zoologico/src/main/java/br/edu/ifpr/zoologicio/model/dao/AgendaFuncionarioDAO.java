@@ -1,169 +1,196 @@
-//precisa ter o funcionario já cadatrado
-
 package br.edu.ifpr.zoologicio.model.dao;
 
 import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AgendaFuncionarioDAO {
 
-    public static int buscaFuncionario_ID(String nomeFuncionario) {
+    // CADASTRAR
+    // ____________________________________________________________
 
-        String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
+    public static void cadastrar(AgendaFuncionario agenda) {
+        String sql = "INSERT INTO agendaFuncionarios (criadoPor, ultimaAtualizacao, atividade, cargo_id, funcionario_id) "
+                +
+                "VALUES (?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlFuncionario);) {
-            ps.setString(1, nomeFuncionario);
-            ResultSet rs = ps.executeQuery();
+                PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            if (rs.next()) {
-                id = rs.getInt("id");
+            pst.setString(1, agenda.getCriadoPor());
+            pst.setString(2, agenda.getUltimaAtualizacao());
+            pst.setString(3, agenda.getAtividade());
+            pst.setInt(4, agenda.getCargo().getId());
+            pst.setInt(5, agenda.getFuncionario().getId());
+
+            pst.executeUpdate();
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    agenda.setId(rs.getInt(1));
+                } else {
+                    throw new SQLException("Falha ao obter ID gerado para AgendaFuncionario");
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return id;
-
     }
 
-    public static void cadastrar(AgendaFuncionario agendaFuncionario) {
+    // EDITAR
+    // ______________________________________________________
+    public static void editar(AgendaFuncionario agenda) {
+        String sql = "UPDATE agendaFuncionarios SET criadoPor=?, ultimaAtualizacao=?, atividade=?, cargo_id=?, funcionario_id=? WHERE id=?";
 
-        Connection con = ConnectionFactory.getConnection();
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-        try {
-
-            String sqlFuncionarioAgenda = "INSERT INTO agendaFuncionarios(criadorPor, ultimaAtualizacao, atividade) VALUES (?,?,?)";
-
-            PreparedStatement psFuncionarioAgenda = con.prepareStatement(sqlFuncionarioAgenda);
-
-            psFuncionarioAgenda.setString(1, agendaFuncionario.getCriadoPor());
-            psFuncionarioAgenda.setString(2, agendaFuncionario.getUltimaAtualizacao());
-            psFuncionarioAgenda.setString(3, agendaFuncionario.getAtividade());
-
-            psFuncionarioAgenda.executeUpdate();
-            System.out.println("AgendaFuncionario inserida com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
-            e.printStackTrace();
-
-        }
-
-    }
-
-    public static void editar(AgendaFuncionario agendaFuncionario) {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "UPDATE agendaFuncionarios SET criadoPor=?, ultimaAtualizacao=?, atividade=?, WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
-
-            pst.setString(1, agendaFuncionario.getCriadoPor());
-            pst.setString(2, agendaFuncionario.getUltimaAtualizacao());
-            pst.setString(3, agendaFuncionario.getAtividade());
-            pst.setInt(4, agendaFuncionario.getId());
+            pst.setString(1, agenda.getCriadoPor());
+            pst.setString(2, agenda.getUltimaAtualizacao());
+            pst.setString(3, agenda.getAtividade());
+            pst.setInt(4, agenda.getCargo().getId());
+            pst.setInt(5, agenda.getFuncionario().getId());
+            pst.setInt(6, agenda.getId());
 
             pst.executeUpdate();
-            System.out.println("agendaFuncionario atualizada com sucesso");
 
         } catch (Exception e) {
-
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-
+            e.printStackTrace();
         }
-
     }
 
-    public void delete(int id) {
-        Connection con = ConnectionFactory.getConnection();
+    // DELETE
+    // ______________________________________________________
+    public static void delete(int id) {
+        String sql = "DELETE FROM agendaFuncionarios WHERE id=?";
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-            String sql = "DELETE FROM agendaFuncionario WHERE id= ?";
-            PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, id);
             pst.executeUpdate();
-            System.out.println("agendaFuncionario excluida com sucesso");
 
         } catch (Exception e) {
-
-            // TODO: handle exception
             e.printStackTrace();
-
         }
     }
 
-    public ArrayList<AgendaFuncionario> select(int id) {
+    // SELECT COMPLETO AgendaFuncionario + Cargo + Funcionario
+    // ______________________________________________________
+    public AgendaFuncionario selectCompleto(int id) {
+        String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, " +
+                "af.cargo_id, af.funcionario_id " +
+                "FROM agendaFuncionarios af " +
+                "WHERE af.id = ?";
 
-        Connection con = ConnectionFactory.getConnection();
-        ArrayList<AgendaFuncionario> agendaFuncionarios = new ArrayList<>();
+        AgendaFuncionario agenda = null;
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-            String sql = "SELECT * FROM agendaFuncionarios WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
+                agenda = new AgendaFuncionario();
+                agenda.setId(rs.getInt("id"));
+                agenda.setCriadoPor(rs.getString("criadoPor"));
+                agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
+                agenda.setAtividade(rs.getString("atividade"));
 
-                AgendaFuncionario agendaFuncionario = new AgendaFuncionario();
-                agendaFuncionario.setId(rs.getInt("id"));
-                agendaFuncionario.setCriadoPor("criadoPor");
-                agendaFuncionario.setUltimaAtualizacao("ultimaAtualizacao");
-                agendaFuncionario.setAtividade("atividade");
-                agendaFuncionarios.add(agendaFuncionario);
+                // busca cargo e funcionario por id (carrega objetos)
+                int cargoId = rs.getInt("cargo_id");
+                int funcId = rs.getInt("funcionario_id");
 
+                if (cargoId > 0) {
+                    agenda.setCargo(CargoDAO.buscarCargoPorId(cargoId));
+                }
+
+                if (funcId > 0) {
+                    agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(funcId));
+                }
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
-        return agendaFuncionarios;
+        return agenda;
     }
 
-    /*
-     * public ArrayList<AgendaFuncionario> listar() {
-     * 
-     * Connection con = ConnectionFactory.getConnection();
-     * 
-     * ArrayList<AgendaFuncionario> agendaFuncionarios = new ArrayList<>();
-     * 
-     * try {
-     * 
-     * String sql = "SELECT * FROM agendaFuncionarios";
-     * PreparedStatement pst = con.prepareStatement(sql);
-     * ResultSet rs = pst.executeQuery();
-     * 
-     * while (rs.next()) {
-     * 
-     * AgendaFuncionario agendaFuncionario = new AgendaFuncionario();
-     * agendaFuncionario.setId(rs.getInt("id"));
-     * agendaFuncionario.setCriadoPor("criadoPor");
-     * agendaFuncionario.setUltimaAtualizacao("ultimaAtualizacao");
-     * agendaFuncionario.setAtividade("atividade");
-     * agendaFuncionarios.add(agendaFuncionario);
-     * 
-     * }
-     * 
-     * } catch (Exception e) {
-     * // TODO: handle exception
-     * System.out.println(e.getMessage());
-     * }
-     * 
-     * return agendaFuncionarios;
-     * }
-     */
+    // LISTAR SIMPLES
+    // ______________________________________________________
+    public ArrayList<AgendaFuncionario> listar() {
+        ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
+        String sql = "SELECT id, criadoPor, ultimaAtualizacao, atividade FROM agendaFuncionarios ORDER BY id DESC";
 
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                AgendaFuncionario agenda = new AgendaFuncionario();
+                agenda.setId(rs.getInt("id"));
+                agenda.setCriadoPor(rs.getString("criadoPor"));
+                agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
+                agenda.setAtividade(rs.getString("atividade"));
+                agendas.add(agenda);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return agendas;
+    }
+
+    // LISTAR COMPLETO Cargo + Funcionario
+    // ___________________________________________________________________
+
+    public ArrayList<AgendaFuncionario> listarCompleto() {
+        ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
+        String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, af.cargo_id, af.funcionario_id " +
+                "FROM agendaFuncionarios af " +
+                "ORDER BY af.id DESC";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                AgendaFuncionario agenda = new AgendaFuncionario();
+                agenda.setId(rs.getInt("id"));
+                agenda.setCriadoPor(rs.getString("criadoPor"));
+                agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
+                agenda.setAtividade(rs.getString("atividade"));
+
+                int cargoId = rs.getInt("cargo_id");
+                int funcId = rs.getInt("funcionario_id");
+
+                if (cargoId > 0) {
+                    agenda.setCargo(CargoDAO.buscarCargoPorId(cargoId));
+                }
+
+                if (funcId > 0) {
+                    agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(funcId));
+                }
+
+                agendas.add(agenda);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return agendas;
+    }
 }
+
+
+
+   

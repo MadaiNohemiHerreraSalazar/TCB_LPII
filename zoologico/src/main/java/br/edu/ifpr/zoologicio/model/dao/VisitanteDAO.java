@@ -37,6 +37,36 @@ public class VisitanteDAO {
 
     }
 
+    // BUSCAR VISITANTE
+    //__________________________________________________________
+    
+    public static Visitante buscarVisitantePor_ID(int id) {
+        Visitante visitante = null;
+        String sql = "SELECT id, nome, cpf, telefone, email FROM visitantes WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                visitante = new Visitante();
+                visitante.setId(rs.getInt("id"));
+                visitante.setNome(rs.getString("nome"));
+                visitante.setCpf(rs.getString("cpf"));
+                visitante.setTelefone(rs.getString("telefone"));
+                visitante.setEmail(rs.getString("email"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return visitante;
+    }
+
+
     public static void cadastrar(Visitante visitante) {
 
         Connection con = ConnectionFactory.getConnection();

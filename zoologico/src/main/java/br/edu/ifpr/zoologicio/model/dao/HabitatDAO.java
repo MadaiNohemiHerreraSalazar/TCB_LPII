@@ -1,6 +1,7 @@
 package br.edu.ifpr.zoologicio.model.dao;
 
 import br.edu.ifpr.zoologicio.model.Animal;
+import br.edu.ifpr.zoologicio.model.Area;
 import br.edu.ifpr.zoologicio.model.Habitat;
 
 import java.sql.Connection;
@@ -11,21 +12,73 @@ import java.util.ArrayList;
 
 public class HabitatDAO {
 
-    // CADASTRAR 
+    
+    // BUSCAR HABITATS POR ÁREA
+    // ______________________________________________________
+    public static ArrayList<Habitat> buscarHabitatsPorArea(int areaId) {
+        ArrayList<Habitat> habitats = new ArrayList<>();
+
+        String sql = "SELECT id, nome, descricao, capacidade FROM habitats WHERE area_id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, areaId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Habitat habitat = new Habitat();
+                habitat.setId(rs.getInt("id"));
+                habitat.setNome(rs.getString("nome"));
+                habitat.setDescricao(rs.getString("descricao"));
+                habitat.setCapacidade(rs.getString("capacidade"));
+                habitats.add(habitat);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return habitats;
+    }
+
+    // BUSCA HABITATs POR ID
+    // ______________________________________________________________
+
+    public static int buscaHabitat_ID(int habitat_id) {
+
+        String sqlHabitat = "SELECT from habitats WHERE id= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlHabitat)) {
+            ps.setInt(1, habitat_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    // CADASTRAR
     // ______________________________________________________
 
     public static void cadastrar(Habitat habitat) {
-
         String sqlHabitat = "INSERT INTO habitats(nome, descricao, capacidade, area_id) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sqlHabitat, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pst = con.prepareStatement(sqlHabitat, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, habitat.getNome());
             pst.setString(2, habitat.getDescricao());
             pst.setString(3, habitat.getCapacidade());
-            pst.setInt(4, habitat.getArea());
-
+            pst.setInt(4, habitat.getArea().getId()); // <<< ALTERADO
             pst.executeUpdate();
 
             try (ResultSet rs = pst.getGeneratedKeys()) {
@@ -36,7 +89,6 @@ public class HabitatDAO {
                 }
             }
 
-            // Se houver animais vinculados, cadastra
             if (habitat.getAnimais() != null && !habitat.getAnimais().isEmpty()) {
                 if (!cadastrarAnimais(con, habitat.getAnimais(), habitat.getId())) {
                     throw new SQLException("Erro ao cadastrar animais do habitat");
@@ -50,8 +102,7 @@ public class HabitatDAO {
         }
     }
 
-
-    // CADASTRAR ANIMAIS 
+    // CADASTRAR ANIMAIS
     // ______________________________________________________
 
     private static boolean cadastrarAnimais(Connection con, ArrayList<Animal> animais, int habitatId) {
@@ -72,8 +123,7 @@ public class HabitatDAO {
         }
     }
 
-
-    // EDITAR 
+    // EDITAR
     // ______________________________________________________
 
     public static void editar(Habitat habitat) {
@@ -88,7 +138,7 @@ public class HabitatDAO {
                 pst.setString(1, habitat.getNome());
                 pst.setString(2, habitat.getDescricao());
                 pst.setString(3, habitat.getCapacidade());
-                pst.setInt(4, habitat.getArea());
+                pst.setInt(4, habitat.getArea().getId());
                 pst.setInt(5, habitat.getId());
                 pst.executeUpdate();
             }
@@ -117,8 +167,7 @@ public class HabitatDAO {
         }
     }
 
-
-    // DELETE 
+    // DELETE
     // ______________________________________________________
 
     public static void delete(int id) {
@@ -144,7 +193,6 @@ public class HabitatDAO {
         }
     }
 
-
     // SELECT COMPLETO
     // ______________________________________________________
 
@@ -154,7 +202,7 @@ public class HabitatDAO {
         String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -165,11 +213,17 @@ public class HabitatDAO {
                 habitat.setNome(rs.getString("nome"));
                 habitat.setDescricao(rs.getString("descricao"));
                 habitat.setCapacidade(rs.getString("capacidade"));
-                habitat.setArea(rs.getInt("area_id"));
+
+                // Criar objeto Area e setar dentro de Habitat
+                Area area = new Area();
+                area.setId(rs.getInt("area_id")); // somente ID
+                area = AreaDAO.buscarAreaPorId(rs.getInt("area_id"));
+                habitat.setArea(area);
+
             }
 
             if (habitat != null) {
-                habitat.setAnimais(buscarAnimaisPorHabitat(habitat.getId()));
+                habitat.setAnimais(AnimalDAO.buscarAnimaisPorHabitat(habitat.getId()));
             }
 
         } catch (Exception e) {
@@ -179,39 +233,7 @@ public class HabitatDAO {
         return habitat;
     }
 
-
-    // BUSCAR ANIMAIS 
-    // ______________________________________________________
-
-    private ArrayList<Animal> buscarAnimaisPorHabitat(int habitatId) {
-        ArrayList<Animal> animais = new ArrayList<>();
-
-        String sql = "SELECT a.id, a.nome FROM animais a " +
-                "JOIN animal_habitat ah ON a.id = ah.animal_id " +
-                "WHERE ah.habitat_id = ?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, habitatId);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
-                animal.setNome(rs.getString("nome"));
-                animais.add(animal);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return animais;
-    }
-
-
-    // LISTAR 
+    // LISTAR
     // ______________________________________________________
 
     public ArrayList<Habitat> listar() {
@@ -219,8 +241,8 @@ public class HabitatDAO {
         String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Habitat habitat = new Habitat();
@@ -228,7 +250,9 @@ public class HabitatDAO {
                 habitat.setNome(rs.getString("nome"));
                 habitat.setDescricao(rs.getString("descricao"));
                 habitat.setCapacidade(rs.getString("capacidade"));
-                habitat.setArea(rs.getInt("area_id"));
+                Area area = new Area();
+                area.setId(rs.getInt("area_id"));
+                habitat.setArea(area);
 
                 habitats.add(habitat);
             }
@@ -241,37 +265,39 @@ public class HabitatDAO {
     }
 
     // LISTAR COM ANIMAIS
+    // ____________________________________________________________________
 
     public ArrayList<Habitat> listarComAnimais() {
-    ArrayList<Habitat> habitats = new ArrayList<>();
-    String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
+        ArrayList<Habitat> habitats = new ArrayList<>();
+        String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
 
-    try (Connection con = ConnectionFactory.getConnection();
-         PreparedStatement pst = con.prepareStatement(sql);
-         ResultSet rs = pst.executeQuery()) {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
-        while (rs.next()) {
-            Habitat habitat = new Habitat();
-            habitat.setId(rs.getInt("id"));
-            habitat.setNome(rs.getString("nome"));
-            habitat.setDescricao(rs.getString("descricao"));
-            habitat.setCapacidade(rs.getString("capacidade"));
-            habitat.setArea(rs.getInt("area_id"));
+            while (rs.next()) {
+                Habitat habitat = new Habitat();
+                habitat.setId(rs.getInt("id"));
+                habitat.setNome(rs.getString("nome"));
+                habitat.setDescricao(rs.getString("descricao"));
+                habitat.setCapacidade(rs.getString("capacidade"));
+                Area area = new Area();
+                area.setId(rs.getInt("area_id"));
+                habitat.setArea(area);
 
-            // Busca e adiciona os animais vinculados
-            habitat.setAnimais(buscarAnimaisPorHabitat(habitat.getId()));
+                // Busca e adiciona os animais vinculados
+                habitat.setAnimais(AnimalDAO.buscarAnimaisPorHabitat(habitat.getId()));
 
-            habitats.add(habitat);
+                habitats.add(habitat);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        return habitats;
     }
 
-    return habitats;
-}
-
-//_________________________________________________________________
-
+    // _________________________________________________________________
 
 }

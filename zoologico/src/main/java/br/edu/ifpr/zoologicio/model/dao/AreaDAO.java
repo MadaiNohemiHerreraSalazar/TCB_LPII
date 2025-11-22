@@ -3,141 +3,208 @@
 package br.edu.ifpr.zoologicio.model.dao;
 
 import br.edu.ifpr.zoologicio.model.Area;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AreaDAO {
 
-    public static void cadastrar(Area area) {
+    // BUSCAR AREA
+    // ___________________________________________________________________
 
-        Connection con = ConnectionFactory.getConnection();
+    public static Area buscarAreaPorId(int id) {
+        String sql = "SELECT id, nome, descricao FROM areas WHERE id = ?";
+        Area area = null;
 
-        String sqlArea = "INSERT INTO areas(nome, descricao) VALUES (?,?)";
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-        try {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
 
-            PreparedStatement psArea = con.prepareStatement(sqlArea);
+            if (rs.next()) {
+                area = new Area();
+                area.setId(rs.getInt("id"));
+                area.setNome(rs.getString("nome"));
+                area.setDescricao(rs.getString("descricao"));
+            }
 
-            psArea.setString(1, area.getNome());
-            psArea.setString(2, area.getDescricao());
-
-            psArea.executeUpdate();
-            System.out.println("Area inserida com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
+        } catch (SQLException e) {
             e.printStackTrace();
-
         }
 
+        return area;
     }
 
+    // CADASTRAR AREA
+    // ______________________________________________________
+    public static void cadastrar(Area area) {
+        String sql = "INSERT INTO areas(nome, descricao) VALUES (?, ?)";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            pst.setString(1, area.getNome());
+            pst.setString(2, area.getDescricao());
+            pst.executeUpdate();
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    area.setId(rs.getInt(1));
+                } else {
+                    throw new SQLException("Falha ao obter ID gerado para Área");
+                }
+            }
+
+            System.out.println("Área cadastrada com sucesso!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // EDITAR AREA
+    // ______________________________________________________
     public static void editar(Area area) {
+        String sql = "UPDATE areas SET nome=?, descricao=? WHERE id=?";
 
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "UPDATE areas SET nome=?, descricao=?, WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, area.getNome());
             pst.setString(2, area.getDescricao());
             pst.setInt(3, area.getId());
-
             pst.executeUpdate();
-            System.out.println("Area atualizada com sucesso");
 
-        } catch (Exception e) {
+            System.out.println("Área atualizada com sucesso!");
 
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-
-        }
-
-    }
-
-    public void delete(int id) {
-        Connection con = ConnectionFactory.getConnection();
-
-        try {
-
-            String sql = "DELETE FROM areas WHERE id= ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            System.out.println("Area excluida com sucesso");
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
+        } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
-    public ArrayList<Area> select(int id) {
+    // DELETE AREA
+    // ______________________________________________________
+    public static void delete(int id) {
+        String sqlDeleteFuncionarios = "UPDATE funcionarios SET area_id=NULL WHERE area_id=?";
+        String sqlDeleteHabitats = "DELETE FROM habitats WHERE area_id=?";
+        String sqlDeleteArea = "DELETE FROM areas WHERE id=?";
 
-        Connection con = ConnectionFactory.getConnection();
-        ArrayList<Area> areas = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getConnection()) {
 
-        try {
-
-            String sql = "SELECT * FROM areas WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-
-                Area area = new Area();
-                area.setId(rs.getInt("id"));
-                area.setNome("nome");
-                area.setDescricao("descricao");
-                areas.add(area);
-
+            // Desassociar os funcionários (não apagar)
+            try (PreparedStatement pst = con.prepareStatement(sqlDeleteFuncionarios)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
             }
 
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
+            // Excluir habitats da área
+            try (PreparedStatement pst = con.prepareStatement(sqlDeleteHabitats)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
+            }
+
+            // Excluir a área
+            try (PreparedStatement pst = con.prepareStatement(sqlDeleteArea)) {
+                pst.setInt(1, id);
+                pst.executeUpdate();
+            }
+
+            System.out.println("Área excluída com sucesso!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // SELECT COMPLETO (com Funcionários e Habitats)
+    // ______________________________________________________
+    public Area selectCompleto(int id) {
+        Area area = null;
+        String sql = "SELECT id, nome, descricao FROM areas WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                area = new Area();
+                area.setId(rs.getInt("id"));
+                area.setNome(rs.getString("nome"));
+                area.setDescricao(rs.getString("descricao"));
+
+                // carregar funcionários e habitats vinculados
+                area.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorArea(area.getId()));
+                area.setHabitats(HabitatDAO.buscarHabitatsPorArea(area.getId()));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return area;
+    }
+
+    // LISTAR SIMPLES
+    // ______________________________________________________
+    public ArrayList<Area> listar() {
+        ArrayList<Area> areas = new ArrayList<>();
+        String sql = "SELECT id, nome, descricao FROM areas";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Area area = new Area();
+                area.setId(rs.getInt("id"));
+                area.setNome(rs.getString("nome"));
+                area.setDescricao(rs.getString("descricao"));
+                areas.add(area);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return areas;
+    }
+
+    // LISTAR COMPLETO (COM FUNCIONÁRIOS E HABITATS)
+    // ______________________________________________________
+
+    public ArrayList<Area> listarCompleto() {
+        ArrayList<Area> areas = new ArrayList<>();
+
+        String sql = "SELECT id, nome, descricao FROM areas";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                Area area = new Area();
+                area.setId(rs.getInt("id"));
+                area.setNome(rs.getString("nome"));
+                area.setDescricao(rs.getString("descricao"));
+
+                // Busca os FUNCIONÁRIOS desta Área
+                area.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorArea(area.getId()));
+
+                // Busca os HABITATS desta Área
+                area.setHabitats(HabitatDAO.buscarHabitatsPorArea(area.getId()));
+
+                areas.add(area);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar Áreas: " + e.getMessage());
         }
 
         return areas;
     }
-
-    /*
-     * public ArrayList<Area> listar() {
-     * 
-     * Connection con = ConnectionFactory.getConnection();
-     * 
-     * ArrayList<Area> areas = new ArrayList<>();
-     * 
-     * try {
-     * 
-     * String sql = "SELECT * FROM areas";
-     * PreparedStatement pst = con.prepareStatement(sql);
-     * ResultSet rs = pst.executeQuery();
-     * 
-     * while (rs.next()) {
-     * 
-     * Area area = new Area();
-     * area.setId(rs.getInt("id"));
-     * area.setNome("nome");
-     * area.setDescricao("descricao");
-     * areas.add(area);
-     * 
-     * }
-     * 
-     * } catch (Exception e) {
-     * // TODO: handle exception
-     * System.out.println(e.getMessage());
-     * }
-     * 
-     * return areas;
-     * }
-     */
 
 }

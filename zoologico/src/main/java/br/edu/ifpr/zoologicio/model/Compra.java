@@ -10,10 +10,8 @@ public class Compra {
     private String quantidade;
     private String meioPagamento;
     private String precoTotal;
-    // private Visitante visitante;
-    private int visitante_ID;
-    // private Funcionario funcionario;
-    private int funcionario_ID;
+    private Visitante visitante;
+    private Funcionario funcionario;
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     public Compra() {
@@ -76,20 +74,20 @@ public class Compra {
         this.tickets = tickets;
     }
 
-    public int getVisitante_ID() {
-        return visitante_ID;
+    public Visitante getVisitante() {
+        return visitante;
     }
 
-    public void setVisitante_ID(int visitante_ID) {
-        this.visitante_ID = visitante_ID;
+    public void setVisitante(Visitante visitante) {
+        this.visitante = visitante;
     }
 
-    public int getFuncionario_ID() {
-        return funcionario_ID;
+    public Funcionario getFuncionario() {
+        return funcionario;
     }
 
-    public void setFuncionario_ID(int funcionario_ID) {
-        this.funcionario_ID = funcionario_ID;
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 
 }

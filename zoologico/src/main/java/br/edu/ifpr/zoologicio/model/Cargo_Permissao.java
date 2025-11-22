@@ -2,7 +2,7 @@ package br.edu.ifpr.zoologicio.model;
 
 import java.util.ArrayList;
 
-public class CargoPermissao {
+public class Cargo_Permissao {
 
     private Integer  id;
     private Cargo cargo;
@@ -10,7 +10,7 @@ public class CargoPermissao {
     private String nome;
     private String descricao;
 
-    public CargoPermissao() {
+    public Cargo_Permissao() {
 
     }
     
