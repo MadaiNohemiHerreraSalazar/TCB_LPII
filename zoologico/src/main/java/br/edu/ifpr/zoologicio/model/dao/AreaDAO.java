@@ -122,7 +122,7 @@ public class AreaDAO {
 
     // SELECT COMPLETO (com Funcionários e Habitats)
     // ______________________________________________________
-    public Area selectCompleto(int id) {
+    public Area select(int id) {
         Area area = null;
         String sql = "SELECT id, nome, descricao FROM areas WHERE id=?";
 

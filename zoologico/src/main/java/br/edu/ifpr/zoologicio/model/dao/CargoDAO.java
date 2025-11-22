@@ -174,7 +174,7 @@ public class CargoDAO {
     // LISTAR SIMPLES
     // ______________________________________________________________________
 
-    public ArrayList<Cargo> listarSimples() {
+    public ArrayList<Cargo> listar() {
         String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos";
         ArrayList<Cargo> cargos = new ArrayList<>();
 
@@ -202,7 +202,7 @@ public class CargoDAO {
 
     // LISTAR COMPLETO (COM FUNCIONÁRIOS)
     // ______________________________________________________
-    public ArrayList<Cargo> listarComFuncionarios() {
+    public ArrayList<Cargo> listarCompleto() {
         ArrayList<Cargo> cargos = new ArrayList<>();
         String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos";
 

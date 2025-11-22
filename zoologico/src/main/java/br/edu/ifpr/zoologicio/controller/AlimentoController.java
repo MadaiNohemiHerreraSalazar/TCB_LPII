@@ -59,8 +59,8 @@ public class AlimentoController {
         dao.select(id);
     }
 
-    // public ArrayList<Alimento> listarAlimentos() {
-    //     return dao.listar();
-    // }
+    public ArrayList<Alimento> listarAlimentos() {
+        return dao.listar();
+    }
     
 }

@@ -59,9 +59,9 @@ public class CargoController {
         dao.select(id);
     }
 
-    // public ArrayList<Cargo> listarCargos() {
-    //     return dao.listar();
-    // }
+    public ArrayList<Cargo> listarCargos() {
+        return dao.listar();
+    }
     
     
 }

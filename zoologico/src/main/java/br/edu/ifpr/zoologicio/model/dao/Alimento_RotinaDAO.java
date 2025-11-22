@@ -10,6 +10,9 @@ import br.edu.ifpr.zoologicio.model.Alimento_Rotina;
 
 public class Alimento_RotinaDAO {
 
+    //CADASTRAR
+    //______________________________________________________________________
+
     public static void cadastrar(Alimento_Rotina alimentoRotina) {
         Connection con = ConnectionFactory.getConnection();
 
@@ -28,6 +31,9 @@ public class Alimento_RotinaDAO {
             e.printStackTrace();
         }
     }
+
+    //EDITAR
+    //_______________________________________________________________________
 
     public static void editar(Alimento_Rotina alimentoRotina) {
         Connection con = ConnectionFactory.getConnection();
@@ -49,6 +55,9 @@ public class Alimento_RotinaDAO {
         }
     }
 
+    // DELETE
+    //__________________________________________________________________
+
     public void delete(int id) {
         Connection con = ConnectionFactory.getConnection();
 
@@ -63,6 +72,9 @@ public class Alimento_RotinaDAO {
             e.printStackTrace();
         }
     }
+
+    //SELECT
+    //_________________________________________________________________
 
     public ArrayList<Alimento_Rotina> select(int id) {
         Connection con = ConnectionFactory.getConnection();
@@ -90,6 +102,9 @@ public class Alimento_RotinaDAO {
 
         return rotinas;
     }
+
+    //LISTAR
+    //___________________________________________________________________
 
     public ArrayList<Alimento_Rotina> listar() {
         Connection con = ConnectionFactory.getConnection();
@@ -120,31 +135,7 @@ public class Alimento_RotinaDAO {
     //METODOS AUXILIARES
     //---------------------------------------------------------------
 
-    // BUSCAR ALIMENTO NOME E ID POR ID
-    //_______________________________________________________________
-    public Alimento buscarAlimento(int alimentoId) {
-        Connection con = ConnectionFactory.getConnection();
-        Alimento alimento = null;
-
-        try {
-            String sql = "SELECT * FROM alimentos WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, alimentoId);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
-                alimento.setNome(rs.getString("nome"));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return alimento;
-    }
-
+   
     // BUSCAR ALIMENTOS POR ROTINA
     // ________________________________________________________
 

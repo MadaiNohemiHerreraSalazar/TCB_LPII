@@ -16,7 +16,7 @@ public class AlimentoDAO {
         String sql = "INSERT INTO alimentos(nome, validade, estoque) VALUES (?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, alimento.getNome());
             pst.setString(2, alimento.getValidade());
@@ -45,7 +45,7 @@ public class AlimentoDAO {
         String sql = "UPDATE alimentos SET nome=?, validade=?, estoque=? WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, alimento.getNome());
             pst.setString(2, alimento.getValidade());
@@ -67,7 +67,7 @@ public class AlimentoDAO {
         String sql = "DELETE FROM alimentos WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             pst.executeUpdate();
@@ -82,12 +82,12 @@ public class AlimentoDAO {
     // SELECT COMPLETO (Buscar por ID)
     // ______________________________________________________
 
-    public Alimento selectCompleto(int id) {
+    public Alimento select(int id) {
         String sql = "SELECT id, nome, validade, estoque FROM alimentos WHERE id=?";
         Alimento alimento = null;
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -110,14 +110,14 @@ public class AlimentoDAO {
     // LISTAR SIMPLES
     // ______________________________________________________
 
-    public ArrayList<Alimento> listarSimples() {
+    public ArrayList<Alimento> listar() {
         String sql = "SELECT id, nome, validade, estoque FROM alimentos ORDER BY nome";
 
         ArrayList<Alimento> alimentos = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Alimento alimento = new Alimento();
@@ -134,4 +134,32 @@ public class AlimentoDAO {
 
         return alimentos;
     }
+
+    // METODOS AUXILIARES
+    // ----------------------------------------------------------------
+    // BUSCAR ALIMENTO NOME E ID POR ID
+    // _______________________________________________________________
+    public Alimento buscarAlimentoPor_ID(int alimentoId) {
+        Connection con = ConnectionFactory.getConnection();
+        Alimento alimento = null;
+
+        try {
+            String sql = "SELECT * FROM alimentos WHERE id=?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, alimentoId);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                alimento = new Alimento();
+                alimento.setId(rs.getInt("id"));
+                alimento.setNome(rs.getString("nome"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alimento;
+    }
+
 }
