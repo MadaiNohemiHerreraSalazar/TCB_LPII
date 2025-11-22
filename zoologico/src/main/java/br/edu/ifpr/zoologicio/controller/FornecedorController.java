@@ -1,96 +1,68 @@
 package br.edu.ifpr.zoologicio.controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import br.edu.ifpr.zoologicio.model.Fornecedor;
-import br.edu.ifpr.zoologicio.model.dao.ConnectionFactory;
 import br.edu.ifpr.zoologicio.model.dao.FornecedorDAO;
 
 public class FornecedorController {
 
-    private FornecedorDAO dao;
+    // Cadastrar
+    public void cadastrarFornecedor(Fornecedor fornecedor) {
+        if (fornecedor == null) {
+            System.out.println("Objeto Fornecedor não pode ser nulo!");
+            return;
+        }
 
-    public FornecedorController(){
-        this.dao = new FornecedorDAO();
-    }
-
-
-    public void cadastrarFornecedor(Fornecedor fornecedor){
-        if(fornecedor.getNome() == null){
+        if (fornecedor.getNome() == null || fornecedor.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(fornecedor);
+        FornecedorDAO.cadastrar(fornecedor);
     }
 
-    // BUSCAR FORNECEDOR
-    // ______________________________________________________
-
-    public static int buscaFornecedor_ID(int fornecedor_id) {
-
-        String sqlFornecedor = "SELECT from fornecedor WHERE id= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps = con.prepareStatement(sqlFornecedor);) {
-            ps.setInt(1, fornecedor_id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    // Editar
+    public void editarFornecedor(Fornecedor fornecedor) {
+        if (fornecedor == null) {
+            System.out.println("Objeto Fornecedor não pode ser nulo!");
+            return;
         }
 
-        return id;
+        if (fornecedor.getId() == null || fornecedor.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
 
-    }
-
-
-    public void editarFornecedor(Fornecedor fornecedor){
-        if(fornecedor.getNome() == null || fornecedor.getNome().isEmpty()){
+        if (fornecedor.getNome() == null || fornecedor.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        if(fornecedor.getId() <= 0){
-            System.out.println("id invalido");
+        FornecedorDAO.editar(fornecedor);
+    }
+
+    // Deletar
+    public void deletarFornecedor(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.editar(fornecedor);
+        FornecedorDAO.delete(id);
     }
 
-    public void deleteFornecedor(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    // Buscar por ID
+    public Fornecedor selecionarFornecedor(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.delete(id);
+        return FornecedorDAO.select(id);
     }
 
-    public void selecionarFornecedor(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.select(id);
-    }
-
+    // Listar todos
     public ArrayList<Fornecedor> listarFornecedores() {
-        return dao.listar();
+        return FornecedorDAO.listar();
     }
-    
 }

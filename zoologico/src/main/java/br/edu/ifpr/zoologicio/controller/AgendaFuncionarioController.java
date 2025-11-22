@@ -6,64 +6,68 @@ import br.edu.ifpr.zoologicio.model.dao.AgendaFuncionarioDAO;
 
 public class AgendaFuncionarioController {
 
-
-    private AgendaFuncionarioDAO dao;
-
-    public  AgendaFuncionarioController() {
-        this.dao = new AgendaFuncionarioDAO();
-    }
-
-
-    public void cadastrarAgendaFuncionario(AgendaFuncionario agendaFuncionario){
-
-        if(agendaFuncionario.getAtividade() == null){
-            System.out.println("Atividade não pode ser vazio!");
+    // Cadastrar
+    public void cadastrarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+        if (agendaFuncionario == null) {
+            System.out.println("Objeto AgendaFuncionario não pode ser nulo!");
             return;
         }
 
-        dao.cadastrar(agendaFuncionario);
-    }
-
-    public void editarAgendaFuncionario(AgendaFuncionario agendaFuncionario){
-        if(agendaFuncionario.getAtividade() == null || agendaFuncionario.getAtividade().isEmpty()){
-            System.out.println("Atividade não pode ser vazio!");
+        if (agendaFuncionario.getAtividade() == null || agendaFuncionario.getAtividade().isEmpty()) {
+            System.out.println("Atividade não pode ser vazia!");
             return;
         }
 
-        if(agendaFuncionario.getId() <= 0){
-            System.out.println("id invalido");
+        AgendaFuncionarioDAO.cadastrar(agendaFuncionario);
+    }
+
+    // Editar
+    public void editarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+        if (agendaFuncionario == null) {
+            System.out.println("Objeto AgendaFuncionario não pode ser nulo!");
             return;
         }
 
-        dao.editar(agendaFuncionario);
-    }
-
-    public void deleteAgendaFuncionario(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
+        if (agendaFuncionario.getId() == null || agendaFuncionario.getId() <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.delete(id);
-    }
-
-    public void selecionarAgendaAnimal(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
+        if (agendaFuncionario.getAtividade() == null || agendaFuncionario.getAtividade().isEmpty()) {
+            System.out.println("Atividade não pode ser vazia!");
             return;
         }
 
-        dao.select(id);
+        AgendaFuncionarioDAO.editar(agendaFuncionario);
     }
 
-    public ArrayList<AgendaFuncionario> listarAgendaFuncionario() {
-        return dao.listar();
+    // Excluir
+    public void deletarAgendaFuncionario(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        AgendaFuncionarioDAO.delete(id);
     }
-    
+
+    // Selecionar por ID
+    public AgendaFuncionario selecionarAgendaFuncionario(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
+        }
+
+        return AgendaFuncionarioDAO.select(id);
+    }
+
+    // Listar simples
+    public ArrayList<AgendaFuncionario> listarAgendaFuncionarios() {
+        return AgendaFuncionarioDAO.listar();
+    }
+
+    // Listar completo com Cargo + Funcionario
+    public ArrayList<AgendaFuncionario> listarAgendaFuncionariosCompleto() {
+        return AgendaFuncionarioDAO.listarCompleto();
+    }
 }
-    
-

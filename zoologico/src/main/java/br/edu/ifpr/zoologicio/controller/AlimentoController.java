@@ -1,66 +1,69 @@
 package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
-
 import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.dao.AlimentoDAO;
 
 public class AlimentoController {
 
-    private AlimentoDAO dao;
+    // Cadastrar
+    public void cadastrarAlimento(Alimento alimento) {
+        if (alimento == null) {
+            System.out.println("Objeto Alimento não pode ser nulo!");
+            return;
+        }
 
-    public AlimentoController(){
-        this.dao = new AlimentoDAO();
-    }
-
-
-    public void cadastrarAlimento(Alimento alimento){
-        if(alimento.getNome() == null){
+        if (alimento.getNome() == null || alimento.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(alimento);
+        AlimentoDAO.cadastrar(alimento);
     }
 
-    public void editarAlimento(Alimento alimento){
-        if(alimento.getNome() == null || alimento.getNome().isEmpty()){
+    // Editar
+    public void editarAlimento(Alimento alimento) {
+        if (alimento == null) {
+            System.out.println("Objeto Alimento não pode ser nulo!");
+            return;
+        }
+
+        if (alimento.getId() == null || alimento.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (alimento.getNome() == null || alimento.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        if(alimento.getId() <= 0){
-            System.out.println("id invalido");
+        AlimentoDAO.editar(alimento);
+    }
+
+    // Deletar
+    public void deletarAlimento(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.editar(alimento);
+        AlimentoDAO.delete(id);
     }
 
-    public void deleteAlimento(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    // Selecionar por ID
+    public Alimento selecionarAlimento(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.delete(id);
+        return AlimentoDAO.select(id);
     }
 
-    public void selecionarAlimento(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.select(id);
-    }
-
+    // Listar todos
     public ArrayList<Alimento> listarAlimentos() {
-        return dao.listar();
+        return AlimentoDAO.listar();
     }
-    
+
 }

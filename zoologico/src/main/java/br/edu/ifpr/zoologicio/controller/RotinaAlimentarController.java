@@ -1,14 +1,9 @@
 package br.edu.ifpr.zoologicio.controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 import br.edu.ifpr.zoologicio.model.dao.AgendaAnimalDAO;
-import br.edu.ifpr.zoologicio.model.dao.ConnectionFactory;
 import br.edu.ifpr.zoologicio.model.dao.FornecedorDAO;
 import br.edu.ifpr.zoologicio.model.dao.RotinaAlimentarDAO;
 
@@ -20,99 +15,90 @@ public class RotinaAlimentarController {
         this.dao = new RotinaAlimentarDAO();
     }
 
-    public void cadastrarRotinaAlimentar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) throws SQLException {
-        // Esto va a ser sobre el nombre del Animal
+    // CADASTRAR
+    public void cadastrarRotinaAlimentar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) {
 
-        int idAgendaAnimal = AgendaAnimalController.buscarAgendaAnimal(rotinaAlimentar.getAgendaAnimal().getAnimal().getId());
-
-        if (idAgendaAnimal == -1) {
-            throw new SQLException("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
+        if (rotinaAlimentar == null) {
+            System.out.println("Objeto RotinaAlimentar inválido!");
+            return;
         }
-
-        Integer fornecedorId = FornecedorController.buscaFornecedor_ID(fornecedor_id);
-
-        if (fornecedorId == null) {
-            throw new SQLException("Fornecedor não possui ID!");
+        if (rotinaAlimentar.getData() == null || rotinaAlimentar.getData().isEmpty()) {
+            System.out.println("Data não pode ser vazia!");
+            return;
         }
-
-        if (rotinaAlimentar.getData() == null) {
-            System.out.println("Data não pode ser vazio!");
+        if (rotinaAlimentar.getAgendaAnimal() == null || 
+            rotinaAlimentar.getAgendaAnimal().getAnimal() == null) {
+            System.out.println("AgendaAnimal e Animal devem estar cadastrados!");
             return;
         }
 
-        dao.cadastrar(rotinaAlimentar, idAgendaAnimal, fornecedorId);
+        int idAgendaAnimal = AgendaAnimalDAO
+                .buscarAgendaAnimal_ID(rotinaAlimentar.getAgendaAnimal().getAnimal().getId());
+
+        if (idAgendaAnimal <= 0) {
+            System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
+            return;
+        }
+
+        Integer fornecedorId = FornecedorDAO.buscaFornecedor_ID(fornecedor_id);
+        
+        if (fornecedorId == null) {
+            System.out.println("Fornecedor inválido!");
+            return;
+        }
+
+        RotinaAlimentarDAO.cadastrar(rotinaAlimentar, idAgendaAnimal, fornecedorId);
         System.out.println("RotinaAlimentar cadastrada com sucesso!");
     }
 
-    // BUSCAR FORNECEDOR
-    // ______________________________________________________
+    // EDITAR
+    public void editarRotinaAlimentar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) {
 
-    public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
-
-        String sqlRotinaAlimentar = "SELECT from rotinasAlimentares WHERE id= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps = con.prepareStatement(sqlRotinaAlimentar);) {
-            ps.setInt(1, rotinaAlimentar_id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (rotinaAlimentar == null) {
+            System.out.println("Objeto RotinaAlimentar inválido!");
+            return;
         }
-
-        return id;
-
-    }
-
-    public void editaRotinaAlimentar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) throws SQLException {
+        if (rotinaAlimentar.getId() == null || rotinaAlimentar.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
         if (rotinaAlimentar.getData() == null || rotinaAlimentar.getData().isEmpty()) {
-            System.out.println("Data não pode ser vazio!");
+            System.out.println("Data não pode ser vazia!");
             return;
         }
 
-        if (rotinaAlimentar.getId() <= 0) {
-            System.out.println("id invalido");
-            return;
-        }
-
-         Integer fornecedorId = FornecedorController.buscaFornecedor_ID(fornecedor_id);
-
+        Integer fornecedorId = FornecedorDAO.buscaFornecedor_ID(fornecedor_id);
         if (fornecedorId == null) {
-            throw new SQLException("Fornecedor não possui ID!");
+            System.out.println("Fornecedor inválido!");
+            return;
         }
 
-        dao.editar(rotinaAlimentar, fornecedor_id);
+        RotinaAlimentarDAO.editar(rotinaAlimentar, fornecedorId);
         System.out.println("RotinaAlimentar atualizada com sucesso!");
     }
 
+    // DELETE
     public void deleteRotinaAlimentar(int id) {
-
         if (id <= 0) {
-
-            System.out.println("id invalido");
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.delete(id);
+        RotinaAlimentarDAO.delete(id);
         System.out.println("RotinaAlimentar excluída com sucesso!");
     }
 
-    public void selecionarRotinaAlimentar(int id) {
-
+    // SELECT
+    public RotinaAlimentar selecionarRotinaAlimentar(int id) {
         if (id <= 0) {
-
-            System.out.println("id invalido");
-            return;
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.select(id);
+        return dao.select(id);
     }
 
+    // LISTAR
     public ArrayList<RotinaAlimentar> listarRotinasAlimentares() {
         return dao.listar();
     }

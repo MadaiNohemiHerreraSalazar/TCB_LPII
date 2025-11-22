@@ -9,6 +9,7 @@ public class Funcionario {
     private String telefone;
     private AgendaFuncionario agendaFuncionario; 
     private Cargo cargo;
+    private Area area;
 
     public Funcionario() {
 
@@ -68,6 +69,14 @@ public class Funcionario {
 
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
     }
 
 

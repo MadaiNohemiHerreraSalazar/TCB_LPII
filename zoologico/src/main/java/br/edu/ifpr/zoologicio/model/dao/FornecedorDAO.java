@@ -10,30 +10,7 @@ import java.sql.SQLException;
 
 public class FornecedorDAO {
 
-    // BUSCAR FORNECEDOR
-    // ____________________________________________________________
-
-    public static int buscaFornecedor_ID(String nomeFornecedor) {
-
-        String sqlFornecedor = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlFornecedor)) {
-            ps.setString(1, nomeFornecedor);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
+    
 
     // CADASTRAR FORNECEDOR
     // ______________________________________________________
@@ -57,6 +34,11 @@ public class FornecedorDAO {
                 } else {
                     throw new SQLException("Falha ao obter ID gerado para Fornecedor");
                 }
+            }
+
+            // Cadastra os alimentos vinculados
+            if (!cadastrarAlimentos(con, fornecedor.getAlimentos(), fornecedor.getId())) {
+                throw new SQLException("Fornecedor NÃO cadastrado. Erro ao cadastrar alimentos vinculados.");
             }
 
         } catch (Exception e) {
@@ -95,7 +77,7 @@ public class FornecedorDAO {
 
         String sqlUpdateFornecedor = "UPDATE fornecedores SET nome=?, cpf=?, telefone=?, email=? WHERE id=?";
         String sqlDeleteAlimentos = "DELETE FROM fornecedor_alimento WHERE fornecedor_id=?";
-    
+
         try (Connection con = ConnectionFactory.getConnection()) {
 
             // Atualiza dados principais
@@ -118,6 +100,7 @@ public class FornecedorDAO {
             if (!cadastrarAlimentos(con, fornecedor.getAlimentos(), fornecedor.getId())) {
                 throw new SQLException("Fornecedor NÃO cadastrado. Erro ao cadastrar alimentos vinculados.");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,10 +133,10 @@ public class FornecedorDAO {
         }
     }
 
-    // SELECT COMPLETO
+    // SELECT 
     // ______________________________________________________
 
-    public Fornecedor select(int id) {
+    public static Fornecedor select(int id) {
 
         String sql = "SELECT id, nome, cpf, telefone, email FROM fornecedores WHERE id = ?";
         Fornecedor fornecedor = null;
@@ -171,10 +154,10 @@ public class FornecedorDAO {
                 fornecedor.setCpf(rs.getString("cpf"));
                 fornecedor.setTelefone(rs.getString("telefone"));
                 fornecedor.setEmail(rs.getString("email"));
-
-                 fornecedor.setAlimentos(buscarAlimentosPorFornecedor(fornecedor.getId()));
+                // Busca os alimentos desse fornecedor
+                fornecedor.setAlimentos(buscarAlimentosPorFornecedor(fornecedor.getId()));
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -185,7 +168,7 @@ public class FornecedorDAO {
     // LISTAR COMPLETO COM TODOS OS FORNECEDORES COM SEUS ALIMENTOS
     // ______________________________________________________
 
-    public ArrayList<Fornecedor> listar() {
+    public static ArrayList<Fornecedor> listar() {
         ArrayList<Fornecedor> fornecedores = new ArrayList<>();
         String sql = "SELECT id, nome, cpf, telefone, email FROM fornecedores ORDER BY nome";
 
@@ -213,6 +196,38 @@ public class FornecedorDAO {
 
         return fornecedores;
     }
+
+    // METODOS AUXILIARES
+    //-----------------------------------------------------------------
+
+    // BUSCAR FORNECEDOR POR ID
+    // ____________________________________________________________
+
+
+    public static int buscaFornecedor_ID(int fornecedor_id) {
+
+        String sqlFornecedor = "SELECT from fornecedores WHERE nome= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlFornecedor)) {
+            ps.setInt(1, fornecedor_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    // BUSCAR ALIMENTOS POR FORNECEDOR POR ID - DEVOLVE ALIMENTOS
+    //_____________________________________________________________________________-
 
     public static ArrayList<Alimento> buscarAlimentosPorFornecedor(int fornecedorId) {
         ArrayList<Alimento> alimentos = new ArrayList<>();

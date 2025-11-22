@@ -123,7 +123,7 @@ public class CargoDAO {
 
     // SELECT COMPLETO (COM FUNCIONÁRIOS)
     // ______________________________________________________
-    public Cargo select(int id) {
+    public static Cargo select(int id) {
         String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos WHERE id = ?";
         Cargo cargo = null;
 
@@ -156,7 +156,7 @@ public class CargoDAO {
     // LISTAR SIMPLES
     // ______________________________________________________________________
 
-    public ArrayList<Cargo> listar() {
+    public static ArrayList<Cargo> listar() {
         String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos";
         ArrayList<Cargo> cargos = new ArrayList<>();
 
@@ -184,7 +184,7 @@ public class CargoDAO {
 
     // LISTAR COMPLETO (COM FUNCIONÁRIOS)
     // ______________________________________________________
-    public ArrayList<Cargo> listarCompleto() {
+    public static ArrayList<Cargo> listarCompleto() {
         ArrayList<Cargo> cargos = new ArrayList<>();
         String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargos";
 

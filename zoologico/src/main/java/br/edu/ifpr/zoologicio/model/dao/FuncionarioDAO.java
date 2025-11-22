@@ -11,20 +11,23 @@ import java.sql.SQLException;
 
 public class FuncionarioDAO {
 
-
     // CADASTRAR FUNCIONÁRIO COM CARGO E AGENDAFUNCIONARIO
     // ______________________________________________________
 
     public static void cadastrar(Funcionario funcionario) {
 
-        String sqlFuncionario = "INSERT INTO funcionarios(nome, cargo_id) VALUES (?,?)";
+        String sqlFuncionario = "INSERT INTO funcionarios(nome, cpf, email, telefone, cargo_id, area_id) VALUES (?,?,?,?,?,?)";
         String sqlAgenda = "INSERT INTO agendasFuncionario(criadoPor, ultimaAtualizacao, atividade, cargo_id, funcionario_id) VALUES (?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlFuncionario, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, funcionario.getNome());
-            pst.setInt(2, funcionario.getCargo().getId());
+            pst.setString(2, funcionario.getCpf());
+            pst.setString(3, funcionario.getEmail());
+            pst.setString(4, funcionario.getTelefone());
+            pst.setInt(5, funcionario.getCargo().getId());
+            pst.setInt(6, funcionario.getArea().getId());
             pst.executeUpdate();
 
             // Pega o ID do funcionário
@@ -56,15 +59,18 @@ public class FuncionarioDAO {
 
     public static void editar(Funcionario funcionario) {
 
-        String sqlFuncionario = "UPDATE funcionarios SET nome=?, cargo_id=? WHERE id=?";
+        String sqlFuncionario = "UPDATE funcionarios SET nome=?, cpf=?, email=?, telefone=?, cargo_id=?, area_id=? WHERE id=?";
         String sqlAgenda = "UPDATE agendasFuncionario SET criadoPor=?, ultimaAtualizacao=?, atividade=?, cargo_id=? WHERE funcionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
             try (PreparedStatement pst = con.prepareStatement(sqlFuncionario)) {
                 pst.setString(1, funcionario.getNome());
-                pst.setInt(2, funcionario.getCargo().getId());
-                pst.setInt(3, funcionario.getId());
+                pst.setString(2, funcionario.getCpf());
+                pst.setString(3, funcionario.getEmail());
+                pst.setString(4, funcionario.getTelefone());
+                pst.setInt(5, funcionario.getCargo().getId());
+                pst.setInt(6, funcionario.getArea().getId());
                 pst.executeUpdate();
             }
 
@@ -112,7 +118,7 @@ public class FuncionarioDAO {
     // SELECT COMPLETO
     // ______________________________________________________
 
-    public Funcionario select(int id) {
+    public static Funcionario select(int id) {
 
         String sql = "SELECT f.id, f.nome, " +
                 "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
@@ -134,6 +140,10 @@ public class FuncionarioDAO {
                 funcionario = new Funcionario();
                 funcionario.setId(rs.getInt("id"));
                 funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setEmail(rs.getString("email"));
+                funcionario.setTelefone(rs.getString("telefone"));
+
 
                 // Cargo
                 Cargo cargo = new Cargo();
@@ -165,12 +175,12 @@ public class FuncionarioDAO {
     }
 
     // LISTAR SIMPLES
-    //_____________________________________________________________________________
+    // _____________________________________________________________________________
 
-    public ArrayList<Funcionario> listarSimples() {
+    public static ArrayList<Funcionario> listar() {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, cpf, telefone FROM funcionarios ORDER BY nome";
+        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios ORDER BY nome";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -181,6 +191,7 @@ public class FuncionarioDAO {
                 funcionario.setId(rs.getInt("id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setEmail(rs.getString("email"));
                 funcionario.setTelefone(rs.getString("telefone"));
 
                 funcionarios.add(funcionario);
@@ -196,7 +207,7 @@ public class FuncionarioDAO {
     // LISTAR COMPLETO
     // ______________________________________________________
 
-    public ArrayList<Funcionario> listarCompletos() {
+    public static ArrayList<Funcionario> listarCompleto() {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
         String sql = "SELECT f.id, f.nome, " +
@@ -215,6 +226,9 @@ public class FuncionarioDAO {
                 Funcionario funcionario = new Funcionario();
                 funcionario.setId(rs.getInt("id"));
                 funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setEmail(rs.getString("email"));
+                funcionario.setTelefone(rs.getString("telefone"));
 
                 // Cargo
                 Cargo cargo = new Cargo();
@@ -248,12 +262,10 @@ public class FuncionarioDAO {
         return funcionarios;
     }
 
-    
+    // METODOS AUXILIARES
+    // -----------------------------------------------------------------
 
-    //METODOS AUXILIARES
-    //-----------------------------------------------------------------
-
-     // BUSCAR FUNCIONÁRIOS PELO CARGO
+    // BUSCAR FUNCIONÁRIOS PELO CARGO
     // ______________________________________________________
 
     public static ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
@@ -267,14 +279,14 @@ public class FuncionarioDAO {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                Funcionario f = new Funcionario();
-                f.setId(rs.getInt("id"));
-                f.setNome(rs.getString("nome"));
-                f.setCpf(rs.getString("cpf"));
-                f.setEmail(rs.getString("email"));
-                f.setTelefone(rs.getString("telefone"));
-                // Não carrego agendaFuncionario e cargo para evitar ciclo; carregue se precisar
-                funcionarios.add(f);
+                Funcionario funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setEmail(rs.getString("email"));
+                funcionario.setTelefone(rs.getString("telefone"));
+                // Não carrego agendaFuncionario e cargo para evitar ciclo
+                funcionarios.add(funcionario);
             }
 
         } catch (Exception e) {
@@ -298,13 +310,13 @@ public class FuncionarioDAO {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                Funcionario f = new Funcionario();
-                f.setId(rs.getInt("id"));
-                f.setNome(rs.getString("nome"));
-                f.setCpf(rs.getString("cpf"));
-                f.setEmail(rs.getString("email"));
-                f.setTelefone(rs.getString("telefone"));
-                funcionarios.add(f);
+                Funcionario funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setEmail(rs.getString("email"));
+                funcionario.setTelefone(rs.getString("telefone"));
+                funcionarios.add(funcionario);
             }
 
         } catch (SQLException e) {
@@ -313,7 +325,8 @@ public class FuncionarioDAO {
         return funcionarios;
     }
 
-    // BUSCAR FUNCIONARIO POR ID
+    // BUSCAR FUNCIONARIO POR ID - DEVOLVE FUNCIONARIO
+    //___________________________________________________________________
     public static Funcionario buscarFuncionarioPor_ID(int id) {
         Funcionario funcionario = null;
         String sql = "SELECT id, nome, cpf, telefone, email FROM funcionarios WHERE id=?";
@@ -338,6 +351,31 @@ public class FuncionarioDAO {
         }
 
         return funcionario;
+    }
+
+    //BUSCA FUNCIONARIO POR ID - DEVOLVE ID
+    //______________________________________________________________________
+
+    public static int buscaFuncionario_ID(int funcionario_id) {
+
+        String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlFuncionario)) {
+            ps.setInt(1, funcionario_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
     }
 
 }

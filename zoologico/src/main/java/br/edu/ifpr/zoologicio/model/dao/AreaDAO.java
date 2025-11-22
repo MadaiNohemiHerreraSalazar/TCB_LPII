@@ -122,7 +122,7 @@ public class AreaDAO {
 
     // SELECT COMPLETO (com Funcionários e Habitats)
     // ______________________________________________________
-    public Area select(int id) {
+    public static Area select(int id) {
         Area area = null;
         String sql = "SELECT id, nome, descricao FROM areas WHERE id=?";
 
@@ -151,7 +151,7 @@ public class AreaDAO {
 
     // LISTAR SIMPLES
     // ______________________________________________________
-    public ArrayList<Area> listar() {
+    public static ArrayList<Area> listar() {
         ArrayList<Area> areas = new ArrayList<>();
         String sql = "SELECT id, nome, descricao FROM areas";
 
@@ -176,7 +176,7 @@ public class AreaDAO {
     // LISTAR COMPLETO (COM FUNCIONÁRIOS E HABITATS)
     // ______________________________________________________
 
-    public ArrayList<Area> listarCompleto() {
+    public static ArrayList<Area> listarCompleto() {
         ArrayList<Area> areas = new ArrayList<>();
 
         String sql = "SELECT id, nome, descricao FROM areas";

@@ -141,7 +141,7 @@ public class RotinaAlimentarDAO {
     // SELECT
     // ______________________________________________________
 
-    public RotinaAlimentar selectCompleto(int id) {
+    public RotinaAlimentar select(int id) {
 
         String sql = "SELECT r.id, r.data, r.hora, r.quantidadeAlimento " +
                 "FROM rotinasAlimentares r " +
@@ -165,7 +165,7 @@ public class RotinaAlimentarDAO {
 
             // Agora buscar os alimentos vinculados à rotina
             if (rotina != null) {
-                rotina.setAlimentos(Alimento_RotinaDAO.buscarAlimentosPorRotina(rotina.getId()));
+                rotina.setAlimentos(buscarAlimentosPorRotina(rotina.getId()));
             }
 
         } catch (Exception e) {
@@ -175,10 +175,10 @@ public class RotinaAlimentarDAO {
         return rotina;
     }
 
-    // LISTAR
+    // LISTAR COMPLETO - COM ALIMENTOS
     // ______________________________________________________
 
-    public ArrayList<RotinaAlimentar> listarComAlimentos() {
+    public ArrayList<RotinaAlimentar> listar() {
         String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares ORDER BY data, hora";
         ArrayList<RotinaAlimentar> rotinas = new ArrayList<>();
 
@@ -192,7 +192,7 @@ public class RotinaAlimentarDAO {
                 rotina.setData(rs.getString("data"));
                 rotina.setHora(rs.getString("hora"));
                 rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
-                rotina.setAlimentos(Alimento_RotinaDAO.buscarAlimentosPorRotina(rotina.getId()));
+                rotina.setAlimentos(buscarAlimentosPorRotina(rotina.getId()));
 
                 rotinas.add(rotina);
             }
@@ -259,6 +259,36 @@ public class RotinaAlimentarDAO {
         }
 
         return rotina;
+    }
+
+     // BUSCAR ALIMENTOS POR ROTINA
+    // ________________________________________________________
+
+    public static ArrayList<Alimento> buscarAlimentosPorRotina(int rotinaId) {
+        ArrayList<Alimento> alimentos = new ArrayList<>();
+
+        String sql = "SELECT a.id, a.nome FROM alimentos a " +
+                "JOIN alimento_rotina ar ON a.id = ar.alimento_id " +
+                "WHERE ar.rotinaAlimentar_id = ?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, rotinaId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Alimento alimento = new Alimento();
+                alimento.setId(rs.getInt("id"));
+                alimento.setNome(rs.getString("nome"));
+                alimentos.add(alimento);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alimentos;
     }
 
 }

@@ -6,64 +6,63 @@ import br.edu.ifpr.zoologicio.model.dao.AgendaAnimalDAO;
 
 public class AgendaAnimalController {
 
-
-    private AgendaAnimalDAO dao;
-
-    public AgendaAnimalController(){
-        this.dao = new AgendaAnimalDAO();
-    }
-
-
-    public void cadastrarAgendaAnimal(AgendaAnimal agendaAnimal){
-        //Esto va a ser sobre el nombre del Animal
-
-        if(agendaAnimal.getAtividade() == null){
-            System.out.println("Atividade não pode ser vazio!");
+    // Cadastrar
+    public void cadastrarAgendaAnimal(AgendaAnimal agendaAnimal) {
+        if (agendaAnimal == null) {
+            System.out.println("Objeto AgendaAnimal não pode ser nulo!");
             return;
         }
 
-        dao.cadastrar(agendaAnimal);
-    }
-
-
-    public void editarAgendaAnimal(AgendaAnimal agendaAnimal){
-        if(agendaAnimal.getAtividade() == null || agendaAnimal.getAtividade().isEmpty()){
-            System.out.println("Nome não pode ser vazio!");
+        if (agendaAnimal.getAtividade() == null || agendaAnimal.getAtividade().isEmpty()) {
+            System.out.println("Atividade não pode ser vazia!");
             return;
         }
 
-        if(agendaAnimal.getId() <= 0){
-            System.out.println("id invalido");
+        AgendaAnimalDAO.cadastrar(agendaAnimal);
+    }
+
+    // Editar
+    public void editarAgendaAnimal(AgendaAnimal agendaAnimal) {
+        if (agendaAnimal == null) {
+            System.out.println("Objeto AgendaAnimal não pode ser nulo!");
             return;
         }
 
-        dao.editar(agendaAnimal);
-    }
-
-    public void deleteAgendaAnimal(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
+        if (agendaAnimal.getId() == null || agendaAnimal.getId() <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.delete(id);
-    }
-
-    public void selecionarAgendaAnimal(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
+        if (agendaAnimal.getAtividade() == null || agendaAnimal.getAtividade().isEmpty()) {
+            System.out.println("Atividade não pode ser vazia!");
             return;
         }
 
-        dao.select(id);
+        AgendaAnimalDAO.editar(agendaAnimal);
     }
 
+    // Excluir
+    public void deletarAgendaAnimal(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        AgendaAnimalDAO.delete(id);
+    }
+
+    // Buscar por ID
+    public AgendaAnimal selecionarAgendaAnimal(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
+        }
+
+        return AgendaAnimalDAO.select(id);
+    }
+
+    // Listar todos
     public ArrayList<AgendaAnimal> listarAgendaAnimais() {
-        return dao.listar();
+        return AgendaAnimalDAO.listar();
     }
-    
 }

@@ -7,11 +7,6 @@ import br.edu.ifpr.zoologicio.model.dao.VisitanteDAO;
 
 public class VisitanteController {
 
-    private VisitanteDAO dao;
-
-    public VisitanteController(){
-        this.dao = new VisitanteDAO();
-    }
 
     public void cadastrarVisitante(Visitante visitante) {
         if (visitante.getNome() == null) {
@@ -19,7 +14,7 @@ public class VisitanteController {
             return;
         }
 
-        dao.cadastrar(visitante);
+        VisitanteDAO.cadastrar(visitante);
     }
 
     public void editarVisitante(Visitante visitante) {
@@ -33,7 +28,7 @@ public class VisitanteController {
             return;
         }
 
-        dao.editar(visitante);
+        VisitanteDAO.editar(visitante);
     }
 
     public void deleteVisitante(int id) {
@@ -44,7 +39,7 @@ public class VisitanteController {
             return;
         }
 
-        dao.delete(id);
+        VisitanteDAO.delete(id);
     }
 
     public void selecionarVisitante(int id) {
@@ -55,11 +50,11 @@ public class VisitanteController {
             return;
         }
 
-        dao.select(id);
+        VisitanteDAO.select(id);
     }
 
     public ArrayList<Visitante> listarVisitantes() {
-        return dao.listar();
+        return VisitanteDAO.listar();
     }
 
 }

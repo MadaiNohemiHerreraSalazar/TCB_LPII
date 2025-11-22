@@ -196,7 +196,7 @@ public class HabitatDAO {
     // SELECT COMPLETO
     // ______________________________________________________
 
-    public Habitat select(int id) {
+    public static Habitat select(int id) {
         Habitat habitat = null;
 
         String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats WHERE id=?";
@@ -236,7 +236,7 @@ public class HabitatDAO {
     // LISTAR
     // ______________________________________________________
 
-    public ArrayList<Habitat> listar() {
+    public static ArrayList<Habitat> listar() {
         ArrayList<Habitat> habitats = new ArrayList<>();
         String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
 
@@ -264,10 +264,10 @@ public class HabitatDAO {
         return habitats;
     }
 
-    // LISTAR COM ANIMAIS
+    // LISTAR COMPLETO COM ANIMAIS
     // ____________________________________________________________________
 
-    public ArrayList<Habitat> listarComAnimais() {
+    public static ArrayList<Habitat> listarCompleto() {
         ArrayList<Habitat> habitats = new ArrayList<>();
         String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
 

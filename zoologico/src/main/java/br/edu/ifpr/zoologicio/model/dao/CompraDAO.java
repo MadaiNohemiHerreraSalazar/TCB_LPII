@@ -14,7 +14,7 @@ public class CompraDAO {
                 + "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sqlCompra, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pst = con.prepareStatement(sqlCompra, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, compra.getData());
             pst.setString(2, compra.getHora());
@@ -43,7 +43,6 @@ public class CompraDAO {
         }
     }
 
-
     // CADASTRAR TICKETS
     // ______________________________________________________
     public static boolean cadastroTickets(Connection con, ArrayList<Ticket> tickets, int compra_id) {
@@ -69,7 +68,6 @@ public class CompraDAO {
             return false;
         }
     }
-
 
     // EDITAR COMPRA
     // ______________________________________________________
@@ -117,7 +115,6 @@ public class CompraDAO {
         }
     }
 
-
     // DELETE COMPRA
     // ______________________________________________________
     public static void delete(int id) {
@@ -142,10 +139,9 @@ public class CompraDAO {
         }
     }
 
-
     // SELECT SIMPLES
     // ______________________________________________________
-    public Compra select(int id) {
+    public static Compra select(int id) {
 
         String sql = "SELECT c.id, c.data, c.hora, c.quantidade, c.meioPagamento, c.precoTotal, "
                 + "c.visitante_id, c.funcionario_id "
@@ -154,7 +150,7 @@ public class CompraDAO {
         Compra compra = null;
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -180,16 +176,15 @@ public class CompraDAO {
         return compra;
     }
 
-
     // LISTAR COMPLETO COM TICKETS
     // ______________________________________________________
-    public ArrayList<Compra> listar() {
+    public static ArrayList<Compra> listar() {
         ArrayList<Compra> compras = new ArrayList<>();
         String sql = "SELECT id, data, hora, quantidade, meioPagamento, precoTotal FROM compras";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Compra compra = new Compra();
@@ -209,6 +204,36 @@ public class CompraDAO {
         }
 
         return compras;
+    }
+
+    // METODOS AUXILIARES
+    // -----------------------------------------------------------------
+
+    // BUSCA COMPRA POR ID - DEVOLVE ID
+    // _________________________________________________________________
+
+    public static int buscaCompra_ID(int compra_id) {
+
+        Connection con = ConnectionFactory.getConnection();
+
+        String sqlCOmpra = "SELECT from compras WHERE id= ?";
+        int id = -1;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlCOmpra);
+            ps.setInt(1, compra_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
     }
 
 }

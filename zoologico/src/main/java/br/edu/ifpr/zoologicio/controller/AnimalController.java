@@ -4,64 +4,77 @@ import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Animal;
 import br.edu.ifpr.zoologicio.model.dao.AnimalDAO;
+import br.edu.ifpr.zoologicio.model.dao.VeterinarioDAO;
 
 public class AnimalController {
 
-    private AnimalDAO dao;
+    public void cadastrarAnimal(Animal animal, int veterinarioId) {
 
-    public AnimalController(){
-        this.dao = new AnimalDAO();
-    }
-
-
-    public void cadastrarAnimal(Animal animal, int veterinario_idl){
-        if(animal.getNome() == null){
+        if (animal == null || animal.getNome() == null || animal.getNome().trim().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(animal, veterinario_idl);
+        if (animal.getHabitat() == null || animal.getHabitat().getId() == null) {
+            System.out.println("Habitat inválido!");
+            return;
+        }
+
+        Integer veterinario_Id = VeterinarioDAO.buscaVeterinario_ID(veterinarioId);
+        
+        if (veterinario_Id == null) {
+            System.out.println("Fornecedor inválido!");
+            return;
+        }
+
+        AnimalDAO.cadastrar(animal, veterinario_Id);
     }
 
-    public void editarAnimal(Animal animal, int veterinario_idl){
-        if(animal.getNome() == null || animal.getNome().isEmpty()){
+    public void editarAnimal(Animal animal, int veterinarioId) {
+        if (animal == null) {
+            System.out.println("Objeto Animal não pode ser nulo!");
+            return;
+        }
+
+        if (animal.getId() == null || animal.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (animal.getNome() == null || animal.getNome().trim().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        if(animal.getId() <= 0){
-            System.out.println("id invalido");
+         Integer veterinario_Id = VeterinarioDAO.buscaVeterinario_ID(veterinarioId);
+        
+        if (veterinario_Id == null) {
+            System.out.println("Fornecedor inválido!");
             return;
         }
 
-        dao.editar(animal, veterinario_idl);
+        AnimalDAO.editar(animal, veterinario_Id);
     }
 
-    public void deleteAnimal(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
+    public void deleteAnimal(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.delete(id);
+        AnimalDAO.delete(id);
     }
 
-    public void selecionarAnimal(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    public Animal selecionarAnimal(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.select(id);
+        return AnimalDAO.buscarAnimalPorId(id); 
     }
 
     public ArrayList<Animal> listarAnimais() {
-        return dao.listar();
+        return AnimalDAO.listar();
     }
-    
-    
 }

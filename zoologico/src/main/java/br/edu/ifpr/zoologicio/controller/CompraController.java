@@ -1,66 +1,98 @@
 package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
-
 import br.edu.ifpr.zoologicio.model.Compra;
 import br.edu.ifpr.zoologicio.model.dao.CompraDAO;
+import br.edu.ifpr.zoologicio.model.dao.FuncionarioDAO;
+import br.edu.ifpr.zoologicio.model.dao.VisitanteDAO;
 
 public class CompraController {
 
-    private CompraDAO dao;
-
-    public CompraController(){
-        this.dao = new CompraDAO();
-    }
-
-
-    public void cadastrarCompra(Compra compra){
-        if(compra.getData() == null){
-            System.out.println("Data não pode ser vazio!");
+    // Cadastrar
+    public void cadastrarCompra(Compra compra, int visitante_id, int funcionario_id) {
+        if (compra == null) {
+            System.out.println("Objeto Compra não pode ser nulo!");
             return;
         }
 
-        dao.cadastrar(compra);
-    }
-
-    public void editarCompra(Compra compra){
-        if(compra.getData() == null || compra.getData().isEmpty()){
-            System.out.println("Data não pode ser vazio!");
+        if (compra.getData() == null || compra.getData().isEmpty()) {
+            System.out.println("Data não pode ser vazia!");
             return;
         }
 
-        if(compra.getId() <= 0){
-            System.out.println("id invalido");
+         int visitanteID = VisitanteDAO.buscaVisitante_ID(visitante_id);
+        
+        if (visitanteID <= 0) {
+            System.out.println("Fornecedor inválido!");
             return;
         }
 
-        dao.editar(compra);
-    }
-
-    public void deleteCompra(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
+        Integer funcionarioID = FuncionarioDAO.buscaFuncionario_ID(funcionario_id);
+        
+        if (visitanteID <= 0 ) {
+            System.out.println("Fornecedor inválido!");
             return;
         }
 
-        dao.delete(id);
+        CompraDAO.cadastrar(compra, visitanteID, funcionarioID);
     }
 
-    public void selecionarCompra(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
+    // Editar
+    public void editarCompra(Compra compra, int visitante_id, int funcionario_id) {
+        if (compra == null) {
+            System.out.println("Objeto Compra não pode ser nulo!");
             return;
         }
 
-        dao.select(id);
+        if (compra.getId() == null || compra.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (compra.getData() == null || compra.getData().isEmpty()) {
+            System.out.println("Data não pode ser vazia!");
+            return;
+        }
+
+         int visitanteID = VisitanteDAO.buscaVisitante_ID(visitante_id);
+        
+        if (visitanteID <= 0) {
+            System.out.println("Fornecedor inválido!");
+            return;
+        }
+
+        Integer funcionarioID = FuncionarioDAO.buscaFuncionario_ID(funcionario_id);
+        
+        if (visitanteID <= 0 ) {
+            System.out.println("Fornecedor inválido!");
+            return;
+        }
+
+        CompraDAO.editar(compra, visitante_id, funcionarioID);
     }
 
+    // Deletar
+    public void deletarCompra(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        CompraDAO.delete(id);
+    }
+
+    // Buscar por ID
+    public Compra selecionarCompra(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
+        }
+
+        return CompraDAO.select(id);
+    }
+
+    // Listar todas
     public ArrayList<Compra> listarCompras() {
-        return dao.listar();
+        return CompraDAO.listar();
     }
-    
 }

@@ -127,7 +127,7 @@ public class AnimalDAO {
     // SELECT COMPLETO
     // ____________________________________________________________________________
 
-    public Animal select(int id) {
+    public static Animal select(int id) {
         String sql = "SELECT a.*, h.id AS habitat_id, h.nome AS habitat_nome, " +
                 "v.id AS vet_id, v.nome AS vet_nome " +
                 "FROM animais a " +
@@ -179,7 +179,7 @@ public class AnimalDAO {
     // LISTAR SIMPLES
     // ______________________________________________________________________________
 
-    public ArrayList<Animal> listar() {
+    public static ArrayList<Animal> listar() {
         ArrayList<Animal> animais = new ArrayList<>();
 
         String sql = "SELECT a.id, a.nome, a.descricao, a.historia, a.especie, a.idade, " +

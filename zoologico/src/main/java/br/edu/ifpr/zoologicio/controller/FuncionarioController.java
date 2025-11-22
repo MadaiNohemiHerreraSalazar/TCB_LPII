@@ -1,66 +1,91 @@
 package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
-
 import br.edu.ifpr.zoologicio.model.Funcionario;
 import br.edu.ifpr.zoologicio.model.dao.FuncionarioDAO;
 
 public class FuncionarioController {
 
-     private FuncionarioDAO dao;
+    // Cadastrar
+    public void cadastrarFuncionario(Funcionario funcionario) {
+        if (funcionario == null) {
+            System.out.println("Objeto Funcionario não pode ser nulo!");
+            return;
+        }
 
-    public FuncionarioController(){
-        this.dao = new FuncionarioDAO();
-    }
-
-
-    public void cadastrarFuncionario(Funcionario funcionario){
-        if(funcionario.getNome() == null){
+        if (funcionario.getNome() == null || funcionario.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(funcionario);
+        FuncionarioDAO.cadastrar(funcionario);
     }
 
-    public void editarFuncionario(Funcionario funcionario){
-        if(funcionario.getNome() == null || funcionario.getNome().isEmpty()){
+    // Editar
+    public void editarFuncionario(Funcionario funcionario) {
+        if (funcionario == null) {
+            System.out.println("Objeto Funcionario não pode ser nulo!");
+            return;
+        }
+
+        if (funcionario.getId() == null || funcionario.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (funcionario.getNome() == null || funcionario.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        if(funcionario.getId() <= 0){
-            System.out.println("id invalido");
+        FuncionarioDAO.editar(funcionario);
+    }
+
+    // Excluir
+    public void deletarFuncionario(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.editar(funcionario);
+        FuncionarioDAO.delete(id);
     }
 
-    public void deleteFuncionario(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    // Buscar por ID
+    public Funcionario selecionarFuncionario(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.delete(id);
+        return FuncionarioDAO.buscarFuncionarioPor_ID(id); // Usa o método correto
     }
 
-    public void selecionarFuncionario(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.select(id);
-    }
-
+    // Listar simples
     public ArrayList<Funcionario> listarFuncionarios() {
-        return dao.listar();
+        return FuncionarioDAO.listar();
     }
-    
+
+    // Listar completo
+    public ArrayList<Funcionario> listarFuncionariosCompleto() {
+        return FuncionarioDAO.listarCompleto();
+    }
+
+    // Buscar por Cargo
+    public ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
+        if (cargoId <= 0) {
+            System.out.println("Cargo inválido!");
+            return null;
+        }
+        return FuncionarioDAO.buscarFuncionariosPorCargo(cargoId);
+    }
+
+    // Buscar por Área
+    public ArrayList<Funcionario> buscarFuncionariosPorArea(int areaId) {
+        if (areaId <= 0) {
+            System.out.println("Área inválida!");
+            return null;
+        }
+        return FuncionarioDAO.buscarFuncionariosPorArea(areaId);
+    }
 }

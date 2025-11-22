@@ -11,58 +11,6 @@ import java.sql.SQLException;
 public class VeterinarioDAO {
 
 
-    //BUSCAR VETERINARIO POR ID - DEVOLVE VET
-
-    public static Veterinario buscarVeterinarioPorId(int id) {
-        Veterinario vet = null;
-        String sql = "SELECT id, nome, email FROM veterinarios WHERE id=?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                vet = new Veterinario();
-                vet.setId(rs.getInt("id"));
-                vet.setNome(rs.getString("nome"));
-                vet.setEmail(rs.getString("email"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return vet;
-    }
-
-
-    // BUSCA VETERINARIO
-
-    public static int buscaVeterinario_ID(int veterinario_id) {
-
-        String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlVeterinario)) {
-            ps.setInt(1, veterinario_id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
-
-
     // CADASTRAR VETERINARIO
     // ______________________________________________________
 
@@ -241,10 +189,10 @@ public class VeterinarioDAO {
         return veterinarios;
     }
 
-    // LISTAR COM ANIMAIS
+    // LISTAR COMPLETO COM ANIMAIS 
     // _________________________________________________________
 
-    public static ArrayList<Veterinario> listarComAnimais() {
+    public static ArrayList<Veterinario> listarCompleto() {
         ArrayList<Veterinario> veterinarios = new ArrayList<>();
         String sql = "SELECT * FROM veterinarios";
 
@@ -268,5 +216,62 @@ public class VeterinarioDAO {
         }
         return veterinarios;
     }
+
+    //METODOS AUXILIARES
+    //----------------------------------------------------------------------
+
+    //BUSCAR VETERINARIO POR ID - DEVOLVE VET
+    //_______________________________________________________________________
+
+    public static Veterinario buscarVeterinarioPorId(int id) {
+        Veterinario vet = null;
+        String sql = "SELECT id, nome, email FROM veterinarios WHERE id=?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                vet = new Veterinario();
+                vet.setId(rs.getInt("id"));
+                vet.setNome(rs.getString("nome"));
+                vet.setEmail(rs.getString("email"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return vet;
+    }
+
+
+    // BUSCA VETERINARIO POR ID - DEVOLVE ID
+    //_______________________________________________________________________
+
+    public static int buscaVeterinario_ID(int veterinario_id) {
+
+        String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlVeterinario)) {
+            ps.setInt(1, veterinario_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
 
 }

@@ -82,7 +82,7 @@ public class AgendaFuncionarioDAO {
 
     // SELECT COMPLETO AgendaFuncionario + Cargo + Funcionario
     // ______________________________________________________
-    public AgendaFuncionario select(int id) {
+    public static AgendaFuncionario select(int id) {
         String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, " +
                 "af.cargo_id, af.funcionario_id " +
                 "FROM agendaFuncionarios af " +
@@ -118,7 +118,7 @@ public class AgendaFuncionarioDAO {
 
     // LISTAR SIMPLES
     // ______________________________________________________
-    public ArrayList<AgendaFuncionario> listar() {
+    public static ArrayList<AgendaFuncionario> listar() {
         ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
         String sql = "SELECT id, criadoPor, ultimaAtualizacao, atividade FROM agendaFuncionarios ORDER BY id DESC";
 
@@ -145,7 +145,7 @@ public class AgendaFuncionarioDAO {
     // LISTAR COMPLETO Cargo + Funcionario
     // ___________________________________________________________________
 
-    public ArrayList<AgendaFuncionario> listarCompleto() {
+    public static ArrayList<AgendaFuncionario> listarCompleto() {
         ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
         String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, af.cargo_id, af.funcionario_id " +
                 "FROM agendaFuncionarios af " +

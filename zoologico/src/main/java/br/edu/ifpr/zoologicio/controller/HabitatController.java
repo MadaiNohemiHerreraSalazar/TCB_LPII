@@ -1,66 +1,88 @@
 package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
-
 import br.edu.ifpr.zoologicio.model.Habitat;
 import br.edu.ifpr.zoologicio.model.dao.HabitatDAO;
 
 public class HabitatController {
 
-    private HabitatDAO dao;
+    // Cadastrar
+    public void cadastrarHabitat(Habitat habitat) {
+        if (habitat == null) {
+            System.out.println("Objeto Habitat não pode ser nulo!");
+            return;
+        }
 
-    public HabitatController(){
-        this.dao = new HabitatDAO();
-    }
-
-
-    public void cadastrarHabitat(Habitat habitat){
-        if(habitat.getNome() == null){
+        if (habitat.getNome() == null || habitat.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(habitat);
+        if (habitat.getArea() == null || habitat.getArea().getId() == null || habitat.getArea().getId() <= 0) {
+            System.out.println("Área inválida!");
+            return;
+        }
+
+        HabitatDAO.cadastrar(habitat);
     }
 
-    public void editarHabitat(Habitat habitat){
-        if(habitat.getNome() == null || habitat.getNome().isEmpty()){
+    // Editar
+    public void editarHabitat(Habitat habitat) {
+        if (habitat == null) {
+            System.out.println("Objeto Habitat não pode ser nulo!");
+            return;
+        }
+
+        if (habitat.getId() == null || habitat.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (habitat.getNome() == null || habitat.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        if(habitat.getId() <= 0){
-            System.out.println("id invalido");
+        HabitatDAO.editar(habitat);
+    }
+
+    // Excluir
+    public void deletarHabitat(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.editar(habitat);
+        HabitatDAO.delete(id);
     }
 
-    public void deleteHabitat(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    // Buscar por ID
+    public Habitat selecionarHabitat(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.delete(id);
+        return HabitatDAO.select(id);
     }
 
-    public void selecionarHabitat(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.select(id);
-    }
-
+    // Listar simples
     public ArrayList<Habitat> listarHabitats() {
-        return dao.listar();
+        return HabitatDAO.listar();
     }
-    
+
+    // Listar completo (com animais e área)
+    public ArrayList<Habitat> listarHabitatsCompleto() {
+        return HabitatDAO.listarCompleto();
+    }
+
+    // Buscar habitats por área
+    public ArrayList<Habitat> buscarHabitatsPorArea(int areaId) {
+        if (areaId <= 0) {
+            System.out.println("ID de área inválido!");
+            return null;
+        }
+
+        return HabitatDAO.buscarHabitatsPorArea(areaId);
+    }
 }

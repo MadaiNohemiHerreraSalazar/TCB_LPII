@@ -1,67 +1,73 @@
 package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
-
-
 import br.edu.ifpr.zoologicio.model.Veterinario;
 import br.edu.ifpr.zoologicio.model.dao.VeterinarioDAO;
 
 public class VeterinarioController {
 
-    private VeterinarioDAO dao;
-
-    public VeterinarioController(){
-        this.dao = new VeterinarioDAO();
-    }
-
-
+    // Cadastrar
     public void cadastrarVeterinario(Veterinario veterinario){
-        if(veterinario.getNome() == null){
+        if (veterinario == null) {
+            System.out.println("Objeto Veterinario não pode ser nulo!");
+            return;
+        }
+
+        if (veterinario.getNome() == null || veterinario.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(veterinario);
+        VeterinarioDAO.cadastrar(veterinario);
     }
 
+    // Editar
     public void editarVeterinario(Veterinario veterinario){
-        if(veterinario.getNome() == null || veterinario.getNome().isEmpty()){
+        if (veterinario == null) {
+            System.out.println("Objeto Veterinario não pode ser nulo!");
+            return;
+        }
+
+        if (veterinario.getId() == null || veterinario.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (veterinario.getNome() == null || veterinario.getNome().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        if(veterinario.getId() <= 0){
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.editar(veterinario);
+        VeterinarioDAO.editar(veterinario);
     }
 
+    // Excluir
     public void deleteVeterinario(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        dao.delete(id);
+        VeterinarioDAO.delete(id);
     }
 
-    public void selecionarVeterinario(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    // Buscar por ID
+    public Veterinario selecionarVeterinario(int id){
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.select(id);
+        return VeterinarioDAO.select(id);
     }
 
+    // Listar todos
     public ArrayList<Veterinario> listarVeterinarios() {
-        return dao.listar();
+        return VeterinarioDAO.listar();
     }
-    
+
+    // Listar completo (com animais)
+    public ArrayList<Veterinario> listarVeterinariosCompleto() {
+        return VeterinarioDAO.listarCompleto();
+    }
 }

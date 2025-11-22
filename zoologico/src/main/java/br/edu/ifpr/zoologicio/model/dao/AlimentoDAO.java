@@ -82,7 +82,7 @@ public class AlimentoDAO {
     // SELECT COMPLETO (Buscar por ID)
     // ______________________________________________________
 
-    public Alimento select(int id) {
+    public static Alimento select(int id) {
         String sql = "SELECT id, nome, validade, estoque FROM alimentos WHERE id=?";
         Alimento alimento = null;
 
@@ -110,7 +110,7 @@ public class AlimentoDAO {
     // LISTAR SIMPLES
     // ______________________________________________________
 
-    public ArrayList<Alimento> listar() {
+    public static ArrayList<Alimento> listar() {
         String sql = "SELECT id, nome, validade, estoque FROM alimentos ORDER BY nome";
 
         ArrayList<Alimento> alimentos = new ArrayList<>();
@@ -139,7 +139,7 @@ public class AlimentoDAO {
     // ----------------------------------------------------------------
     // BUSCAR ALIMENTO NOME E ID POR ID
     // _______________________________________________________________
-    public Alimento buscarAlimentoPor_ID(int alimentoId) {
+    public static Alimento buscarAlimentoPor_ID(int alimentoId) {
         Connection con = ConnectionFactory.getConnection();
         Alimento alimento = null;
 

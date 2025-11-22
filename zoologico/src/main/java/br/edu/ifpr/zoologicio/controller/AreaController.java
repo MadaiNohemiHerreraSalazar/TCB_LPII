@@ -7,64 +7,57 @@ import br.edu.ifpr.zoologicio.model.dao.AreaDAO;
 
 public class AreaController {
 
-     private AreaDAO dao;
+    public void cadastrarArea(Area area) {
+        if (area == null || area.getNome() == null || area.getNome().trim().isEmpty()) {
+            System.out.println("Nome da área não pode ser vazio!");
+            return;
+        }
 
-    public AreaController(){
-        this.dao = new AreaDAO();
+        AreaDAO.cadastrar(area);
     }
 
+    public void editarArea(Area area) {
+        if (area == null) {
+            System.out.println("Objeto Área não pode ser nulo!");
+            return;
+        }
 
-    public void cadastrarArea(Area area){
-        if(area.getNome() == null){
+        if (area.getId() == null || area.getId() <= 0) {
+            System.out.println("ID inválido!");
+            return;
+        }
+
+        if (area.getNome() == null || area.getNome().trim().isEmpty()) {
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(area);
+        AreaDAO.editar(area);
     }
 
-    public void editarArea(Area area){
-        if(area.getNome() == null || area.getNome().isEmpty()){
-            System.out.println("Nome não pode ser vazio!");
+    public void deleteArea(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
             return;
         }
 
-        if(area.getId() <= 0){
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.editar(area);
+        AreaDAO.delete(id);
     }
 
-    public void deleteArea(int id){
-       
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
+    public Area selecionarArea(int id) {
+        if (id <= 0) {
+            System.out.println("ID inválido!");
+            return null;
         }
 
-        dao.delete(id);
-    }
-
-    public void selecionarArea(int id){
-
-        if(id <= 0){
-
-            System.out.println("id invalido");
-            return;
-        }
-
-        dao.select(id);
+        return AreaDAO.buscarAreaPorId(id);
     }
 
     public ArrayList<Area> listarAreas() {
-        return dao.listar();
+        return AreaDAO.listar();
     }
 
-     public ArrayList<Area> listarAreasCompleto() {
-        return dao.listarCompleto();
+    public ArrayList<Area> listarAreasCompleto() {
+        return AreaDAO.listarCompleto();
     }
-    
 }

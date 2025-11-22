@@ -13,30 +13,6 @@ import br.edu.ifpr.zoologicio.model.Visitante;
 
 public class VisitanteDAO {
 
-    public static int buscaCompra_ID(String nomeCompra) {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        String sqlCOmpra = "SELECT from agendaAnimais WHERE nome= ?";
-        int id = -1;
-
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlCOmpra);
-            ps.setString(1, nomeCompra);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return id;
-
-    }
-
     // BUSCAR VISITANTE
     //__________________________________________________________
     
@@ -119,7 +95,7 @@ public class VisitanteDAO {
 
     }
 
-    public void delete(int id) {
+    public static void delete(int id) {
         Connection con = ConnectionFactory.getConnection();
 
         try {
@@ -138,7 +114,7 @@ public class VisitanteDAO {
         }
     }
 
-    public ArrayList<Visitante> select(int id) {
+    public static ArrayList<Visitante> select(int id) {
 
         Connection con = ConnectionFactory.getConnection();
         ArrayList<Visitante> visitantes = new ArrayList<>();
@@ -169,7 +145,7 @@ public class VisitanteDAO {
         return visitantes;
     }
 
-    public ArrayList<Visitante> listar() {
+    public static ArrayList<Visitante> listar() {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -200,5 +176,35 @@ public class VisitanteDAO {
 
         return visitantes;
     }
+
+    //METODOS AUXILIARES
+    //----------------------------------------------------------------------
+
+    //BUSCA FUNCIONARIO POR ID - DEVOLVE ID
+    //______________________________________________________________________
+
+    public static int buscaVisitante_ID(int visitante_id) {
+
+        String sqlvisitante = "SELECT from visitantes WHERE nome= ?";
+        int id = -1;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlvisitante)) {
+            ps.setInt(1, visitante_id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    
 
 }
