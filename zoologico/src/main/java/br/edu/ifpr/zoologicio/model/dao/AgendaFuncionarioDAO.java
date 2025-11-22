@@ -104,16 +104,9 @@ public class AgendaFuncionarioDAO {
                 agenda.setAtividade(rs.getString("atividade"));
 
                 // busca cargo e funcionario por id (carrega objetos)
-                int cargoId = rs.getInt("cargo_id");
-                int funcId = rs.getInt("funcionario_id");
+                agenda.setCargo(CargoDAO.buscarCargoPorId(rs.getInt("cargo_id")));
+                agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
 
-                if (cargoId > 0) {
-                    agenda.setCargo(CargoDAO.buscarCargoPorId(cargoId));
-                }
-
-                if (funcId > 0) {
-                    agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(funcId));
-                }
             }
 
         } catch (Exception e) {
@@ -169,16 +162,8 @@ public class AgendaFuncionarioDAO {
                 agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
                 agenda.setAtividade(rs.getString("atividade"));
 
-                int cargoId = rs.getInt("cargo_id");
-                int funcId = rs.getInt("funcionario_id");
-
-                if (cargoId > 0) {
-                    agenda.setCargo(CargoDAO.buscarCargoPorId(cargoId));
-                }
-
-                if (funcId > 0) {
-                    agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(funcId));
-                }
+                agenda.setCargo(CargoDAO.buscarCargoPorId(rs.getInt("cargo_id")));
+                agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
 
                 agendas.add(agenda);
             }
@@ -190,7 +175,3 @@ public class AgendaFuncionarioDAO {
         return agendas;
     }
 }
-
-
-
-   

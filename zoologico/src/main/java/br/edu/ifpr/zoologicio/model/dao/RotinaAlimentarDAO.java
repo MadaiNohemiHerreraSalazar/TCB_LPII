@@ -17,10 +17,7 @@ public class RotinaAlimentarDAO {
 
         String sqlRotinaAlimentar = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento, agendaAnimal_id) VALUES (?,?,?,?)";
 
-        try (
-
-                Connection con = ConnectionFactory.getConnection();
-
+        try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlRotinaAlimentar,
                         PreparedStatement.RETURN_GENERATED_KEYS)) {
 
@@ -86,7 +83,7 @@ public class RotinaAlimentarDAO {
 
         String sqlUpdateRotina = "UPDATE rotinasAlimentares SET data=?, hora=?, quantidadeAlimento=? WHERE id=?";
         String sqlDeleteAlimentos = "DELETE FROM alimento_rotina WHERE rotinaAlimentar_id=?";
-    
+
         try (Connection con = ConnectionFactory.getConnection()) {
 
             // Atualiza a tabela principal
@@ -105,7 +102,7 @@ public class RotinaAlimentarDAO {
             }
 
             // Insere os alimentos atualizados
-              if (!cadastroAlimentos(con, rotinaAlimentar.getAlimentos(), rotinaAlimentar, fornecedor_id)) {
+            if (!cadastroAlimentos(con, rotinaAlimentar.getAlimentos(), rotinaAlimentar, fornecedor_id)) {
                 throw new SQLException("Rotina NÃO cadastrada. Erro ao cadastrar alimentos.");
             }
 

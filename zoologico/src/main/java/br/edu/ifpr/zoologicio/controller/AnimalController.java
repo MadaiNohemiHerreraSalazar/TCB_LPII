@@ -14,16 +14,16 @@ public class AnimalController {
     }
 
 
-    public void cadastrarAnimal(Animal animal){
+    public void cadastrarAnimal(Animal animal, int veterinario_idl){
         if(animal.getNome() == null){
             System.out.println("Nome não pode ser vazio!");
             return;
         }
 
-        dao.cadastrar(animal);
+        dao.cadastrar(animal, veterinario_idl);
     }
 
-    public void editarAnimal(Animal animal){
+    public void editarAnimal(Animal animal, int veterinario_idl){
         if(animal.getNome() == null || animal.getNome().isEmpty()){
             System.out.println("Nome não pode ser vazio!");
             return;
@@ -34,7 +34,7 @@ public class AnimalController {
             return;
         }
 
-        dao.editar(animal);
+        dao.editar(animal, veterinario_idl);
     }
 
     public void deleteAnimal(int id){
@@ -59,9 +59,9 @@ public class AnimalController {
         dao.select(id);
     }
 
-    // public ArrayList<Animal> listarAnimais() {
-    //     return dao.listar();
-    // }
+    public ArrayList<Animal> listarAnimais() {
+        return dao.listar();
+    }
     
     
 }
