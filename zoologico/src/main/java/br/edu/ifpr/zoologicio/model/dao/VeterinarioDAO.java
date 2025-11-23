@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 public class VeterinarioDAO {
 
-
     // CADASTRAR VETERINARIO
     // ______________________________________________________
 
@@ -189,7 +188,7 @@ public class VeterinarioDAO {
         return veterinarios;
     }
 
-    // LISTAR COMPLETO COM ANIMAIS 
+    // LISTAR COMPLETO COM ANIMAIS
     // _________________________________________________________
 
     public static ArrayList<Veterinario> listarCompleto() {
@@ -217,18 +216,18 @@ public class VeterinarioDAO {
         return veterinarios;
     }
 
-    //METODOS AUXILIARES
-    //----------------------------------------------------------------------
+    // METODOS AUXILIARES
+    // ----------------------------------------------------------------------
 
-    //BUSCAR VETERINARIO POR ID - DEVOLVE VET
-    //_______________________________________________________________________
+    // BUSCAR VETERINARIO POR ID - DEVOLVE VET
+    // _______________________________________________________________________
 
     public static Veterinario buscarVeterinarioPorId(int id) {
         Veterinario vet = null;
         String sql = "SELECT id, nome, email FROM veterinarios WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -247,13 +246,12 @@ public class VeterinarioDAO {
         return vet;
     }
 
-
     // BUSCA VETERINARIO POR ID - DEVOLVE ID
-    //_______________________________________________________________________
+    // _______________________________________________________________________
 
     public static int buscaVeterinario_ID(int veterinario_id) {
 
-        String sqlVeterinario = "SELECT from agendaAnimais WHERE nome= ?";
+        String sqlVeterinario = "SELECT from veterinarios WHERE nome= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -272,6 +270,5 @@ public class VeterinarioDAO {
         return id;
 
     }
-
 
 }

@@ -358,7 +358,7 @@ public class FuncionarioDAO {
 
     public static int buscaFuncionario_ID(int funcionario_id) {
 
-        String sqlFuncionario = "SELECT from agendaAnimais WHERE nome= ?";
+        String sqlFuncionario = "SELECT from funcionarios WHERE nome= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
