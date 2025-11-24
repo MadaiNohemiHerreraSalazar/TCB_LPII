@@ -6,7 +6,7 @@ public class Cargo_Permissao {
 
     private Integer  id;
     private Cargo cargo;
-    private ArrayList<CargoPermissao> permissoes = new ArrayList<CargoPermissao>();
+    private ArrayList<Permissao> permissoes = new ArrayList<Permissao>();
     private String nome;
     private String descricao;
 

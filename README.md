@@ -18,6 +18,7 @@ faltam 10 dias para dia 3/12
 
     - Ticket
     - Permissao
+    - CargoPermissao
 
 -> verficiar objetos que tem permissão para editar outros objetos
 

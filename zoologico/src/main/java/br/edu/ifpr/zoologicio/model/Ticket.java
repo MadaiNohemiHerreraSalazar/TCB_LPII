@@ -11,7 +11,7 @@ public class Ticket {
     public Ticket() {
 
     }
-
+ 
     public Integer  getId() {
         return id;
     }

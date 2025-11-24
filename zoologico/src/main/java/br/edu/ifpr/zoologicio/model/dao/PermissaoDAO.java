@@ -32,14 +32,15 @@ public class PermissaoDAO {
 
 
 
-    public static void editar(Connection con) {
+    public static void editar(Permissao permissoes) {
+
+
+            String sqlPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
 
         Connection con = ConnectionFactory.getConnection();
 
-        try {
 
-            String sqlPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sqlPermissao);
+          try (PreparedStatement pst = con.prepareStatement(sqlPermissao)) {
 
             pst.setString(1, permissao.getNome());
             pst.setString(2, permissao.getDescricao());

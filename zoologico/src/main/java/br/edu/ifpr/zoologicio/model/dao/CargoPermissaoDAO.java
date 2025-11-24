@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.Cargo;
 import br.edu.ifpr.zoologicio.model.Cargo_Permissao;
-import br.edu.ifpr.zoologicio.model.CargoPermissao;
 
 public class CargoPermissaoDAO {
 
