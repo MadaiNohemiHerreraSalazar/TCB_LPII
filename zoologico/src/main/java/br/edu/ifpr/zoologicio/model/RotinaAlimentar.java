@@ -48,7 +48,6 @@ public class RotinaAlimentar {
         this.quantidadeAlimento = quantidadeAlimento;
     }
 
-    //////
     public void reduzirQuantidade(String quantidadeAlimento) {
         int estoqueAtual = Integer.parseInt(this.quantidadeAlimento);
         int intQuantidadeReduzir =  Integer.parseInt(quantidadeAlimento);
@@ -61,7 +60,6 @@ public class RotinaAlimentar {
         int intQuantidadeAumenta  = Integer.parseInt(quantidadeAlimento);
         this.quantidadeAlimento = String.valueOf(estoqueAtual + intQuantidadeAumenta);
     }
-
 
     public int getAgendaAnimal_ID() {
         return agendaAnimal_ID;

@@ -2,7 +2,7 @@ package br.edu.ifpr.zoologicio.model;
 
 import java.util.ArrayList;
 
-public class Cargo_Permissao {
+public class CargoPermissao {
 
     private Integer  id;
     private Cargo cargo;
@@ -10,13 +10,13 @@ public class Cargo_Permissao {
     private String nome;
     private String descricao;
 
-    public Cargo_Permissao() {
+    public CargoPermissao() {
 
     }
     
     public Integer getId() {
         return id;
-    }
+    } 
 
     public void setId(Integer id) {
         this.id = id;
@@ -31,11 +31,11 @@ public class Cargo_Permissao {
         this.cargo = cargo;
     }
 
-    public ArrayList<CargoPermissao> getPermissoes() {
+    public ArrayList<Permissao> getPermissoes() {
         return permissoes;
     }
 
-    public void setPermissoes(ArrayList<CargoPermissao> permissoes) {
+    public void setPermissoes(ArrayList<Permissao> permissoes) {
         this.permissoes = permissoes;
     }
 

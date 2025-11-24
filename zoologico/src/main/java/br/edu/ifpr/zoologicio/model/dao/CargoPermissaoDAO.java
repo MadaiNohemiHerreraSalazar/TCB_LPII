@@ -8,11 +8,12 @@ import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.Cargo;
-import br.edu.ifpr.zoologicio.model.Cargo_Permissao;
+import br.edu.ifpr.zoologicio.model.CargoPermissao;
+import br.edu.ifpr.zoologicio.model.Permissao;
 
 public class CargoPermissaoDAO {
 
-       public static void cadastrar(Cargo_Permissao CargoPermissao) {
+    public static void cadastrar(CargoPermissao CargoPermissao) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -28,7 +29,7 @@ public class CargoPermissaoDAO {
             pst.executeUpdate();
             System.out.println("Permissão inserida com sucesso");
 
-             if (!cadastrarPermissao(con, CargoPermissao.getPermissoes(), CargoPermissao.getId())) {
+            if (!cadastrarPermissao(con, CargoPermissao.getPermissoes(), CargoPermissao.getId())) {
                 throw new SQLException("Fornecedor NÃO cadastrado. Erro ao cadastrar alimentos vinculados.");
             }
 
@@ -37,7 +38,7 @@ public class CargoPermissaoDAO {
         }
     }
 
-      public static void cadastrarPermissao(CargoPermissao permissao) {
+    public static void cadastrarPermissao(CargoPermissao permissao) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -58,12 +59,12 @@ public class CargoPermissaoDAO {
         }
     }
 
-     public static boolean cadastrarPermissao(Connection con, ArrayList<Permissao> permissao, int cargo_int) {
+    public static boolean cadastrarPermissao(Connection con, ArrayList<Permissao> permissao, int cargo_int) {
 
         String sql = "INSERT INTO CargoPermissao_permissao(fornecedor_id, alimento_id) VALUES (?,?)";
 
         try {
-            for (Permissao permissao: permissao) {
+            for (Permissao permisoes : permissao) {
                 try (PreparedStatement pst = con.prepareStatement(sql)) {
                     pst.setInt(1, cargo_int);
                     pst.setInt(2, alimento.getId());
@@ -78,7 +79,6 @@ public class CargoPermissaoDAO {
             return false;
         }
     }
-
 
     public static void editar(CargoPermissao CargoPermissao) {
 
@@ -179,5 +179,3 @@ public class CargoPermissaoDAO {
     }
 
 }
-
-

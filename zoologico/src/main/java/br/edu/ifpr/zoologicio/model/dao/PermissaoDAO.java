@@ -6,10 +6,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.CargoPermissao;
+import br.edu.ifpr.zoologicio.model.Permissao;
 
 public class PermissaoDAO {
-  
-    public static void cadastrar(CargoPermissao permissao) {
+
+    public static void cadastrar(Permissao permissao) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -30,21 +31,16 @@ public class PermissaoDAO {
         }
     }
 
+    public static void editar(Permissao permissao) {
 
-
-    public static void editar(Permissao permissoes) {
-
-
-            String sqlPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
+        String sqlPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
 
         Connection con = ConnectionFactory.getConnection();
 
-
-          try (PreparedStatement pst = con.prepareStatement(sqlPermissao)) {
+        try (PreparedStatement pst = con.prepareStatement(sqlPermissao)) {
 
             pst.setString(1, permissao.getNome());
             pst.setString(2, permissao.getDescricao());
-            pst.setInt(3, permissao.getId());
 
             pst.executeUpdate();
             System.out.println("Permissão atualizada com sucesso");
@@ -132,4 +128,3 @@ public class PermissaoDAO {
     }
 
 }
-

@@ -14,12 +14,6 @@ faltam 10 dias para dia 3/12
 
 //DAOs e Controllers:
 
--DAOS e Controllers por arrumar:
-
-    - Ticket
-    - Permissao
-    - CargoPermissao
-
 -> verficiar objetos que tem permissão para editar outros objetos
 
 //classes
