@@ -1,6 +1,6 @@
 //gerado automaticamente ao fazer compra
 
-package br.edu.ifpr.zoologicio.model.dao;
+package br.edu.ifpr.zoologicio.model.dao;  
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -6,7 +6,7 @@ public class Cargo_Permissao {
 
     private Integer  id;
     private Cargo cargo;
-    private ArrayList<Permissao> permissoes = new ArrayList<Permissao>();
+    private ArrayList<CargoPermissao> permissoes = new ArrayList<CargoPermissao>();
     private String nome;
     private String descricao;
 
@@ -31,11 +31,11 @@ public class Cargo_Permissao {
         this.cargo = cargo;
     }
 
-    public ArrayList<Permissao> getPermissoes() {
+    public ArrayList<CargoPermissao> getPermissoes() {
         return permissoes;
     }
 
-    public void setPermissoes(ArrayList<Permissao> permissoes) {
+    public void setPermissoes(ArrayList<CargoPermissao> permissoes) {
         this.permissoes = permissoes;
     }
 

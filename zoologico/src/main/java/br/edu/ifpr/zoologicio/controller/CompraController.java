@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.Compra;
 import br.edu.ifpr.zoologicio.model.dao.CompraDAO;
 import br.edu.ifpr.zoologicio.model.dao.FuncionarioDAO;
-import br.edu.ifpr.zoologicio.model.dao.VisitanteDAO;
 
 public class CompraController {
 
@@ -20,21 +19,14 @@ public class CompraController {
             return;
         }
 
-         int visitanteID = VisitanteDAO.buscaVisitante_ID(visitante_id);
-        
-        if (visitanteID <= 0) {
-            System.out.println("Fornecedor inválido!");
-            return;
-        }
-
         Integer funcionarioID = FuncionarioDAO.buscaFuncionario_ID(funcionario_id);
         
-        if (visitanteID <= 0 ) {
+        if (funcionarioID <= 0 ) {
             System.out.println("Fornecedor inválido!");
             return;
         }
 
-        CompraDAO.cadastrar(compra, visitanteID, funcionarioID);
+        CompraDAO.cadastrar(compra, funcionarioID);
     }
 
     // Editar
@@ -54,16 +46,10 @@ public class CompraController {
             return;
         }
 
-         int visitanteID = VisitanteDAO.buscaVisitante_ID(visitante_id);
-        
-        if (visitanteID <= 0) {
-            System.out.println("Fornecedor inválido!");
-            return;
-        }
 
         Integer funcionarioID = FuncionarioDAO.buscaFuncionario_ID(funcionario_id);
         
-        if (visitanteID <= 0 ) {
+        if (funcionarioID <= 0 ) {
             System.out.println("Fornecedor inválido!");
             return;
         }

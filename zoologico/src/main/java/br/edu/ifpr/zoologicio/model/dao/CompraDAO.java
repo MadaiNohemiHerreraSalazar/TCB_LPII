@@ -5,10 +5,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class CompraDAO {
-
+  
     // CADASTRAR COMPRA
     // ______________________________________________________
-    public static void cadastrar(Compra compra, int visitante_id, int funcionario_id) {
+    public static void cadastrar(Compra compra, int funcionario_id) {
 
         String sqlCompra = "INSERT INTO compras(data, hora, quantidade, meioPagamento, precoTotal, visitante_id, funcionario_id) "
                 + "VALUES (?,?,?,?,?,?,?)";
@@ -21,7 +21,7 @@ public class CompraDAO {
             pst.setString(3, compra.getQuantidade());
             pst.setString(4, compra.getMeioPagamento());
             pst.setString(5, compra.getPrecoTotal());
-            pst.setInt(6, visitante_id);
+            pst.setString(6, compra.getVisitante());
             pst.setInt(7, funcionario_id);
 
             pst.executeUpdate();
@@ -163,8 +163,8 @@ public class CompraDAO {
                 compra.setQuantidade(rs.getString("quantidade"));
                 compra.setMeioPagamento(rs.getString("meioPagamento"));
                 compra.setPrecoTotal(rs.getString("precoTotal"));
+                compra.setVisitante(rs.getString("cpf"));
 
-                compra.setVisitante(VisitanteDAO.buscarVisitantePor_ID(rs.getInt("visitante_id")));
                 compra.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
                 compra.setTickets(TicketDAO.buscarTicketsPorCompra(id));
             }

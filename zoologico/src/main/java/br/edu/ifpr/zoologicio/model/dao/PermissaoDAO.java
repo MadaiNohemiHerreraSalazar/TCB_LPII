@@ -5,11 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.Permissao;
+import br.edu.ifpr.zoologicio.model.CargoPermissao;
 
 public class PermissaoDAO {
-
-    public static void cadastrar(Permissao permissao) {
+  
+    public static void cadastrar(CargoPermissao permissao) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -30,7 +30,9 @@ public class PermissaoDAO {
         }
     }
 
-    public static void editar(Permissao permissao) {
+
+
+    public static void editar(Connection con) {
 
         Connection con = ConnectionFactory.getConnection();
 
@@ -70,10 +72,10 @@ public class PermissaoDAO {
         }
     }
 
-    public ArrayList<Permissao> select(int id) {
+    public ArrayList<CargoPermissao> select(int id) {
 
         Connection con = ConnectionFactory.getConnection();
-        ArrayList<Permissao> permissoes = new ArrayList<>();
+        ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
         try {
 
@@ -85,7 +87,7 @@ public class PermissaoDAO {
 
             while (rs.next()) {
 
-                Permissao permissao = new Permissao();
+                CargoPermissao permissao = new CargoPermissao();
                 permissao.setId(rs.getInt("id"));
                 permissao.setNome(rs.getString("nome"));
                 permissao.setDescricao(rs.getString("descricao"));
@@ -100,10 +102,10 @@ public class PermissaoDAO {
         return permissoes;
     }
 
-    public ArrayList<Permissao> listar() {
+    public ArrayList<CargoPermissao> listar() {
 
         Connection con = ConnectionFactory.getConnection();
-        ArrayList<Permissao> permissoes = new ArrayList<>();
+        ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
         try {
 
@@ -113,7 +115,7 @@ public class PermissaoDAO {
 
             while (rs.next()) {
 
-                Permissao permissao = new Permissao();
+                CargoPermissao permissao = new CargoPermissao();
                 permissao.setId(rs.getInt("id"));
                 permissao.setNome(rs.getString("nome"));
                 permissao.setDescricao(rs.getString("descricao"));

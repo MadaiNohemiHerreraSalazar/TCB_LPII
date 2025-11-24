@@ -10,7 +10,7 @@ public class Compra {
     private String quantidade;
     private String meioPagamento;
     private String precoTotal;
-    private Visitante visitante;
+    private String visitante;
     private Funcionario funcionario;
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
@@ -74,11 +74,11 @@ public class Compra {
         this.tickets = tickets;
     }
 
-    public Visitante getVisitante() {
+    public String getVisitante() {
         return visitante;
     }
 
-    public void setVisitante(Visitante visitante) {
+    public void setVisitante(String visitante) {
         this.visitante = visitante;
     }
 

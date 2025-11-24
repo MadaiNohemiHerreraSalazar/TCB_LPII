@@ -1,6 +1,6 @@
 # TCB_LPII
 
-faltam 11 dias para dia 3/12
+faltam 10 dias para dia 3/12
 
 //requisitos
 -> terminar
@@ -16,10 +16,8 @@ faltam 11 dias para dia 3/12
 
 -DAOS e Controllers por arrumar:
 
-    - Visitante
     - Ticket
     - Permissao
-    - Compra
 
 -> verficiar objetos que tem permissão para editar outros objetos
 

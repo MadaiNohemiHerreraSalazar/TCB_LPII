@@ -1,13 +1,13 @@
 package br.edu.ifpr.zoologicio.model;
 
-public class Permissao {
+public class CargoPermissao {
 
     private Integer id;
     private String nome;
     private String descricao;
     private Cargo_Permissao cargoPermissao;
 
-    public Permissao() {
+    public CargoPermissao() {
 
     }
 
