@@ -3,6 +3,7 @@ package br.edu.ifpr.zoologicio.model;
 import java.util.ArrayList;
 
 public class RotinaAlimentar {
+    //retira e adiciona alimento
     
     private Integer  id;
     private String data;
@@ -55,7 +56,7 @@ public class RotinaAlimentar {
 
     }
 
-    public void adicionarEstoque(String quantidadeAlimento) {
+    public void adicionarQuantidade(String quantidadeAlimento) {
         int estoqueAtual = Integer.parseInt(this.quantidadeAlimento);
         int intQuantidadeAumenta  = Integer.parseInt(quantidadeAlimento);
         this.quantidadeAlimento = String.valueOf(estoqueAtual + intQuantidadeAumenta);

@@ -3,8 +3,9 @@ package br.edu.ifpr.zoologicio.model;
 import java.util.ArrayList;
 
 public class Fornecedor {
+    // retira e adiciona alimentos
 
-    private Integer  id;
+    private Integer id;
     private String nome;
     private String cpf;
     private String telefone;
@@ -61,6 +62,14 @@ public class Fornecedor {
 
     public void setAlimentos(ArrayList<Alimento> alimentos) {
         this.alimentos = alimentos;
+    }
+
+     public void retirarALimento(ArrayList<Alimento> alimentos) {
+
+    }
+
+    public void adicionarAlimento(ArrayList<Alimento> alimentos) {
+
     }
 
 }

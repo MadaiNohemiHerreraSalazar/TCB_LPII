@@ -3,14 +3,15 @@ package br.edu.ifpr.zoologicio.model;
 import java.util.ArrayList;
 
 public class Habitat {
+    //retira e adiciona animais
 
-    private Integer  id;
+    private Integer id;
     private String nome;
     private String descricao;
     private String capacidade;
     private Area area;
     private ArrayList<Animal> animais = new ArrayList<Animal>();
-    
+
     public Integer getId() {
         return id;
     }
@@ -22,8 +23,6 @@ public class Habitat {
     public void setArea(Area area) {
         this.area = area;
     }
-
-    
 
     public Habitat() {
 
@@ -53,6 +52,13 @@ public class Habitat {
         this.capacidade = capacidade;
     }
 
+    public void reduzirAnimal(ArrayList<Animal> animais) {
+
+    }
+
+    public void adicionarAnimal(ArrayList<Animal> animais) {
+
+    }
 
     public ArrayList<Animal> getAnimais() {
         return animais;

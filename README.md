@@ -14,6 +14,15 @@ faltam 10 dias para dia 3/12
 
 //DAOs e Controllers:
 
+Tarefinhas (gi):
+
+   -terminar capacidade animal (Habitat) e arrumar seu dao  
+   -terminar estoque alimento (Fornecedor) e arrumar seu dao
+   - verificar classe fornecedor_alimentos 
+   - verificar cargo, permissao, cargoPermissao (daos)
+   
+
+
 -> verficiar objetos que tem permissão para editar outros objetos
 
 //classes
