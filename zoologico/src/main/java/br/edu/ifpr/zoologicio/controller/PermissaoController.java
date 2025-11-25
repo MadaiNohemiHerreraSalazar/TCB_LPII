@@ -24,7 +24,7 @@ public class PermissaoController {
             return;
         }
 
-        PermissaoDAO.cadastrar(permissao);
+        // PermissaoDAO.cadastrarPermissao(permissao);
     }
 
     // Editar
@@ -42,7 +42,7 @@ public class PermissaoController {
             return;
         }
 
-        PermissaoDAO.editar((Connection) permissao);
+        // PermissaoDAO.editarPermissao(permissao);
     }
 
     // Excluir

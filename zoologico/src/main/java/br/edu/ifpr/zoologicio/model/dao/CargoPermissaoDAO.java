@@ -67,7 +67,6 @@ public class CargoPermissaoDAO {
             for (Permissao permisoes : permissao) {
                 try (PreparedStatement pst = con.prepareStatement(sql)) {
                     pst.setInt(1, cargo_int);
-                    pst.setInt(2, alimento.getId());
                     pst.executeUpdate();
                 }
             }

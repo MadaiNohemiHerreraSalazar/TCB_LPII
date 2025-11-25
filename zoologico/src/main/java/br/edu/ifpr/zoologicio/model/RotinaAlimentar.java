@@ -3,9 +3,8 @@ package br.edu.ifpr.zoologicio.model;
 import java.util.ArrayList;
 
 public class RotinaAlimentar {
-    //retira e adiciona alimento
-    
-    private Integer  id;
+
+    private Integer id;
     private String data;
     private String hora;
     private String quantidadeAlimento;
@@ -13,11 +12,11 @@ public class RotinaAlimentar {
     private AgendaAnimal agendaAnimal;
     private ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
 
-     public Integer  getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Integer  id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,19 +48,6 @@ public class RotinaAlimentar {
         this.quantidadeAlimento = quantidadeAlimento;
     }
 
-    public void reduzirQuantidade(String quantidadeAlimento) {
-        int estoqueAtual = Integer.parseInt(this.quantidadeAlimento);
-        int intQuantidadeReduzir =  Integer.parseInt(quantidadeAlimento);
-        this.quantidadeAlimento = String.valueOf(estoqueAtual - intQuantidadeReduzir);
-
-    }
-
-    public void adicionarQuantidade(String quantidadeAlimento) {
-        int estoqueAtual = Integer.parseInt(this.quantidadeAlimento);
-        int intQuantidadeAumenta  = Integer.parseInt(quantidadeAlimento);
-        this.quantidadeAlimento = String.valueOf(estoqueAtual + intQuantidadeAumenta);
-    }
-
     public int getAgendaAnimal_ID() {
         return agendaAnimal_ID;
     }
@@ -75,7 +61,7 @@ public class RotinaAlimentar {
     }
 
     public void setAgendaAnimal(AgendaAnimal agendaAnimal) {
-        this.agendaAnimal= agendaAnimal;
+        this.agendaAnimal = agendaAnimal;
     }
 
     public ArrayList<Alimento> getAlimentos() {

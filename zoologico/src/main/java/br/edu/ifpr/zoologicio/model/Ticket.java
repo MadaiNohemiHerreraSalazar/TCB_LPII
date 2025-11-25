@@ -2,7 +2,7 @@ package br.edu.ifpr.zoologicio.model;
 
 public class Ticket {
 
-    private Integer  id;
+    private Integer id;
     private String data;
     private String hora;
     private String preco;
@@ -11,12 +11,12 @@ public class Ticket {
     public Ticket() {
 
     }
- 
-    public Integer  getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Integer  id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -51,6 +51,5 @@ public class Ticket {
     public void setCompra(Compra compra) {
         this.compra = compra;
     }
-
 
 }
