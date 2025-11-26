@@ -12,7 +12,7 @@ public class RotinaAlimentarController {
     private RotinaAlimentarDAO dao;
 
     public RotinaAlimentarController() {
-        this.dao = new RotinaAlimentarDAO();
+        this.dao = new RotinaAlimentarDAO();  
     }
 
     // CADASTRAR
@@ -42,11 +42,6 @@ public class RotinaAlimentarController {
 
         Integer fornecedorId = FornecedorDAO.buscaFornecedor_ID(fornecedor_id);
         
-        if (fornecedorId == null) {
-            System.out.println("Fornecedor inválido!");
-            return;
-        }
-
         RotinaAlimentarDAO.cadastrar(rotinaAlimentar, idAgendaAnimal, fornecedorId);
         System.out.println("RotinaAlimentar cadastrada com sucesso!");
     }

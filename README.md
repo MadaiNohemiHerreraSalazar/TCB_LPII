@@ -1,19 +1,10 @@
 # TCB_LPII
 
-//requisitos
--> terminar
+Arrumar:
+-> Arrumar DER e BD
+-> ConnectionFactory
 
-//arrumar DER
-->remover atributos 
-->remover cadastros 
-
-//conexão com banco de dados 
--> connection factory (pesquisar como fazer funcionar em todas os computadores a conexão) 
-
-//DAOs
--> cargoPermissao
-->
-
-
-
-//Controllers
+Interface:
+-> Inserir senha - redireciona para opções de acordo com seu cargo 
+-> Funcionário escolhe o que fazer - cadastrar, editar, selecionar, listar, deletar
+-> Tela final

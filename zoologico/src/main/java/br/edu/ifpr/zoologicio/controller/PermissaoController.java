@@ -1,8 +1,8 @@
 package br.edu.ifpr.zoologicio.controller;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.CargoPermissao;
+import br.edu.ifpr.zoologicio.model.Permissao;
 import br.edu.ifpr.zoologicio.model.dao.PermissaoDAO;
 
 public class PermissaoController {
@@ -14,7 +14,7 @@ public class PermissaoController {
     }
 
     // Cadastrar
-    public void cadastrarPermissao(CargoPermissao permissao) {
+    public void cadastrarPermissao(Permissao permissao) {
         if (permissao == null) {
             System.out.println("Objeto Permissão inválido!");
             return;
@@ -24,11 +24,11 @@ public class PermissaoController {
             return;
         }
 
-        // PermissaoDAO.cadastrarPermissao(permissao);
+        PermissaoDAO.cadastrar(permissao);
     }
 
     // Editar
-    public void editarPermissao(CargoPermissao permissao) {
+    public void editarPermissao(Permissao permissao) {
         if (permissao == null) {
             System.out.println("Objeto Permissão inválido!");
             return;
@@ -42,7 +42,7 @@ public class PermissaoController {
             return;
         }
 
-        // PermissaoDAO.editarPermissao(permissao);
+        PermissaoDAO.editar(permissao);
     }
 
     // Excluir

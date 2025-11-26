@@ -93,7 +93,7 @@ public class AnimalDAO {
             }
 
             // Cria o novo vínculo com veterinário
-           cadastrarAnimalVeterinario(con, animal.getId(), veterinarioId);
+            cadastrarAnimalVeterinario(con, animal.getId(), veterinarioId);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -221,8 +221,8 @@ public class AnimalDAO {
         return animais;
     }
 
-    //METODOS AUXILIARES
-    //-------------------------------------------------------------------------------
+    // METODOS AUXILIARES
+    // -------------------------------------------------------------------------------
 
     // BUSCAR ANIMAIS POR VETERINARIO
     // ______________________________________________________________________________

@@ -18,6 +18,7 @@ public class VeterinarioDAO {
         String sqlVeterinario = "INSERT INTO veterinarios(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
+        
                 PreparedStatement pst = con.prepareStatement(sqlVeterinario, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, veterinario.getNome());

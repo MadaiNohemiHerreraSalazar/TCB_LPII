@@ -6,22 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import br.edu.ifpr.zoologicio.model.Alimento;
-import br.edu.ifpr.zoologicio.model.Cargo;
 import br.edu.ifpr.zoologicio.model.CargoPermissao;
 import br.edu.ifpr.zoologicio.model.Permissao;
 
 public class CargoPermissaoDAO {
 
+    // CADASTRAR CARGO PERMISSAO
+    // ______________________________________________________
     public static void cadastrar(CargoPermissao CargoPermissao) {
-
-        Connection con = ConnectionFactory.getConnection();
 
         String sqlPermissao = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
 
-            PreparedStatement pst = con.prepareStatement(sqlPermissao);
+                PreparedStatement pst = con.prepareStatement(sqlPermissao, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, CargoPermissao.getNome());
             pst.setString(2, CargoPermissao.getDescricao());
@@ -38,55 +36,14 @@ public class CargoPermissaoDAO {
         }
     }
 
-    public static void cadastrarPermissao(CargoPermissao permissao) {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        String sqlPermissao = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
-
-        try {
-
-            PreparedStatement pst = con.prepareStatement(sqlPermissao);
-
-            pst.setString(1, permissao.getNome());
-            pst.setString(2, permissao.getDescricao());
-
-            pst.executeUpdate();
-            System.out.println("Permissão inserida com sucesso");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean cadastrarPermissao(Connection con, ArrayList<Permissao> permissao, int cargo_int) {
-
-        String sql = "INSERT INTO CargoPermissao_permissao(fornecedor_id, alimento_id) VALUES (?,?)";
-
-        try {
-            for (Permissao permisoes : permissao) {
-                try (PreparedStatement pst = con.prepareStatement(sql)) {
-                    pst.setInt(1, cargo_int);
-                    pst.executeUpdate();
-                }
-            }
-            System.out.println("Alimentos vinculados ao fornecedor com sucesso!");
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    // EDITAR CARGO PERMISSAO
+    // ______________________________________________________
     public static void editar(CargoPermissao CargoPermissao) {
 
-        Connection con = ConnectionFactory.getConnection();
+        String sqlCargoPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
 
-        try {
-
-            String sqlCargoPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sqlCargoPermissao);
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlCargoPermissao)) {
 
             pst.setString(1, CargoPermissao.getNome());
             pst.setString(2, CargoPermissao.getDescricao());
@@ -96,19 +53,20 @@ public class CargoPermissaoDAO {
             System.out.println("Permissão atualizada com sucesso");
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
     }
 
+    // DELETE CARGO PERMISSAO
+    // ______________________________________________________
     public void delete(int id) {
 
-        Connection con = ConnectionFactory.getConnection();
+        String sqlCargoPermissao = "DELETE FROM permissoes WHERE id=?";
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlCargoPermissao)) {
 
-            String sqlCargoPermissao = "DELETE FROM permissoes WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sqlCargoPermissao);
             pst.setInt(1, id);
 
             pst.executeUpdate();
@@ -120,14 +78,13 @@ public class CargoPermissaoDAO {
     }
 
     public ArrayList<CargoPermissao> select(int id) {
+        String sqlCargoPermissao = "SELECT * FROM permissoes WHERE id=?";
 
-        Connection con = ConnectionFactory.getConnection();
         ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlCargoPermissao)) {
 
-            String sqlCargoPermissao = "SELECT * FROM permissoes WHERE id=?";
-            PreparedStatement pst = con.prepareStatement(sqlCargoPermissao);
             pst.setInt(1, id);
 
             ResultSet rs = pst.executeQuery();
@@ -150,14 +107,13 @@ public class CargoPermissaoDAO {
     }
 
     public ArrayList<CargoPermissao> listar() {
+        String sqlCargoPermissao = "SELECT * FROM permissoes";
 
-        Connection con = ConnectionFactory.getConnection();
         ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
-        try {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlCargoPermissao)) {
 
-            String sqlCargoPermissao = "SELECT * FROM permissoes";
-            PreparedStatement pst = con.prepareStatement(sqlCargoPermissao);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
@@ -176,5 +132,48 @@ public class CargoPermissaoDAO {
 
         return permissoes;
     }
+
+    // METODOS AUXILIARES
+    // ----------------------------------------------------------------
+
+    public static void cadastrarPermissao(CargoPermissao permissao) {
+
+        String sqlPermissao = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sqlPermissao)) {
+
+            pst.setString(1, permissao.getNome());
+            pst.setString(2, permissao.getDescricao());
+
+            pst.executeUpdate();
+            System.out.println("Permissão inserida com sucesso");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean cadastrarPermissao(Connection con, ArrayList<Permissao> permissao, int cargo_int) {
+
+    String sql = "INSERT INTO cargo_permissao(cargo_id, permissao_id) VALUES (?,?)";
+
+    try {
+        for (Permissao p : permissao) {
+            try (PreparedStatement pst = con.prepareStatement(sql)) {
+                pst.setInt(1, cargo_int);
+                pst.setInt(2, p.getId()); 
+                pst.executeUpdate();
+            }
+        }
+
+        System.out.println("Permissões vinculadas ao cargo com sucesso!");
+        return true;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 
 }

@@ -3,7 +3,7 @@ package br.edu.ifpr.zoologicio.controller;
 import java.util.ArrayList;
 
 import br.edu.ifpr.zoologicio.model.Animal;
-import br.edu.ifpr.zoologicio.model.dao.AnimalDAO;
+import br.edu.ifpr.zoologicio.model.dao.AnimalDAO;  
 import br.edu.ifpr.zoologicio.model.dao.VeterinarioDAO;
 
 public class AnimalController {

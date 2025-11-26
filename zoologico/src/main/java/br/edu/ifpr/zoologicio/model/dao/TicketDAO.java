@@ -62,12 +62,15 @@ public class TicketDAO {
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return tickets;
     }
+
+
+    // LISTAR TICKET
+    // ______________________________________________________
 
     public ArrayList<Ticket> listar() {
 
@@ -93,8 +96,7 @@ public class TicketDAO {
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return tickets;
