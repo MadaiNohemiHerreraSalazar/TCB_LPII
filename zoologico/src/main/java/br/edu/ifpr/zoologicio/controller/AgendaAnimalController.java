@@ -22,7 +22,7 @@ public class AgendaAnimalController {
     }
 
     // Editar
-    public void editarAgendaAnimal(AgendaAnimal agendaAnimal) {
+    public static void editarAgendaAnimal(AgendaAnimal agendaAnimal) {
         if (agendaAnimal == null) {
             System.out.println("Objeto AgendaAnimal não pode ser nulo!");
             return;

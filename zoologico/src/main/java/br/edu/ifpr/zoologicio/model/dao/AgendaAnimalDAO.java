@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
 
+
 import br.edu.ifpr.zoologicio.model.AgendaAnimal;
+
 
 public class AgendaAnimalDAO {
 
@@ -153,23 +155,22 @@ public class AgendaAnimalDAO {
         return agendas;
     }
 
-    //METODOS AUXILIARES
-    //------------------------------------------------------------
-    // BUSCAR AGENDA ANIMAL POR ID - DEVOLVE ID
-    // ______________________________________________________
+    // METODOS AUXILIARES
+    //____________________________________________________________________
 
-    public static int buscarAgendaAnimal_ID(int animal_id) {
 
-        String sqlAgendaAnimal = "SELECT * FROM agendaAnimais WHERE id = ?";
-        int id = -1;
+    public static AgendaAnimal buscarAgendaAnimalPorID(int id) {
+        String sql = "SELECT id FROM agendaAnimais WHERE id = ?";
+        AgendaAnimal agenda = null;
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sqlAgendaAnimal)) {
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, animal_id);
+            pst.setInt(1, id);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    id = rs.getInt("id");
+                    agenda = new AgendaAnimal();
+                    agenda.setId(rs.getInt("id"));
                 }
             }
 
@@ -177,7 +178,7 @@ public class AgendaAnimalDAO {
             e.printStackTrace();
         }
 
-        return id;
+        return agenda;
     }
 
 }

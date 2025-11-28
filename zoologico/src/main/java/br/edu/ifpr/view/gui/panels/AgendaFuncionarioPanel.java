@@ -2,7 +2,9 @@ package br.edu.ifpr.view.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -14,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 
 public class AgendaFuncionarioPanel {
 
@@ -22,7 +25,7 @@ public class AgendaFuncionarioPanel {
 
     public static void main(String[] args) {
         criarJanelaPrincipal();
-        mostrarMenuPrincipal();
+        mostrarTelaVerificacao();
     }
 
     // CRIAR JANELA PRINCIPAL COM TITULO
@@ -43,6 +46,69 @@ public class AgendaFuncionarioPanel {
 
         janela.setVisible(true);
     }
+
+    // MOSTRAR TELA DE VERIFICAÇÃO DE PERMISSO
+    //__________________________________________________________
+
+    private static void mostrarTelaVerificacao() {
+    // Limpar painel principal
+    painelPrincipal.removeAll();
+    painelPrincipal.setLayout(new BorderLayout());
+
+    // Título - CENTRO
+    JLabel labelTitulo = new JLabel("Validação de Entrada");
+    labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
+    labelTitulo.setHorizontalAlignment(JLabel.CENTER);
+    
+    JPanel painelTitulo = new JPanel(new BorderLayout());
+    painelTitulo.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+    painelTitulo.add(labelTitulo, BorderLayout.CENTER);
+    painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+
+    // Painel CENTRAL com texto e caixinha
+    JPanel painelCentral = new JPanel();
+    painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
+    painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+
+    // Texto "Coloque a senha"
+    JLabel labelSenha = new JLabel("Coloque a senha:");
+    labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
+    labelSenha.setForeground(Color.BLACK);
+    labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    // Espaço
+    painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
+
+    // Painel para caixinha e botão
+    JPanel painelInput = new JPanel();
+    painelInput.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+
+    JPasswordField campoSenha = new JPasswordField(15);
+    campoSenha.setFont(new Font("Serif", Font.PLAIN, 18));
+
+    JButton botaoVerificar = new JButton("Verificar");
+    botaoVerificar.setFont(new Font("Serif", Font.BOLD, 16));
+    botaoVerificar.setBackground(Color.BLACK);
+    botaoVerificar.setForeground(Color.WHITE);
+
+    painelInput.add(campoSenha);
+    painelInput.add(botaoVerificar);
+
+    // Adicionar ao painel central
+    painelCentral.add(labelSenha);
+    painelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
+    painelCentral.add(painelInput);
+
+    painelPrincipal.add(painelCentral, BorderLayout.CENTER);
+
+    // Atualizar e ActionListeners (mesmo código)
+    painelPrincipal.revalidate();
+    painelPrincipal.repaint();
+
+}
+
+  // MOSTRAR MENU PRINCIPAL
+    // ________________________________________________________
 
     private static void mostrarMenuPrincipal() {
         // Limpar painel principal

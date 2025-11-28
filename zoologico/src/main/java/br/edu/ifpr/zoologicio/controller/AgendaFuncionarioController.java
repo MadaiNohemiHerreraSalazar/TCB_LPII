@@ -7,7 +7,7 @@ import br.edu.ifpr.zoologicio.model.dao.AgendaFuncionarioDAO;
 public class AgendaFuncionarioController {
 
     // Cadastrar
-    public void cadastrarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+    public static void cadastrarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
         if (agendaFuncionario == null) {
             System.out.println("Objeto AgendaFuncionario não pode ser nulo!");
             return;
@@ -22,7 +22,8 @@ public class AgendaFuncionarioController {
     }
 
     // Editar
-    public void editarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+    public static void editarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+        
         if (agendaFuncionario == null) {
             System.out.println("Objeto AgendaFuncionario não pode ser nulo!");
             return;
@@ -42,7 +43,7 @@ public class AgendaFuncionarioController {
     }
 
     // Excluir
-    public void deletarAgendaFuncionario(int id) {
+    public static void deletarAgendaFuncionario(int id) {
         if (id <= 0) {
             System.out.println("ID inválido!");
             return;
@@ -52,7 +53,7 @@ public class AgendaFuncionarioController {
     }
 
     // Selecionar por ID
-    public AgendaFuncionario selecionarAgendaFuncionario(int id) {
+    public static AgendaFuncionario selecionarAgendaFuncionario(int id) {
         if (id <= 0) {
             System.out.println("ID inválido!");
             return null;
@@ -62,12 +63,12 @@ public class AgendaFuncionarioController {
     }
 
     // Listar simples
-    public ArrayList<AgendaFuncionario> listarAgendaFuncionarios() {
+    public static ArrayList<AgendaFuncionario> listarAgendaFuncionarios() {
         return AgendaFuncionarioDAO.listar();
     }
 
     // Listar completo com Cargo + Funcionario
-    public ArrayList<AgendaFuncionario> listarAgendaFuncionariosCompleto() {
+    public static ArrayList<AgendaFuncionario> listarAgendaFuncionariosCompleto() {
         return AgendaFuncionarioDAO.listarCompleto();
     }
 }

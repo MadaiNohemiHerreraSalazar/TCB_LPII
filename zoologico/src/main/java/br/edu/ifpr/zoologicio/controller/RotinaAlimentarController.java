@@ -2,6 +2,7 @@ package br.edu.ifpr.zoologicio.controller;
 
 import java.util.ArrayList;
 
+import br.edu.ifpr.zoologicio.model.AgendaAnimal;
 import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 import br.edu.ifpr.zoologicio.model.dao.AgendaAnimalDAO;
 import br.edu.ifpr.zoologicio.model.dao.FornecedorDAO;
@@ -32,17 +33,16 @@ public class RotinaAlimentarController {
             return;
         }
 
-        int idAgendaAnimal = AgendaAnimalDAO
-                .buscarAgendaAnimal_ID(rotinaAlimentar.getAgendaAnimal().getAnimal().getId());
+         AgendaAnimal agenda = AgendaAnimalDAO.buscarAgendaAnimalPorID(rotinaAlimentar.getAgendaAnimal().getAnimal().getId());
 
-        if (idAgendaAnimal <= 0) {
+        if (agenda.getId() <= 0) {
             System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
             return;
         }
 
         Integer fornecedorId = FornecedorDAO.buscaFornecedor_ID(fornecedor_id);
         
-        RotinaAlimentarDAO.cadastrar(rotinaAlimentar, idAgendaAnimal, fornecedorId);
+        RotinaAlimentarDAO.cadastrar(rotinaAlimentar, agenda.getId(), fornecedorId);
         System.out.println("RotinaAlimentar cadastrada com sucesso!");
     }
 
