@@ -8,7 +8,6 @@ public class RotinaAlimentar {
     private String data;
     private String hora;
     private String quantidadeAlimento;
-    private int agendaAnimal_ID;
     private AgendaAnimal agendaAnimal;
     private ArrayList<Alimento> alimentos = new ArrayList<Alimento>();
 
@@ -48,13 +47,6 @@ public class RotinaAlimentar {
         this.quantidadeAlimento = quantidadeAlimento;
     }
 
-    public int getAgendaAnimal_ID() {
-        return agendaAnimal_ID;
-    }
-
-    public void setAgendaAnimal_ID(int agendaAnimal_ID) {
-        this.agendaAnimal_ID = agendaAnimal_ID;
-    }
 
     public AgendaAnimal getAgendaAnimal() {
         return agendaAnimal;

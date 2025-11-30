@@ -1,6 +1,20 @@
 package br.edu.ifpr.view.gui;
 
 import javax.swing.*;
+
+import br.edu.ifpr.view.gui.panels.AgendaAnimalPanel;
+import br.edu.ifpr.view.gui.panels.AgendaFuncionarioPanel;
+import br.edu.ifpr.view.gui.panels.AlimentoPanel;
+import br.edu.ifpr.view.gui.panels.AnimalPanel;
+import br.edu.ifpr.view.gui.panels.AreaPanel;
+import br.edu.ifpr.view.gui.panels.CargoPanel;
+import br.edu.ifpr.view.gui.panels.CompraPanel;
+import br.edu.ifpr.view.gui.panels.FornecedorPanel;
+import br.edu.ifpr.view.gui.panels.FuncionarioPanel;
+import br.edu.ifpr.view.gui.panels.HabitatPanel;
+import br.edu.ifpr.view.gui.panels.RotinaAlimentarPanel;
+import br.edu.ifpr.view.gui.panels.VeterinarioPanel;
+
 import java.awt.*;
 
 public class MainFrame {
@@ -35,8 +49,8 @@ public class MainFrame {
     // MOSTRAR TELA PRINCIPAL
     // ____________________________________________________________
 
-    private static void mostrarTelaInicial() {
-        // Limpar painel principal
+    public static void mostrarTelaInicial() {
+    
         painelPrincipal.removeAll();
 
         // Label topo com texto
@@ -44,7 +58,7 @@ public class MainFrame {
         label.setFont(new Font("Serif", Font.BOLD, 50));
         label.setHorizontalAlignment(JLabel.CENTER);
 
-        // Painel para o label topo com espaçamento
+
         JPanel painelLabel = new JPanel(new BorderLayout());
         painelLabel.setBorder(BorderFactory.createEmptyBorder(100, 0, 20, 0));
         painelLabel.add(label, BorderLayout.CENTER);
@@ -67,7 +81,7 @@ public class MainFrame {
         btnEntrar.setFocusPainted(false);
 
         // Ação do botão para ir ao menu principal
-        btnEntrar.addActionListener(e -> mostrarMenuPrincipal());
+        btnEntrar.addActionListener(e -> mostrarMenuPrincipalMain());
 
         // Painel central com BoxLayout para organizar verticalmente
         JPanel centro = new JPanel();
@@ -96,7 +110,7 @@ public class MainFrame {
     // MOSTRAR MENU PRINCIPAL
     // _____________________________________________________________
 
-    private static void mostrarMenuPrincipal() {
+    public static void mostrarMenuPrincipalMain() {
         // Limpar painel principal
         painelPrincipal.removeAll();
 
@@ -127,8 +141,8 @@ public class MainFrame {
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 
         // Criar botões de gerenciamento
-        String[] gerenciamentos = {"Animais", "Agenda de Animais", "Funcionários", "Agenda de Funcionários",
-                "Cargos", "Áreas", "Habitats", "Vendas", "Fornecedores", "Alimentos", "Veterinarios", "Sair do Sistema"
+        String[] gerenciamentos = { "Animais", "Agenda de Animais", "Funcionários", "Agenda de Funcionários",
+                "Cargos", "Áreas", "Habitats", "Vendas", "Rotinas Alimentares", "Fornecedores", "Alimentos", "Veterinarios", "Sair do Sistema"
         };
 
         for (String gerenciamento : gerenciamentos) {
@@ -165,24 +179,49 @@ public class MainFrame {
         botao.setForeground(Color.WHITE);
         botao.setFocusPainted(false);
 
-          // Asignar la acción correspondiente a cada botón
-    botao.addActionListener(e -> {
-        switch (texto) {
-            case "Gerenciamento de Animais":
-            //     mostrarGerenciamentoAnimais();
-            //     break;
-            // case "Gerenciamento de Funcionários":
-            //     mostrarGerenciamentoFuncionarios();
-            //     break;
-            // case "Gerenciamento de Habitats":
-            //     mostrarGerenciamentoHabitats();
-            //     break;
-            // ... otros casos
-            default:
-                JOptionPane.showMessageDialog(janela, "Abrindo: " + texto);
-        }
-    });
-    
-    return botao;
+        // Asignar la acción correspondiente a cada botón
+        botao.addActionListener(e -> {
+            switch (texto) {
+                case "Agenda de Animais":
+                    AgendaAnimalPanel.main(null);
+                    break;
+                case "Animais":
+                    AnimalPanel.main(null);
+                    break;
+                case "Funcionários":
+                    FuncionarioPanel.main(null);
+                    break;
+                case "Agenda de Funcionários":
+                    AgendaFuncionarioPanel.main(null);
+                    break;
+                case "Cargos":
+                    CargoPanel.main(null);
+                    break;
+                case "Áreas":
+                    AreaPanel.main(null);
+                    break;
+                case "Habitats":
+                    HabitatPanel.main(null);
+                    break;
+                case "Vendas":
+                    CompraPanel.main(null);
+                    break;
+                case "Rotinas Alimentares":
+                    RotinaAlimentarPanel.main(null);
+                    break;
+                case "Alimentos":
+                    AlimentoPanel.main(null);
+                    break;
+                case "Fornecedores":
+                    FornecedorPanel.main(null);
+                    break;
+                case "Veterinários":
+                    VeterinarioPanel.main(null);
+                default:
+                    JOptionPane.showMessageDialog(janela, "Abrindo: " + texto);
+            }
+        });
+
+        return botao;
     }
 }

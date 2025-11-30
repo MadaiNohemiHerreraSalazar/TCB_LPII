@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
-public class RotinaAlimentar {
+public class RotinaAlimentarPanel {
 
     private static JFrame janela;
     private static JPanel painelPrincipal;
