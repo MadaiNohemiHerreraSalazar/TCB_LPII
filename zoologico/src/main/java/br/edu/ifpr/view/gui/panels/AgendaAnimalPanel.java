@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+//mport javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -37,7 +37,7 @@ public class AgendaAnimalPanel {
 
     public static void main(String[] args) {
         criarJanelaPrincipal();
-        mostrarTelaVerificacao();
+        mostrarMenuPrincipal();
 
     }
 
@@ -63,86 +63,89 @@ public class AgendaAnimalPanel {
     // MOSTRAR TELA DE VERIFICAÇÃO DE PERMISSO
     // __________________________________________________________
 
-    private static void mostrarTelaVerificacao() {
-
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
-
-        // Título centralizado
-        JLabel labelTitulo = new JLabel("Validação de Entrada");
-        labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
-        labelTitulo.setHorizontalAlignment(JLabel.CENTER);
-
-        JPanel painelTitulo = new JPanel(new BorderLayout());
-        painelTitulo.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
-        painelTitulo.add(labelTitulo, BorderLayout.CENTER);
-        painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
-
-        // Painel CENTRAL com texto e caixinha
-        JPanel painelCentral = new JPanel();
-        painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
-        painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
-
-        JLabel labelSenha = new JLabel("Coloque a senha:");
-        labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
-        labelSenha.setForeground(Color.BLACK);
-        labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        JPanel painelInput = new JPanel();
-        painelInput.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-
-        JPasswordField campoSenha = new JPasswordField(15);
-        campoSenha.setFont(new Font("Serif", Font.PLAIN, 18));
-
-        JButton botaoVerificar = new JButton("Verificar");
-        botaoVerificar.setFont(new Font("Serif", Font.BOLD, 16));
-        botaoVerificar.setBackground(Color.BLACK);
-        botaoVerificar.setForeground(Color.WHITE);
-
-        JButton botaoVoltar = new JButton("Voltar");
-        botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
-        botaoVoltar.setBackground(Color.GRAY);
-        botaoVoltar.setForeground(Color.WHITE);
-
-        painelInput.add(campoSenha);
-        painelInput.add(botaoVerificar);
-        painelInput.add(botaoVoltar);
-
-        painelCentral.add(labelSenha);
-        painelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
-        painelCentral.add(painelInput);
-
-        painelPrincipal.add(painelCentral, BorderLayout.CENTER);
-
-        // Verifica senha e vai para próxima tela
-        ActionListener verificarSenhaAction = e -> {
-            String senhaCorreta = "1234"; // GIO : Aqui vc tem que fazer que ele pegue a senha do usuario e buscar se tem a permissão.
-            String senhaDigitada = new String(campoSenha.getPassword()).trim();
-
-            if (senhaDigitada.equals(senhaCorreta)) {
-                JOptionPane.showMessageDialog(painelPrincipal,
-                        "Acesso permitido!",
-                        "Sucesso",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                mostrarMenuPrincipal(); // Chama a próxima tela
-            } else {
-                JOptionPane.showMessageDialog(painelPrincipal,
-                        "Senha incorreta! Tente novamente.",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        };
-
-        botaoVerificar.addActionListener(verificarSenhaAction);
-        campoSenha.addActionListener(verificarSenhaAction);
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
-
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
-    }
+    /*
+     * private static void mostrarTelaVerificacao() {
+     * 
+     * painelPrincipal.removeAll();
+     * painelPrincipal.setLayout(new BorderLayout());
+     * 
+     * // Título centralizado
+     * JLabel labelTitulo = new JLabel("Validação de Entrada");
+     * labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
+     * labelTitulo.setHorizontalAlignment(JLabel.CENTER);
+     * 
+     * JPanel painelTitulo = new JPanel(new BorderLayout());
+     * painelTitulo.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+     * painelTitulo.add(labelTitulo, BorderLayout.CENTER);
+     * painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+     * 
+     * // Painel CENTRAL com texto e caixinha
+     * JPanel painelCentral = new JPanel();
+     * painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
+     * painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+     * 
+     * JLabel labelSenha = new JLabel("Coloque a senha:");
+     * labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
+     * labelSenha.setForeground(Color.BLACK);
+     * labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
+     * 
+     * painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
+     * 
+     * JPanel painelInput = new JPanel();
+     * painelInput.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+     * 
+     * JPasswordField campoSenha = new JPasswordField(15);
+     * campoSenha.setFont(new Font("Serif", Font.PLAIN, 18));
+     * 
+     * JButton botaoVerificar = new JButton("Verificar");
+     * botaoVerificar.setFont(new Font("Serif", Font.BOLD, 16));
+     * botaoVerificar.setBackground(Color.BLACK);
+     * botaoVerificar.setForeground(Color.WHITE);
+     * 
+     * JButton botaoVoltar = new JButton("Voltar");
+     * botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
+     * botaoVoltar.setBackground(Color.GRAY);
+     * botaoVoltar.setForeground(Color.WHITE);
+     * 
+     * painelInput.add(campoSenha);
+     * painelInput.add(botaoVerificar);
+     * painelInput.add(botaoVoltar);
+     * 
+     * painelCentral.add(labelSenha);
+     * painelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
+     * painelCentral.add(painelInput);
+     * 
+     * painelPrincipal.add(painelCentral, BorderLayout.CENTER);
+     * 
+     * // Verifica senha e vai para próxima tela
+     * ActionListener verificarSenhaAction = e -> {
+     * String senhaCorreta = "1234"; // GIO : Aqui vc tem que fazer que ele pegue a
+     * senha do usuario e buscar se tem a permissão.
+     * String senhaDigitada = new String(campoSenha.getPassword()).trim();
+     * 
+     * if (senhaDigitada.equals(senhaCorreta)) {
+     * JOptionPane.showMessageDialog(painelPrincipal,
+     * "Acesso permitido!",
+     * "Sucesso",
+     * JOptionPane.INFORMATION_MESSAGE);
+     * 
+     * mostrarMenuPrincipal(); // Chama a próxima tela
+     * } else {
+     * JOptionPane.showMessageDialog(painelPrincipal,
+     * "Senha incorreta! Tente novamente.",
+     * "Erro",
+     * JOptionPane.ERROR_MESSAGE);
+     * }
+     * };
+     * 
+     * botaoVerificar.addActionListener(verificarSenhaAction);
+     * campoSenha.addActionListener(verificarSenhaAction);
+     * botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+     * 
+     * painelPrincipal.revalidate();
+     * painelPrincipal.repaint();
+     * }
+     */
 
     // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
@@ -191,7 +194,7 @@ public class AgendaAnimalPanel {
         btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
         btnVoltar.setBackground(Color.BLACK);
         btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e -> MainFrame.mostrarMenuPrincipalMain()); //GIO: Não está funcionando (arrumar)
+        btnVoltar.addActionListener(e -> MainFrame.mostrarMenuPrincipalMain()); // GIO: Não está funcionando (arrumar)
         painelInferior.add(btnVoltar);
         painelPrincipal.add(painelInferior, BorderLayout.SOUTH);
 
@@ -211,9 +214,8 @@ public class AgendaAnimalPanel {
         botao.setForeground(Color.WHITE);
         botao.setFocusPainted(false);
 
-        
         botao.addActionListener(e -> {
-            switch (texto.trim()) { 
+            switch (texto.trim()) {
                 case "Cadastro":
                     Cadastro();
                     break;
@@ -221,10 +223,10 @@ public class AgendaAnimalPanel {
                     telaBuscaIDEdicao();
                     break;
                 case "Remover":
-                    telaBuscaIDRemover_Remover(); 
+                    telaBuscaIDRemover_Remover();
                     break;
                 case "Selecionar":
-                    telaBuscaIDSelecionar(); 
+                    telaBuscaIDSelecionar();
                     break;
                 case "Listar":
                     Listar();
@@ -358,7 +360,7 @@ public class AgendaAnimalPanel {
 
         painelPrincipal.add(painelCampos, BorderLayout.CENTER);
 
-        // PANEL DE BOTONES 
+        // PANEL DE BOTONES
         JPanel painelBotoes = new JPanel();
         JButton botaoSalvar = new JButton("Salvar");
         botaoSalvar.setBackground(Color.BLACK);
@@ -548,7 +550,7 @@ public class AgendaAnimalPanel {
         painelCampos.add(panelRotina);
         painelPrincipal.add(painelCampos, BorderLayout.CENTER);
 
-        // PANEL DE BOTONES 
+        // PANEL DE BOTONES
         JPanel painelBotoes = new JPanel();
         JButton botaoAtualizar = new JButton("Atualizar");
         botaoAtualizar.setBackground(Color.BLACK);
@@ -699,7 +701,7 @@ public class AgendaAnimalPanel {
 
         painelPrincipal.add(painelCentral, BorderLayout.CENTER);
 
-        // ACTION 
+        // ACTION
         botaoVerificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -766,7 +768,6 @@ public class AgendaAnimalPanel {
         JPanel painelCentral = new JPanel();
         painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
-
 
         JLabel labelSenha = new JLabel("Coloque o ID da Agenda a ser Removida:");
         labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
@@ -889,7 +890,6 @@ public class AgendaAnimalPanel {
         labelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         painelPrincipal.add(labelTitulo, BorderLayout.NORTH);
 
-        
         JPanel painelDados = new JPanel(new GridLayout(9, 2, 10, 10));
         painelDados.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
@@ -1060,7 +1060,7 @@ public class AgendaAnimalPanel {
 
         painelPrincipal.add(painelCentral, BorderLayout.CENTER);
 
-        // ACTION 
+        // ACTION
         botaoListar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

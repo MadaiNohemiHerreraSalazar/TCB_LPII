@@ -2,9 +2,9 @@ package br.edu.ifpr.view.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
+//import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+//import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+//import javax.swing.JPasswordField;
 
 public class CargoPanel {
 
@@ -25,7 +25,7 @@ public class CargoPanel {
 
     public static void main(String[] args) {
         criarJanelaPrincipal();
-        mostrarTelaVerificacao();
+        mostrarMenuPrincipal();
 
     }
 
@@ -51,7 +51,7 @@ public class CargoPanel {
     // MOSTRAR TELA DE VERIFICAÇÃO DE PERMISSO
     //__________________________________________________________
 
-    private static void mostrarTelaVerificacao() {
+     /*   private static void mostrarTelaVerificacao() {
     // Limpar painel principal
     painelPrincipal.removeAll();
     painelPrincipal.setLayout(new BorderLayout());
@@ -106,7 +106,7 @@ public class CargoPanel {
     painelPrincipal.revalidate();
     painelPrincipal.repaint();
 
-}
+}*/
 
   // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
