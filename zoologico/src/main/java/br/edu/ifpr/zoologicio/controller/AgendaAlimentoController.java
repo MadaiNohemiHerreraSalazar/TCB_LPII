@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
 import br.edu.ifpr.zoologicio.model.dao.AgendaFuncionarioDAO;
 
-public class AgendaFuncionarioController {
+public class AgendaAlimentoController {
 
     // Cadastrar
-    public static void cadastrarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
+    public void cadastrarAgendaFuncionario(AgendaFuncionario agendaFuncionario) {
         if (agendaFuncionario == null) {
             System.out.println("Objeto AgendaFuncionario não pode ser nulo!");
             return;

@@ -3,15 +3,12 @@ package br.edu.ifpr.zoologicio.model;
 public class AgendaFuncionario {
 
     private Integer  id;
-    private String criadoPor;
-    private String ultimaAtualizacao;
     private String atividade;
-    private Cargo cargo;
     private Funcionario funcionario;
 
     public AgendaFuncionario() {
 
-    }
+    } 
 
     public Integer getId() {
         return id;
@@ -21,21 +18,6 @@ public class AgendaFuncionario {
         this.id = id;
     }
 
-    public String getCriadoPor() {
-        return criadoPor;
-    }
-
-    public void setCriadoPor(String criadoPor) {
-        this.criadoPor = criadoPor;
-    }
-
-    public String getUltimaAtualizacao() {
-        return ultimaAtualizacao;
-    }
-
-    public void setUltimaAtualizacao(String ultimaAtualizacao) {
-        this.ultimaAtualizacao = ultimaAtualizacao;
-    }
 
     public String getAtividade() {
         return atividade;
@@ -43,14 +25,6 @@ public class AgendaFuncionario {
 
     public void setAtividade(String atividade) {
         this.atividade = atividade;
-    }
-
-    public Cargo getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
     }
 
     public Funcionario getFuncionario() {

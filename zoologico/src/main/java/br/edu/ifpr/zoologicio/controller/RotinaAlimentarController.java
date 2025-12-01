@@ -28,12 +28,12 @@ public class RotinaAlimentarController {
             return;
         }
         if (rotinaAlimentar.getAgendaAnimal() == null || 
-            rotinaAlimentar.getAgendaAnimal().getAnimal() == null) {
+            rotinaAlimentar.getAgendaAnimal().getFuncionario() == null) {
             System.out.println("AgendaAnimal e Animal devem estar cadastrados!");
             return;
         }
 
-         AgendaAnimal agenda = AgendaAnimalDAO.buscarAgendaAnimalPorID(rotinaAlimentar.getAgendaAnimal().getAnimal().getId());
+         AgendaAnimal agenda = AgendaAnimalDAO.buscarAgendaAnimalPorID(rotinaAlimentar.getAgendaAnimal().getFuncionario().getId());
 
         if (agenda.getId() <= 0) {
             System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");

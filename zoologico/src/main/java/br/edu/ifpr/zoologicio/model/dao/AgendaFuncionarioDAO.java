@@ -21,10 +21,7 @@ public class AgendaFuncionarioDAO {
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            pst.setString(1, agenda.getCriadoPor());
-            pst.setString(2, agenda.getUltimaAtualizacao());
             pst.setString(3, agenda.getAtividade());
-            pst.setInt(4, agenda.getCargo().getId());
             pst.setInt(5, agenda.getFuncionario().getId());
 
             pst.executeUpdate();
@@ -50,10 +47,7 @@ public class AgendaFuncionarioDAO {
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, agenda.getCriadoPor());
-            pst.setString(2, agenda.getUltimaAtualizacao());
             pst.setString(3, agenda.getAtividade());
-            pst.setInt(4, agenda.getCargo().getId());
             pst.setInt(5, agenda.getFuncionario().getId());
             pst.setInt(6, agenda.getId());
 
@@ -99,12 +93,9 @@ public class AgendaFuncionarioDAO {
             if (rs.next()) {
                 agenda = new AgendaFuncionario();
                 agenda.setId(rs.getInt("id"));
-                agenda.setCriadoPor(rs.getString("criadoPor"));
-                agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
                 agenda.setAtividade(rs.getString("atividade"));
 
                 // busca cargo e funcionario por id (carrega objetos)
-                agenda.setCargo(CargoDAO.buscarCargoPorId(rs.getInt("cargo_id")));
                 agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
 
             }
@@ -129,8 +120,6 @@ public class AgendaFuncionarioDAO {
             while (rs.next()) {
                 AgendaFuncionario agenda = new AgendaFuncionario();
                 agenda.setId(rs.getInt("id"));
-                agenda.setCriadoPor(rs.getString("criadoPor"));
-                agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
                 agenda.setAtividade(rs.getString("atividade"));
                 agendas.add(agenda);
             }
@@ -158,11 +147,8 @@ public class AgendaFuncionarioDAO {
             while (rs.next()) {
                 AgendaFuncionario agenda = new AgendaFuncionario();
                 agenda.setId(rs.getInt("id"));
-                agenda.setCriadoPor(rs.getString("criadoPor"));
-                agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
                 agenda.setAtividade(rs.getString("atividade"));
 
-                agenda.setCargo(CargoDAO.buscarCargoPorId(rs.getInt("cargo_id")));
                 agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
 
                 agendas.add(agenda);

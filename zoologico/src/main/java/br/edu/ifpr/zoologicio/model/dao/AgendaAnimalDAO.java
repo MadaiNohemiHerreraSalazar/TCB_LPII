@@ -25,7 +25,7 @@ public class AgendaAnimalDAO {
             pst.setString(2, agenda.getBanho());
             pst.setString(3, agenda.getMedicacao());
             pst.setString(4, agenda.getAtividade());
-            pst.setInt(5, agenda.getAnimal().getId());
+            pst.setInt(5, agenda.getFuncionario().getId());
             pst.setInt(6, agenda.getVeterinario().getId());
             pst.setInt(7, agenda.getRotinaAlimentar() != null ? agenda.getRotinaAlimentar().getId() : null);
 
@@ -57,7 +57,7 @@ public class AgendaAnimalDAO {
             pst.setString(2, agenda.getBanho());
             pst.setString(3, agenda.getMedicacao());
             pst.setString(4, agenda.getAtividade());
-            pst.setInt(5, agenda.getAnimal().getId());
+            pst.setInt(5, agenda.getFuncionario().getId());
             pst.setInt(6, agenda.getVeterinario().getId());
             pst.setInt(7, agenda.getRotinaAlimentar() != null ? agenda.getRotinaAlimentar().getId() : null);
             pst.setInt(8, agenda.getId());

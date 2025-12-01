@@ -40,8 +40,6 @@ public class FuncionarioDAO {
             // Cadastra AgendaFuncionario (1:1)
             if (funcionario.getAgendaFuncionario() != null) {
                 try (PreparedStatement pstAgenda = con.prepareStatement(sqlAgenda)) {
-                    pstAgenda.setString(1, funcionario.getAgendaFuncionario().getCriadoPor());
-                    pstAgenda.setString(2, funcionario.getAgendaFuncionario().getUltimaAtualizacao());
                     pstAgenda.setString(3, funcionario.getAgendaFuncionario().getAtividade());
                     pstAgenda.setInt(4, funcionario.getCargo().getId());
                     pstAgenda.setInt(5, funcionario.getId());
@@ -76,8 +74,6 @@ public class FuncionarioDAO {
 
             if (funcionario.getAgendaFuncionario() != null) {
                 try (PreparedStatement pstAgenda = con.prepareStatement(sqlAgenda)) {
-                    pstAgenda.setString(1, funcionario.getAgendaFuncionario().getCriadoPor());
-                    pstAgenda.setString(2, funcionario.getAgendaFuncionario().getUltimaAtualizacao());
                     pstAgenda.setString(3, funcionario.getAgendaFuncionario().getAtividade());
                     pstAgenda.setInt(4, funcionario.getCargo().getId());
                     pstAgenda.setInt(5, funcionario.getId());
@@ -158,10 +154,7 @@ public class FuncionarioDAO {
                 if (rs.getInt("agenda_id") > 0) {
                     AgendaFuncionario agenda = new AgendaFuncionario();
                     agenda.setId(rs.getInt("agenda_id"));
-                    agenda.setCriadoPor(rs.getString("criadoPor"));
-                    agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
                     agenda.setAtividade(rs.getString("atividade"));
-                    agenda.setCargo(cargo);
                     agenda.setFuncionario(funcionario);
                     funcionario.setAgendaFuncionario(agenda);
                 }
@@ -243,10 +236,9 @@ public class FuncionarioDAO {
                 if (rs.getInt("agenda_id") > 0) {
                     AgendaFuncionario agenda = new AgendaFuncionario();
                     agenda.setId(rs.getInt("agenda_id"));
-                    agenda.setCriadoPor(rs.getString("criadoPor"));
-                    agenda.setUltimaAtualizacao(rs.getString("ultimaAtualizacao"));
+            
                     agenda.setAtividade(rs.getString("atividade"));
-                    agenda.setCargo(cargo);
+         
                     agenda.setFuncionario(funcionario);
 
                     funcionario.setAgendaFuncionario(agenda);

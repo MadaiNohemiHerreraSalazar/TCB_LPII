@@ -31,7 +31,7 @@ public class AgendaAnimal {
         this.consulta = consulta;
     }
 
-    public  Animal getAnimal() {
+    public  Animal getFuncionario() {
         return animal;
     }
 

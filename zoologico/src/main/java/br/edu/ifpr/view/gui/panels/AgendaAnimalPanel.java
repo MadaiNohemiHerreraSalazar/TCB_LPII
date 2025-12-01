@@ -510,8 +510,8 @@ public class AgendaAnimalPanel {
         JLabel labelAnimalId = new JLabel("ID Animal:");
         labelAnimalId.setFont(new Font("Serif", Font.BOLD, 18));
         JTextField campoAnimalId = new JTextField(
-                agenda.getAnimal() != null && agenda.getAnimal().getId() != null
-                        ? String.valueOf(agenda.getAnimal().getId())
+                agenda.getFuncionario() != null && agenda.getFuncionario().getId() != null
+                        ? String.valueOf(agenda.getFuncionario().getId())
                         : "");
         campoAnimalId.setPreferredSize(new Dimension(500, 25));
         campoAnimalId.setMaximumSize(new Dimension(500, 25));
@@ -580,9 +580,9 @@ public class AgendaAnimalPanel {
                 try {
                     String animalIdTexto = campoAnimalId.getText().trim();
                     if (!animalIdTexto.isEmpty()) {
-                        if (agenda.getAnimal() == null)
+                        if (agenda.getFuncionario() == null)
                             agenda.setAnimal(new Animal());
-                        agenda.getAnimal().setId(Integer.parseInt(animalIdTexto));
+                        agenda.getFuncionario().setId(Integer.parseInt(animalIdTexto));
                     } else {
                         agenda.setAnimal(null);
                     }
@@ -925,7 +925,7 @@ public class AgendaAnimalPanel {
         campoAtividade.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         // Para objetos complexos, mostrar toString() a informação relevante
-        String animalInfo = agenda.getAnimal() != null ? agenda.getAnimal().toString() : "Não informado";
+        String animalInfo = agenda.getFuncionario() != null ? agenda.getFuncionario().toString() : "Não informado";
         JTextField campoAnimal = new JTextField(animalInfo);
         campoAnimal.setFont(new Font("Serif", Font.PLAIN, 14));
         campoAnimal.setEditable(false);
@@ -1145,7 +1145,8 @@ public class AgendaAnimalPanel {
                     dados[i][2] = agenda.getBanho() != null ? agenda.getBanho() : "";
                     dados[i][3] = agenda.getMedicacao() != null ? agenda.getMedicacao() : "";
                     dados[i][4] = agenda.getAtividade() != null ? agenda.getAtividade() : "";
-                    dados[i][5] = agenda.getAnimal() != null ? agenda.getAnimal().toString() : "Não informado";
+                    dados[i][5] = agenda.getFuncionario() != null ? agenda.getFuncionario().toString()
+                            : "Não informado";
                     dados[i][6] = agenda.getVeterinario() != null ? agenda.getVeterinario().toString()
                             : "Não informado";
                 }

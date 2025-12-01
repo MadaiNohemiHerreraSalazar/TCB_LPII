@@ -47,6 +47,8 @@ String prefixo2 = senha.substring(0, 2); // pega "01", "02", "10", etc.
 
 frame.dispose();
 
+//if gerente
+
 switch (prefixo2) {
 
     case "01":
