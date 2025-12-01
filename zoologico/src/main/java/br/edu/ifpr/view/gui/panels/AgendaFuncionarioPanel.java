@@ -14,7 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,44 +23,26 @@ import javax.swing.JTable;
 //import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import br.edu.ifpr.zoologicio.controller.AgendaFuncionarioController;
 import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
 import br.edu.ifpr.zoologicio.model.Funcionario;
 
-public class AgendaFuncionarioPanel {
+public class AgendaFuncionarioPanel extends JPanel {
 
-    private static JFrame janela;
-    private static JPanel painelPrincipal;
+    private JPanel painelPrincipalInterno; // Para gerenciar sub-painel dentro do panel principal
 
-    public static void main(String[] args) {
-        criarJanelaPrincipal();
+    public AgendaFuncionarioPanel() {
+        setLayout(new BorderLayout());
+        painelPrincipalInterno = new JPanel(new BorderLayout());
+        add(painelPrincipalInterno, BorderLayout.CENTER);
+
         mostrarMenuPrincipal();
-    }
-
-    // CRIAR JANELA PRINCIPAL COM TITULO
-    // ___________________________________________________________
-
-    private static void criarJanelaPrincipal() {
-
-        janela = new JFrame("Sistema do Zoológico - Gerenciamento da Agenda de Funcionários");
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        janela.setSize(1200, 800);
-        janela.setLocationRelativeTo(null);
-
-        janela.setLayout(new BorderLayout());
-
-        // Painel principal que será trocado
-        painelPrincipal = new JPanel(new BorderLayout());
-        janela.add(painelPrincipal, BorderLayout.CENTER);
-
-        janela.setVisible(true);
     }
 
     // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
-
-    private static void mostrarMenuPrincipal() {
-        // Limpar painel principal
-        painelPrincipal.removeAll();
+    private void mostrarMenuPrincipal() {
+        painelPrincipalInterno.removeAll();
 
         // Título do menu principal
         JLabel labelTitulo = new JLabel(" Gerenciamento da Agenda de Funcionários");
@@ -78,45 +60,43 @@ public class AgendaFuncionarioPanel {
         painelTitulo.setLayout(new BoxLayout(painelTitulo, BoxLayout.Y_AXIS));
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(30, 0, 30, 0));
         painelTitulo.add(labelTitulo);
-        painelTitulo.add(Box.createRigidArea(new Dimension(0, 15))); // Espaço entre título e subtítulo
+        painelTitulo.add(Box.createRigidArea(new Dimension(0, 15)));
         painelTitulo.add(labelSubtitulo);
 
-        painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(painelTitulo, BorderLayout.NORTH);
 
         // Painel central com os botões de gerenciamento
         JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(7, 2, 20, 20)); // 4 linhas, 2 colunas, espaço 20px
+        painelBotoes.setLayout(new GridLayout(5, 1, 20, 20));
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 200, 0, 200));
 
         // Criar botões de gerenciamento
-        String[] gerenciamentos = { " Cadastro ", "Editar ", " Remover ", " Selecionar ", " Listar " };
+        String[] gerenciamentos = { "Cadastro", "Editar", "Remover", "Selecionar", "Listar" };
 
         for (String gerenciamento : gerenciamentos) {
             JButton botao = criarBotaoGerenciamento(gerenciamento);
             painelBotoes.add(botao);
         }
 
-        painelPrincipal.add(painelBotoes, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelBotoes, BorderLayout.CENTER);
 
         // Painel inferior com botão de voltar
         JPanel painelInferior = new JPanel();
-        JButton btnVoltar = new JButton("Voltar ao Início");
+        JButton btnVoltar = new JButton("Voltar ao Menu Principal");
         btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
         btnVoltar.setBackground(Color.BLACK);
         btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e -> mostrarMenuPrincipal());
+        btnVoltar.addActionListener(e -> mostrarMenuPrincipal()); // Depois você pode trocar para voltar ao MainFrame
         painelInferior.add(btnVoltar);
-        painelPrincipal.add(painelInferior, BorderLayout.SOUTH);
+        painelPrincipalInterno.add(painelInferior, BorderLayout.SOUTH);
 
-        // Atualizar a janela
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    // CRAIR BOTÕES DE GERENCIAMENTO
+    // CRIAR BOTÕES DE GERENCIAMENTO
     // _________________________________________________________________
-
-    private static JButton criarBotaoGerenciamento(String texto) {
+    private JButton criarBotaoGerenciamento(String texto) {
 
         JButton botao = new JButton(texto);
         botao.setFont(new Font("Arial", Font.BOLD, 18));
@@ -125,7 +105,7 @@ public class AgendaFuncionarioPanel {
         botao.setForeground(Color.WHITE);
         botao.setFocusPainted(false);
 
-        // Asignar la acción correspondiente a cada botón
+        // Ação correspondente a cada botão
         botao.addActionListener(e -> {
             switch (texto.trim()) {
                 case "Cadastro":
@@ -144,7 +124,7 @@ public class AgendaFuncionarioPanel {
                     Listar();
                     break;
                 default:
-                    JOptionPane.showMessageDialog(janela, "Abrindo: " + texto);
+                    JOptionPane.showMessageDialog(this, "Abrindo: " + texto);
             }
         });
 
@@ -154,15 +134,14 @@ public class AgendaFuncionarioPanel {
     // CRUD
     // _________________________________________________________________
 
-    public static void Cadastro() {
-
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    public void Cadastro() {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         JLabel labelTitulo = new JLabel("Cadastro de Agenda");
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
         labelTitulo.setHorizontalAlignment(JLabel.CENTER);
-        painelPrincipal.add(labelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(labelTitulo, BorderLayout.NORTH);
 
         JPanel painelCampos = new JPanel();
         painelCampos.setLayout(new BoxLayout(painelCampos, BoxLayout.Y_AXIS));
@@ -199,9 +178,9 @@ public class AgendaFuncionarioPanel {
         painelCampos.add(panelFuncionario);
         painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        painelPrincipal.add(painelCampos, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelCampos, BorderLayout.CENTER);
 
-        // PANEL DE BOTONES
+        // PANEL DE BOTÕES
         JPanel painelBotoes = new JPanel();
         JButton botaoSalvar = new JButton("Salvar");
         botaoSalvar.setBackground(Color.BLACK);
@@ -215,76 +194,39 @@ public class AgendaFuncionarioPanel {
         painelBotoes.add(Box.createRigidArea(new Dimension(20, 0)));
         painelBotoes.add(botaoVoltar);
 
-        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+        painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
         // ACTION
-        botaoSalvar.addActionListener(e -> {
-            try {
-                AgendaFuncionario agenda = new AgendaFuncionario();
-                agenda.setAtividade(campoAtividade.getText().trim());
-
-                // ID Funcionario
-                if (!campoFuncionarioId.getText().trim().isEmpty()) {
-                    Funcionario funcionario = new Funcionario();
-                    funcionario.setId(Integer.parseInt(campoFuncionarioId.getText().trim()));
-                    agenda.setFuncionario(funcionario);
-                }
-
-                // Salvar
-                AgendaAlimentoController controller = new AgendaAlimentoController();
-                controller.cadastrarAgendaFuncionario(agenda);
-
-                JOptionPane.showMessageDialog(painelPrincipal,
-                        "Agenda cadastrada com sucesso!",
-                        "Sucesso",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                // Limpar campos
-                campoAtividade.setText("");
-                campoFuncionarioId.setText("");
-
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(painelPrincipal,
-                        "IDs devem conter apenas números!",
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(painelPrincipal,
-                        "Erro ao salvar: " + ex.getMessage(),
-                        "Erro",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
         botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    public static void Editar(AgendaFuncionario agenda) {
-
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    public void Editar(AgendaFuncionario agenda) {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         JLabel labelTitulo = new JLabel("Editar Agenda");
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
         labelTitulo.setHorizontalAlignment(JLabel.CENTER);
-        painelPrincipal.add(labelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(labelTitulo, BorderLayout.NORTH);
 
         JPanel painelCampos = new JPanel();
         painelCampos.setLayout(new BoxLayout(painelCampos, BoxLayout.Y_AXIS));
         painelCampos.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
 
         // PANEIS DOS ATRIBUTOS COM ETIQUETA E CAMPOS
-
         JPanel panelAtividade = new JPanel();
         panelAtividade.setLayout(new BoxLayout(panelAtividade, BoxLayout.Y_AXIS));
+        panelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
         JLabel labelAtividade = new JLabel("Atividade:");
         labelAtividade.setFont(new Font("Serif", Font.BOLD, 18));
+        labelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
         JTextField campoAtividade = new JTextField(agenda.getAtividade());
         campoAtividade.setPreferredSize(new Dimension(500, 50));
         campoAtividade.setMaximumSize(new Dimension(500, 50));
+        campoAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
         panelAtividade.add(labelAtividade);
         panelAtividade.add(campoAtividade);
         painelCampos.add(panelAtividade);
@@ -292,20 +234,26 @@ public class AgendaFuncionarioPanel {
 
         JPanel panelFuncionario = new JPanel();
         panelFuncionario.setLayout(new BoxLayout(panelFuncionario, BoxLayout.Y_AXIS));
-        JLabel labelAnimalId = new JLabel("ID Funcionario:");
-        labelAnimalId.setFont(new Font("Serif", Font.BOLD, 18));
+        panelFuncionario.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        JLabel labelFuncionarioId = new JLabel("ID Funcionario:"); // CORRIGIDO nome da variável
+        labelFuncionarioId.setFont(new Font("Serif", Font.BOLD, 18));
+        labelFuncionarioId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
         JTextField campoFuncionarioId = new JTextField(
                 agenda.getFuncionario() != null && agenda.getFuncionario().getId() != null
                         ? String.valueOf(agenda.getFuncionario().getId())
                         : "");
         campoFuncionarioId.setPreferredSize(new Dimension(500, 25));
         campoFuncionarioId.setMaximumSize(new Dimension(500, 25));
-        panelFuncionario.add(labelAnimalId);
+        campoFuncionarioId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelFuncionario.add(labelFuncionarioId);
         panelFuncionario.add(campoFuncionarioId);
         painelCampos.add(panelFuncionario);
         painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // PANEL DE BOTONES
+        // ADICIONAR PAINEL DE CAMPOS AO PAINEL PRINCIPAL
+        painelPrincipalInterno.add(painelCampos, BorderLayout.CENTER);
+
+        // PANEL DE BOTÕES
         JPanel painelBotoes = new JPanel();
         JButton botaoAtualizar = new JButton("Atualizar");
         botaoAtualizar.setBackground(Color.BLACK);
@@ -318,14 +266,12 @@ public class AgendaFuncionarioPanel {
         painelBotoes.add(botaoAtualizar);
         painelBotoes.add(Box.createRigidArea(new Dimension(20, 0)));
         painelBotoes.add(botaoCancelar);
-        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+        painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
         // ACTION
-
         botaoAtualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 agenda.setAtividade(campoAtividade.getText());
 
                 // Atualizar Funcionario
@@ -339,19 +285,20 @@ public class AgendaFuncionarioPanel {
                         agenda.setFuncionario(null);
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
-                            "ID do Funcionnario inválido! Digite apenas números.",
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO: usar this
+                            "ID do Funcionario inválido! Digite apenas números.",
                             "Erro", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 try {
-                    AgendaAlimentoController.editarAgendaFuncionario(agenda);
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    AgendaFuncionarioController.editarAgendaFuncionario(agenda);
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO: usar this
                             "Registro atualizado com sucesso!",
                             "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    mostrarMenuPrincipal(); // VOLTAR AO MENU APÓS SALVAR
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO: usar this
                             "Erro ao atualizar no banco de dados!",
                             "Erro", JOptionPane.ERROR_MESSAGE);
                 }
@@ -360,13 +307,14 @@ public class AgendaFuncionarioPanel {
 
         botaoCancelar.addActionListener(e -> mostrarMenuPrincipal());
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    public static void telaBuscaIDEdicao() {
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    // telaBuscaIDEdicao - REMOVER "static"
+    public void telaBuscaIDEdicao() {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         JLabel labelTitulo = new JLabel("Busca da Agenda");
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
@@ -375,16 +323,16 @@ public class AgendaFuncionarioPanel {
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
         painelTitulo.add(labelTitulo, BorderLayout.CENTER);
-        painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(painelTitulo, BorderLayout.NORTH);
 
         JPanel painelCentral = new JPanel();
         painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
 
-        JLabel labelSenha = new JLabel("Coloque a o ID do Agenda Escolhida:");
-        labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
-        labelSenha.setForeground(Color.BLACK);
-        labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel labelId = new JLabel("Coloque o ID da Agenda Escolhida:"); // CORRIGIDO texto
+        labelId.setFont(new Font("Serif", Font.BOLD, 20));
+        labelId.setForeground(Color.BLACK);
+        labelId.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
 
@@ -394,8 +342,7 @@ public class AgendaFuncionarioPanel {
         JTextField campoID = new JTextField(15);
         campoID.setFont(new Font("Serif", Font.PLAIN, 18));
 
-        // BUTÕES
-
+        // BOTÕES
         JButton botaoVerificar = new JButton("Verificar");
         botaoVerificar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVerificar.setBackground(Color.BLACK);
@@ -410,11 +357,11 @@ public class AgendaFuncionarioPanel {
         painelInput.add(botaoVerificar);
         painelInput.add(botaoVoltar);
 
-        painelCentral.add(labelSenha);
+        painelCentral.add(labelId);
         painelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
         painelCentral.add(painelInput);
 
-        painelPrincipal.add(painelCentral, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelCentral, BorderLayout.CENTER);
 
         // ACTION
         botaoVerificar.addActionListener(new ActionListener() {
@@ -423,7 +370,7 @@ public class AgendaFuncionarioPanel {
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                             "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
@@ -433,25 +380,25 @@ public class AgendaFuncionarioPanel {
                 try {
                     int id = Integer.parseInt(idTexto);
 
-                    AgendaAlimentoController controller = new AgendaAlimentoController();
+                    AgendaFuncionarioController controller = new AgendaFuncionarioController();
                     AgendaFuncionario agenda = controller.selecionarAgendaFuncionario(id);
 
                     if (agenda != null) {
-                        JOptionPane.showMessageDialog(painelPrincipal,
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                 "Agenda carregada com sucesso!",
                                 "Sucesso",
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         Editar(agenda); // Abre a tela com os dados preenchidos
                     } else {
-                        JOptionPane.showMessageDialog(painelPrincipal,
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -463,13 +410,14 @@ public class AgendaFuncionarioPanel {
 
         campoID.addActionListener(e -> botaoVerificar.doClick());
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    public static void telaBuscaIDRemover_Remover() {
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    // telaBuscaIDRemover_Remover - REMOVER "static"
+    public void telaBuscaIDRemover_Remover() {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         JLabel labelTitulo = new JLabel("Remover Agenda");
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
@@ -478,16 +426,16 @@ public class AgendaFuncionarioPanel {
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
         painelTitulo.add(labelTitulo, BorderLayout.CENTER);
-        painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(painelTitulo, BorderLayout.NORTH);
 
         JPanel painelCentral = new JPanel();
         painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
 
-        JLabel labelSenha = new JLabel("Coloque o ID da Agenda a ser Removida:");
-        labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
-        labelSenha.setForeground(Color.BLACK);
-        labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel labelId = new JLabel("Coloque o ID da Agenda a ser Removida:");
+        labelId.setFont(new Font("Serif", Font.BOLD, 20));
+        labelId.setForeground(Color.BLACK);
+        labelId.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
 
@@ -497,8 +445,7 @@ public class AgendaFuncionarioPanel {
         JTextField campoID = new JTextField(15);
         campoID.setFont(new Font("Serif", Font.PLAIN, 18));
 
-        // BUTÕES
-
+        // BOTÕES
         JButton botaoRemover = new JButton("Remover");
         botaoRemover.setFont(new Font("Serif", Font.BOLD, 16));
         botaoRemover.setBackground(Color.RED);
@@ -513,11 +460,11 @@ public class AgendaFuncionarioPanel {
         painelInput.add(botaoRemover);
         painelInput.add(botaoVoltar);
 
-        painelCentral.add(labelSenha);
+        painelCentral.add(labelId);
         painelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
         painelCentral.add(painelInput);
 
-        painelPrincipal.add(painelCentral, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelCentral, BorderLayout.CENTER);
 
         // ACTION
         botaoRemover.addActionListener(new ActionListener() {
@@ -526,7 +473,7 @@ public class AgendaFuncionarioPanel {
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                             "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
@@ -536,12 +483,12 @@ public class AgendaFuncionarioPanel {
                 try {
                     int id = Integer.parseInt(idTexto);
 
-                    AgendaAlimentoController controller = new AgendaAlimentoController();
+                    AgendaFuncionarioController controller = new AgendaFuncionarioController();
                     AgendaFuncionario agenda = controller.selecionarAgendaFuncionario(id);
 
                     if (agenda != null) {
                         int confirmacao = JOptionPane.showConfirmDialog(
-                                painelPrincipal,
+                                AgendaFuncionarioPanel.this, // CORRIGIDO
                                 "Tem certeza que deseja remover a agenda com ID: " + id + "?",
                                 "Confirmar Remoção",
                                 JOptionPane.YES_NO_OPTION,
@@ -550,27 +497,27 @@ public class AgendaFuncionarioPanel {
                         if (confirmacao == JOptionPane.YES_OPTION) {
                             try {
                                 controller.deletarAgendaFuncionario(id);
-                                JOptionPane.showMessageDialog(painelPrincipal,
+                                JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                         "Agenda removida com sucesso!",
                                         "Sucesso",
                                         JOptionPane.INFORMATION_MESSAGE);
-                                campoID.setText("");
+                                mostrarMenuPrincipal(); // VOLTAR AO MENU APÓS REMOVER
                             } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(painelPrincipal,
+                                JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                         "Erro ao remover a agenda: " + ex.getMessage(),
                                         "Erro",
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(painelPrincipal,
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -582,20 +529,21 @@ public class AgendaFuncionarioPanel {
 
         campoID.addActionListener(e -> botaoRemover.doClick());
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    public static void Selecionar(AgendaFuncionario agenda) {
-
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    // Selecionar - REMOVER "static" e usar painelPrincipalInterno
+    public void Selecionar(AgendaFuncionario agenda) {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         if (agenda == null) {
-            JOptionPane.showMessageDialog(null,
+            JOptionPane.showMessageDialog(this, // CORRIGIDO
                     "Agenda não encontrada!",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
+            mostrarMenuPrincipal();
             return;
         }
 
@@ -604,12 +552,13 @@ public class AgendaFuncionarioPanel {
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 24));
         labelTitulo.setHorizontalAlignment(JLabel.CENTER);
         labelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-        painelPrincipal.add(labelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(labelTitulo, BorderLayout.NORTH);
 
-        JPanel painelDados = new JPanel(new GridLayout(9, 2, 10, 10));
+        JPanel painelDados = new JPanel(new GridLayout(3, 2, 10, 10)); // CORRIGIDO: 3 linhas (ID, Atividade,
+                                                                       // Funcionario)
         painelDados.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Criar campos de texto não editavéis para mostrar os dados
+        // Criar campos de texto não editáveis para mostrar os dados
         JTextField campoID = new JTextField(String.valueOf(agenda.getId()));
         campoID.setFont(new Font("Serif", Font.PLAIN, 14));
         campoID.setEditable(false);
@@ -648,7 +597,7 @@ public class AgendaFuncionarioPanel {
         painelDados.add(labelFuncionario);
         painelDados.add(campoFuncionario);
 
-        painelPrincipal.add(painelDados, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelDados, BorderLayout.CENTER);
 
         // BOTÕES
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -661,15 +610,16 @@ public class AgendaFuncionarioPanel {
         botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
 
         painelBotoes.add(botaoVoltar);
-        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+        painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    public static void telaBuscaIDSelecionar() {
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    // telaBuscaIDSelecionar - REMOVER "static"
+    public void telaBuscaIDSelecionar() {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         JLabel labelTitulo = new JLabel("Visualizar Agenda");
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
@@ -678,16 +628,16 @@ public class AgendaFuncionarioPanel {
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
         painelTitulo.add(labelTitulo, BorderLayout.CENTER);
-        painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(painelTitulo, BorderLayout.NORTH);
 
         JPanel painelCentral = new JPanel();
         painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
 
-        JLabel labelSenha = new JLabel("Coloque o ID da Agenda a ser Visualizada:");
-        labelSenha.setFont(new Font("Serif", Font.BOLD, 20));
-        labelSenha.setForeground(Color.BLACK);
-        labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel labelId = new JLabel("Coloque o ID da Agenda a ser Visualizada:");
+        labelId.setFont(new Font("Serif", Font.BOLD, 20));
+        labelId.setForeground(Color.BLACK);
+        labelId.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
 
@@ -698,10 +648,10 @@ public class AgendaFuncionarioPanel {
         campoID.setFont(new Font("Serif", Font.PLAIN, 18));
 
         // BOTÕES
-        JButton botaoListar = new JButton("Visualizar");
-        botaoListar.setFont(new Font("Serif", Font.BOLD, 16));
-        botaoListar.setBackground(Color.BLUE);
-        botaoListar.setForeground(Color.WHITE);
+        JButton botaoVisualizar = new JButton("Visualizar"); // CORRIGIDO nome da variável
+        botaoVisualizar.setFont(new Font("Serif", Font.BOLD, 16));
+        botaoVisualizar.setBackground(Color.BLUE);
+        botaoVisualizar.setForeground(Color.WHITE);
 
         JButton botaoVoltar = new JButton("Voltar");
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
@@ -709,23 +659,23 @@ public class AgendaFuncionarioPanel {
         botaoVoltar.setForeground(Color.WHITE);
 
         painelInput.add(campoID);
-        painelInput.add(botaoListar);
+        painelInput.add(botaoVisualizar);
         painelInput.add(botaoVoltar);
 
-        painelCentral.add(labelSenha);
+        painelCentral.add(labelId);
         painelCentral.add(Box.createRigidArea(new Dimension(0, 15)));
         painelCentral.add(painelInput);
 
-        painelPrincipal.add(painelCentral, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelCentral, BorderLayout.CENTER);
 
         // ACTION
-        botaoListar.addActionListener(new ActionListener() {
+        botaoVisualizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                             "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
@@ -735,20 +685,20 @@ public class AgendaFuncionarioPanel {
                 try {
                     int id = Integer.parseInt(idTexto);
 
-                    AgendaAlimentoController controller = new AgendaAlimentoController();
+                    AgendaFuncionarioController controller = new AgendaFuncionarioController();
                     AgendaFuncionario agenda = controller.selecionarAgendaFuncionario(id);
 
                     if (agenda != null) {
                         Selecionar(agenda); // Chama ao metodo selecionar
                     } else {
-                        JOptionPane.showMessageDialog(painelPrincipal,
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(painelPrincipal,
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -758,16 +708,16 @@ public class AgendaFuncionarioPanel {
 
         botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
 
-        campoID.addActionListener(e -> botaoListar.doClick());
+        campoID.addActionListener(e -> botaoVisualizar.doClick());
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
-    public static void Listar() {
-
-        painelPrincipal.removeAll();
-        painelPrincipal.setLayout(new BorderLayout());
+    // Listar - REMOVER "static"
+    public void Listar() {
+        painelPrincipalInterno.removeAll();
+        painelPrincipalInterno.setLayout(new BorderLayout());
 
         JLabel labelTitulo = new JLabel("Listar Todas as Agendas");
         labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
@@ -776,14 +726,14 @@ public class AgendaFuncionarioPanel {
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(30, 0, 20, 0));
         painelTitulo.add(labelTitulo, BorderLayout.CENTER);
-        painelPrincipal.add(painelTitulo, BorderLayout.NORTH);
+        painelPrincipalInterno.add(painelTitulo, BorderLayout.NORTH);
 
         // Panel central com a tabela
         JPanel painelCentral = new JPanel(new BorderLayout());
         painelCentral.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
         try {
-            AgendaFUncionarioController controller = new AgendaFUncionarioController();
+            AgendaFuncionarioController controller = new AgendaFuncionarioController();
             java.util.List<AgendaFuncionario> agendas = controller.listarAgendaFuncionarios();
 
             if (agendas == null || agendas.isEmpty()) {
@@ -793,17 +743,16 @@ public class AgendaFuncionarioPanel {
                 labelVazio.setForeground(Color.GRAY);
                 painelCentral.add(labelVazio, BorderLayout.CENTER);
             } else {
-                // Criar tabela com os dados
-                String[] colunas = { "ID", "Consulta", "Banho", "Medicação", "Atividade", "Animal", "Veterinário" };
-                Object[][] dados = new Object[agendas.size()][7];
+                // CORRIGIDO: Colunas da tabela - ajustadas para AgendaFuncionario
+                String[] colunas = { "ID", "Atividade", "Funcionario" }; // CORRIGIDO: só 3 colunas relevantes
+                Object[][] dados = new Object[agendas.size()][3];
 
                 for (int i = 0; i < agendas.size(); i++) {
                     AgendaFuncionario agenda = agendas.get(i);
                     dados[i][0] = agenda.getId();
-                    dados[i][4] = agenda.getAtividade() != null ? agenda.getAtividade() : "";
-                    dados[i][5] = agenda.getFuncionario() != null ? agenda.getFuncionario().toString()
+                    dados[i][1] = agenda.getAtividade() != null ? agenda.getAtividade() : "";
+                    dados[i][2] = agenda.getFuncionario() != null ? agenda.getFuncionario().toString()
                             : "Não informado";
-
                 }
 
                 JTable tabela = new JTable(dados, colunas);
@@ -814,8 +763,8 @@ public class AgendaFuncionarioPanel {
 
                 // Configurar largura das colunas
                 tabela.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
-                tabela.getColumnModel().getColumn(4).setPreferredWidth(120); // Atividade
-                tabela.getColumnModel().getColumn(5).setPreferredWidth(150); // Funcionario
+                tabela.getColumnModel().getColumn(1).setPreferredWidth(200); // Atividade
+                tabela.getColumnModel().getColumn(2).setPreferredWidth(250); // Funcionario
 
                 JScrollPane scrollPane = new JScrollPane(tabela);
                 scrollPane.setPreferredSize(new Dimension(1100, 500));
@@ -836,7 +785,7 @@ public class AgendaFuncionarioPanel {
             painelCentral.add(labelErro, BorderLayout.CENTER);
         }
 
-        painelPrincipal.add(painelCentral, BorderLayout.CENTER);
+        painelPrincipalInterno.add(painelCentral, BorderLayout.CENTER);
 
         // BOTÕES
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -846,7 +795,7 @@ public class AgendaFuncionarioPanel {
         botaoAtualizar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoAtualizar.setBackground(Color.BLUE);
         botaoAtualizar.setForeground(Color.WHITE);
-        botaoAtualizar.addActionListener(e -> Listar());
+        botaoAtualizar.addActionListener(e -> Listar()); // Chama o mesmo método
 
         JButton botaoVoltar = new JButton("Voltar ao Menu");
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
@@ -858,10 +807,10 @@ public class AgendaFuncionarioPanel {
         painelBotoes.add(Box.createRigidArea(new Dimension(20, 0)));
         painelBotoes.add(botaoVoltar);
 
-        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+        painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        painelPrincipalInterno.revalidate();
+        painelPrincipalInterno.repaint();
     }
 
 }

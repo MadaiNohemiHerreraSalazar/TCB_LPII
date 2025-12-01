@@ -146,7 +146,7 @@ public class FuncionarioDAO {
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("cargo_nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
                 cargo.setSenha(rs.getString("senha"));
                 funcionario.setCargo(cargo);
 
@@ -228,7 +228,7 @@ public class FuncionarioDAO {
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("cargo_nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
                 cargo.setSenha(rs.getString("senha"));
                 funcionario.setCargo(cargo);
 

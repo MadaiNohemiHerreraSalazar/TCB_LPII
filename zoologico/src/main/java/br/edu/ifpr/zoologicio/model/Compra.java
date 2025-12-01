@@ -6,7 +6,7 @@ public class Compra {
 
     private Integer id;
     private String data;
-    private String hora;
+    private String hora; 
     private String quantidade;
     private String meioPagamento;
     private String precoTotal;

@@ -39,6 +39,10 @@ public class AgendaAnimal {
         this.animal = animal;
     }
 
+    public Animal getAnimal ( ){
+        return animal;
+    }
+
     public Veterinario getVeterinario() {
         return veterinario;
     }

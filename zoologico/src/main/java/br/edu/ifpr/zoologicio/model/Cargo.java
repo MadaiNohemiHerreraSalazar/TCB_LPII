@@ -7,7 +7,7 @@ public class Cargo {
     private Integer  id;
     private String nome;
     private String salario;
-    private String cargaHoraroia;
+    private String cargaHoraria;
     private String senha;
     private ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
@@ -31,12 +31,12 @@ public class Cargo {
         this.salario = salario;
     }
 
-    public String getCargaHoraroia() {
-        return cargaHoraroia;
+    public String getCargaHoraria() {
+        return cargaHoraria;
     }
 
-    public void setCargaHoraroia(String cargaHoraroia) {
-        this.cargaHoraroia = cargaHoraroia;
+    public void setCargaHoraria(String cargaHoraroia) {
+        this.cargaHoraria = cargaHoraroia;
     }
 
     public String getSenha() {

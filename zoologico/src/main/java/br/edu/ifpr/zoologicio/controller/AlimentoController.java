@@ -22,7 +22,7 @@ public class AlimentoController {
     }
 
     // Editar
-    public static void editarAlimento(Alimento alimento) {
+    public void editarAlimento(Alimento alimento) {
         if (alimento == null) {
             System.out.println("Objeto Alimento não pode ser nulo!");
             return;

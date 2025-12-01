@@ -44,5 +44,10 @@ public class Alimento {
         this.estoque = estoque;
     }
 
+    public void setEstoque(int int1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setEstoque'");
+    }
+
   
 }

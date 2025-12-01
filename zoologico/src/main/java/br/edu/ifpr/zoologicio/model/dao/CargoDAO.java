@@ -28,7 +28,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
                 cargo.setSenha(rs.getString("senha"));
                 // não carrega lista de funcionarios aqui (evita recursão pesada)
             }
@@ -50,7 +50,7 @@ public class CargoDAO {
 
             pst.setString(1, cargo.getNome());
             pst.setString(2, cargo.getSalario());
-            pst.setString(3, cargo.getCargaHoraroia());
+            pst.setString(3, cargo.getCargaHoraria());
             pst.setString(4, cargo.getSenha());
             pst.executeUpdate();
 
@@ -82,7 +82,7 @@ public class CargoDAO {
             try (PreparedStatement pst = con.prepareStatement(sqlUpdateCargo)) {
                 pst.setString(1, cargo.getNome());
                 pst.setString(2, cargo.getSalario());
-                pst.setString(3, cargo.getCargaHoraroia());
+                pst.setString(3, cargo.getCargaHoraria());
                 pst.setString(4, cargo.getSenha());
                 pst.setInt(5, cargo.getId());
                 pst.executeUpdate();
@@ -138,7 +138,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
                 cargo.setSenha(rs.getString("senha"));
             }
 
@@ -169,7 +169,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
                 cargo.setSenha(rs.getString("senha"));
 
                 cargos.add(cargo);
@@ -197,7 +197,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraroia(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
                 cargo.setSenha(rs.getString("senha"));
                 cargo.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorCargo(cargo.getId()));
 

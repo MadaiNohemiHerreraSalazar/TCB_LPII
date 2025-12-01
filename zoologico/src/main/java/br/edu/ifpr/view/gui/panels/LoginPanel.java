@@ -1,110 +1,154 @@
 package br.edu.ifpr.view.gui.panels;
+
 import javax.swing.*;
+
+import br.edu.ifpr.view.gui.MainFrame;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class LoginPanel {
+public class LoginPanel extends JPanel {
 
-    public static void main(String[] args) {
-        criarTelaLogin();
+    public LoginPanel() {
+
+        setLayout(new BorderLayout());
+
+        // ===============================
+        // TÍTULO
+        // ===============================
+        JLabel labelTitulo = new JLabel("Validação de Entrada");
+        labelTitulo.setFont(new Font("Serif", Font.BOLD, 40));
+        labelTitulo.setHorizontalAlignment(JLabel.CENTER);
+
+        JPanel painelTitulo = new JPanel(new BorderLayout());
+        painelTitulo.setBorder(BorderFactory.createEmptyBorder(40, 0, 20, 0));
+        painelTitulo.add(labelTitulo, BorderLayout.CENTER);
+
+        add(painelTitulo, BorderLayout.NORTH);
+
+        // ===============================
+        // PAINEL CENTRAL
+        // ===============================
+        JPanel painelCentral = new JPanel();
+        painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
+        painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+
+        JLabel labelSenha = new JLabel("Digite sua senha:");
+        labelSenha.setFont(new Font("Serif", Font.BOLD, 22));
+        labelSenha.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        painelCentral.add(labelSenha);
+        painelCentral.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // ===============================
+        // INPUT + BOTÕES
+        // ===============================
+        JPanel painelInput = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+
+        JPasswordField campoSenha = new JPasswordField(15);
+        campoSenha.setFont(new Font("Serif", Font.PLAIN, 18));
+
+        JButton botaoEntrar = new JButton("Entrar");
+        botaoEntrar.setFont(new Font("Serif", Font.BOLD, 16));
+        botaoEntrar.setBackground(Color.BLACK);
+        botaoEntrar.setForeground(Color.WHITE);
+
+        JButton botaoVoltar = new JButton("Voltar");
+        botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
+        botaoVoltar.setBackground(Color.GRAY);
+        botaoVoltar.setForeground(Color.WHITE);
+
+        painelInput.add(campoSenha);
+        painelInput.add(botaoEntrar);
+        painelInput.add(botaoVoltar);
+
+        painelCentral.add(painelInput);
+
+        add(painelCentral, BorderLayout.CENTER);
+
+        // ===============================
+        // LÓGICA DO LOGIN
+        // ===============================
+        botaoEntrar.addActionListener(e -> realizarLogin(campoSenha));
+        campoSenha.addActionListener(e -> realizarLogin(campoSenha));
+
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
     }
 
-    private static void criarTelaLogin() {
+    // ===============================
+    // MÉTODO QUE VALIDA E REDIRECIONA
+    // ===============================
+    private void realizarLogin(JPasswordField campoSenha) {
 
-        JFrame frame = new JFrame("Sistema - Login");
-        frame.setSize(350, 200);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        String senha = new String(campoSenha.getPassword()).trim();
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1, 10, 10));
+        if (senha.length() < 2) {
+            JOptionPane.showMessageDialog(this, "Senha muito curta!");
+            return;
+        }
 
-        JLabel labelSenha = new JLabel("Digite a sua senha:");
-        JPasswordField campoSenha = new JPasswordField(15);
+        // ============================
+        // ✔ SENHA MESTRA - GERENTE
+        // ============================
+        if (senha.equals("2000")) {
+            MainFrame.mostrarPanel(new GerentePanel());
+            return;
+        }
 
-        JButton botaoLogin = new JButton("Entrar");
+        // Prefixo 2 primeiros dígitos
+        String prefixo = senha.substring(0, 2);
 
-        panel.add(labelSenha);
-        panel.add(campoSenha);
-        panel.add(botaoLogin);
+        switch (prefixo) {
+            case "01":
+                MainFrame.mostrarPanel(new AnimalPanel());
+                break;
 
-        frame.add(panel);
-        frame.setVisible(true);
+            case "02":
+                MainFrame.mostrarPanel(new AgendaAnimalPanel());
+                break;
 
-        botaoLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-String senha = new String(campoSenha.getPassword());
+            case "03":
+                MainFrame.mostrarPanel(new FuncionarioPanel());
+                break;
 
-if (senha.length() < 2) {
-    JOptionPane.showMessageDialog(frame, "Senha muito curta!");
-    return;
-}
+            case "04":
+                MainFrame.mostrarPanel(new AgendaFuncionarioPanel());
+                break;
 
-String prefixo2 = senha.substring(0, 2); // pega "01", "02", "10", etc.
+            case "05":
+                MainFrame.mostrarPanel(new CargoPanel());
+                break;
 
-frame.dispose();
+            case "06":
+                MainFrame.mostrarPanel(new AreaPanel());
+                break;
 
-//if gerente
+            case "07":
+                MainFrame.mostrarPanel(new HabitatPanel());
+                break;
 
-switch (prefixo2) {
+            case "08":
+                MainFrame.mostrarPanel(new RotinaAlimentarPanel());
+                break;
 
-    case "01":
-        AnimalPanel.main(null);
-        break;
+            case "09":
+                MainFrame.mostrarPanel(new FornecedorPanel());
+                break;
 
-    case "02":
-        AgendaAnimalPanel.main(null);
-        break;
+            case "10":
+                MainFrame.mostrarPanel(new AlimentoPanel());
+                break;
 
-    case "03":
-        FuncionarioPanel.main(null);
-        break;
+            case "11":
+                MainFrame.mostrarPanel(new VeterinarioPanel());
+                break;
 
-    case "04":
-        AgendaFuncionarioPanel.main(null);
-        break;
+            default:
+                JOptionPane.showMessageDialog(this, "Senha inválida!");
+        }
+    }
 
-    case "05":
-        CargoPanel.main(null);
-        break;
-
-    case "06":
-        AreaPanel.main(null);
-        break;
-
-    case "07":
-        HabitatPanel.main(null);
-        break;
-
-    case "08":
-        VendaPanel.main(null);
-        break;
-
-    case "09":
-        RotinaAlimentarPanel.main(null);
-        break;
-
-    case "10":
-        FornecedorPanel.main(null);
-        break;
-
-    case "11":
-        AlimentoPanel.main(null);
-        break;
-
-    case "12":
-        VeterinarioPanel.main(null);
-        break;
-
-    default:
-        JOptionPane.showMessageDialog(null,
-                "Senha inválida ou não atribuída a nenhum módulo!");
-        criarTelaLogin();
-}
-            }
-        });
+    // Chamada principal
+    public static void iniciarLogin() {
+        MainFrame.mostrarPanel(new LoginPanel());
     }
 }
