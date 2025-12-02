@@ -357,7 +357,7 @@ public class AnimalPanel extends JPanel {
                 }
 
                 AnimalController controller = new AnimalController();
-               // controller.cadastrarAnimal(animal);
+               //controller.cadastrarAnimal(animal, veterinarioId);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Animal cadastrado com sucesso!",

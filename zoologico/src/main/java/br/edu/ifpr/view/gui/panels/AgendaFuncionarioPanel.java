@@ -23,6 +23,7 @@ import javax.swing.JTable;
 //import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import br.edu.ifpr.view.gui.MainFrame;
 import br.edu.ifpr.zoologicio.controller.AgendaFuncionarioController;
 import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
 import br.edu.ifpr.zoologicio.model.Funcionario;
@@ -197,7 +198,7 @@ public class AgendaFuncionarioPanel extends JPanel {
         painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
         // ACTION
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+botaoVoltar.addActionListener(e -> MainFrame.mostrarMenuPrincipal());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();
@@ -406,7 +407,7 @@ public class AgendaFuncionarioPanel extends JPanel {
             }
         });
 
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+botaoVoltar.addActionListener(e -> MainFrame.mostrarMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVerificar.doClick());
 
@@ -525,7 +526,7 @@ public class AgendaFuncionarioPanel extends JPanel {
             }
         });
 
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+botaoVoltar.addActionListener(e -> MainFrame.mostrarMenuPrincipal());
 
         campoID.addActionListener(e -> botaoRemover.doClick());
 
@@ -706,7 +707,7 @@ public class AgendaFuncionarioPanel extends JPanel {
             }
         });
 
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+botaoVoltar.addActionListener(e -> MainFrame.mostrarMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVisualizar.doClick());
 

@@ -10,13 +10,11 @@ import java.util.ArrayList;
 public class AlimentoDAO {
 
     // CADASTRAR
-    // ______________________________________________________
-
     public static void cadastrar(Alimento alimento) {
-        String sql = "INSERT INTO alimentos(nome, validade, estoque) VALUES (?,?,?)";
+        String sql = "INSERT INTO Alimento(nome, validade, estoque) VALUES (?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, alimento.getNome());
             pst.setString(2, alimento.getValidade());
@@ -25,7 +23,7 @@ public class AlimentoDAO {
 
             try (ResultSet rs = pst.getGeneratedKeys()) {
                 if (rs.next()) {
-                    alimento.setId(rs.getInt(1));
+                    alimento.setId(rs.getInt(1)); // OK (generated key)
                 } else {
                     throw new SQLException("Falha ao obter ID gerado para Alimento");
                 }
@@ -39,13 +37,11 @@ public class AlimentoDAO {
     }
 
     // EDITAR
-    // ______________________________________________________
-
     public static void editar(Alimento alimento) {
-        String sql = "UPDATE alimentos SET nome=?, validade=?, estoque=? WHERE id=?";
+        String sql = "UPDATE Alimento SET nome=?, validade=?, estoque=? WHERE idAlimento=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, alimento.getNome());
             pst.setString(2, alimento.getValidade());
@@ -61,13 +57,11 @@ public class AlimentoDAO {
     }
 
     // DELETE
-    // ______________________________________________________
-
     public static void delete(int id) {
-        String sql = "DELETE FROM alimentos WHERE id=?";
+        String sql = "DELETE FROM Alimento WHERE idAlimento=?";
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             pst.executeUpdate();
@@ -80,21 +74,19 @@ public class AlimentoDAO {
     }
 
     // SELECT COMPLETO (Buscar por ID)
-    // ______________________________________________________
-
     public static Alimento select(int id) {
-        String sql = "SELECT id, nome, validade, estoque FROM alimentos WHERE id=?";
+        String sql = "SELECT idAlimento, nome, validade, estoque FROM Alimento WHERE idAlimento=?";
         Alimento alimento = null;
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
                 alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
+                alimento.setId(rs.getInt("idAlimento"));
                 alimento.setNome(rs.getString("nome"));
                 alimento.setValidade(rs.getString("validade"));
                 alimento.setEstoque(rs.getString("estoque"));
@@ -107,21 +99,19 @@ public class AlimentoDAO {
         return alimento;
     }
 
-    // LISTAR SIMPLES
-    // ______________________________________________________
-
+    // LISTAR
     public static ArrayList<Alimento> listar() {
-        String sql = "SELECT id, nome, validade, estoque FROM alimentos ORDER BY nome";
+        String sql = "SELECT idAlimento, nome, validade, estoque FROM Alimento ORDER BY nome";
 
         ArrayList<Alimento> alimentos = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql);
-                ResultSet rs = pst.executeQuery()) {
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
+                alimento.setId(rs.getInt("idAlimento"));
                 alimento.setNome(rs.getString("nome"));
                 alimento.setValidade(rs.getString("validade"));
                 alimento.setEstoque(rs.getString("estoque"));
@@ -129,29 +119,26 @@ public class AlimentoDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar alimentos: " + e.getMessage());
+            System.err.println("Erro ao listar alimento: " + e.getMessage());
         }
 
         return alimentos;
     }
 
-    // METODOS AUXILIARES
-    // ----------------------------------------------------------------
-    // BUSCAR ALIMENTO NOME E ID POR ID
-    // _______________________________________________________________
+    // MÉTODO AUXILIAR
     public static Alimento buscarAlimentoPor_ID(int alimentoId) {
         Connection con = ConnectionFactory.getConnection();
         Alimento alimento = null;
 
         try {
-            String sql = "SELECT * FROM alimentos WHERE id=?";
+            String sql = "SELECT idAlimento, nome FROM Alimento WHERE idAlimento=?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, alimentoId);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
                 alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
+                alimento.setId(rs.getInt("idAlimento"));
                 alimento.setNome(rs.getString("nome"));
             }
 
@@ -161,5 +148,4 @@ public class AlimentoDAO {
 
         return alimento;
     }
-
 }

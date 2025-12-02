@@ -358,7 +358,7 @@ public class RotinaAlimentarPanel extends JPanel {
                 rotinaAlimentar.setQuantidadeAlimento(campoQuantidadeAlimento.getText().trim());
 
                 RotinaAlimentarController controller = new RotinaAlimentarController();
-               // controller.editarRotinaAlimentar(rotinaAlimentar);
+               //controller.editarRotinaAlimentar(rotinaAlimentar);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Rotina Alimentar atualizada com sucesso!",

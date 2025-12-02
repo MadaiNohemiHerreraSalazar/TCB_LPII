@@ -297,7 +297,7 @@ public class CompraPanel extends JPanel {
                 }
 
                 CompraController controller = new CompraController();
-               // controller.cadastrarCompra(compra);
+               //controller.cadastrarCompra(compra);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Compra cadastrada com sucesso!",
