@@ -38,12 +38,12 @@ public class RotinaAlimentarPanel extends JPanel {
         painelPrincipalInterno = new JPanel(new BorderLayout());
         add(painelPrincipalInterno, BorderLayout.CENTER);
 
-        mostrarMenuPrincipal();
+        mostrarLogin();
     }
 
     // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
-    private void mostrarMenuPrincipal() {
+    private void mostrarLogin() {
         painelPrincipalInterno.removeAll();
 
         // Título do menu principal
@@ -88,7 +88,7 @@ public class RotinaAlimentarPanel extends JPanel {
         btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
         btnVoltar.setBackground(Color.BLACK);
         btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e -> mostrarMenuPrincipal()); // Depois você pode trocar para voltar ao MainFrame
+        btnVoltar.addActionListener(e -> mostrarLogin()); // Depois você pode trocar para voltar ao MainFrame
         painelInferior.add(btnVoltar);
         painelPrincipalInterno.add(painelInferior, BorderLayout.SOUTH);
 
@@ -243,7 +243,7 @@ public class RotinaAlimentarPanel extends JPanel {
         painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
         // ACTION
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+        botaoVoltar.addActionListener(e -> mostrarLogin());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();

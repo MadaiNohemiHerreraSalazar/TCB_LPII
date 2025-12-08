@@ -39,12 +39,12 @@ public class AgendaAnimalPanel extends JPanel {
         painelPrincipalInterno = new JPanel(new BorderLayout());
         add(painelPrincipalInterno, BorderLayout.CENTER);
 
-        mostrarMenuPrincipal();
+        mostrarLogin();
     }
 
     // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
-    private void mostrarMenuPrincipal() {
+    private void mostrarLogin() {
         painelPrincipalInterno.removeAll();
 
         // Título do menu principal
@@ -89,7 +89,7 @@ public class AgendaAnimalPanel extends JPanel {
         btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
         btnVoltar.setBackground(Color.BLACK);
         btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        btnVoltar.addActionListener(e -> MainFrame.mostrarLogin()); // CORRIGIDO
         painelInferior.add(btnVoltar);
         painelPrincipalInterno.add(painelInferior, BorderLayout.SOUTH);
 
@@ -133,6 +133,7 @@ public class AgendaAnimalPanel extends JPanel {
 
         return botao;
     }
+
 
     // MÉTODOS CRUD PARA AgendaAnimalPanel
 

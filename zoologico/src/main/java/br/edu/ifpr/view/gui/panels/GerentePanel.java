@@ -40,7 +40,20 @@ public class GerentePanel extends JPanel {
             painelBotoes.add(botao);
         }
 
+         // ------------------------------
+        // BOTÃO DE VOLTAR AO LOGIN
+        // ------------------------------
+        JButton btnVoltarLogin = new JButton("Voltar ao Login");
+        btnVoltarLogin.setFont(new Font("Arial", Font.BOLD, 16));
+        btnVoltarLogin.setBackground(Color.GRAY);
+        btnVoltarLogin.setForeground(Color.WHITE);
+
+        btnVoltarLogin.addActionListener(e -> MainFrame.mostrarPanel(new LoginPanel()));
+
+        painelBotoes.add(btnVoltarLogin);
+
         add(painelBotoes, BorderLayout.CENTER);
+
     }
 
     private JButton criarBotaoGerenciamento(String texto) {

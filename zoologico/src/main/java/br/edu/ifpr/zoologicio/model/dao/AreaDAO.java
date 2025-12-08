@@ -157,7 +157,7 @@ public class AreaDAO {
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery()) {
-
+ 
             while (rs.next()) {
                 Area area = new Area();
                 area.setId(rs.getInt("area_id"));

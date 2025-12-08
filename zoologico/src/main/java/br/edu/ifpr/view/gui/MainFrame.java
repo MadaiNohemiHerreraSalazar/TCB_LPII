@@ -25,8 +25,9 @@ public class MainFrame {
 
     public static void main(String[] args) {
         MainFrame.iniciar();
-        LoginPanel.iniciarLogin();
-    }
+mostrarTelaInicial();
+
+}
 
 
     // MOSTRAR TELA PRINCIPAL
@@ -71,7 +72,7 @@ public class MainFrame {
         btnEntrar.setFocusPainted(false);
 
         // Ação do botão para ir ao menu principal
-        btnEntrar.addActionListener(e -> mostrarMenuPrincipal());
+        btnEntrar.addActionListener(e -> mostrarLogin());
 
         // Painel central com BoxLayout para organizar verticalmente
         JPanel centro = new JPanel();
@@ -282,5 +283,9 @@ public class MainFrame {
         iniciar();
         return janela;
     }
+
+    public static void mostrarLogin() {
+    mostrarPanel(new LoginPanel());
+}
 
 }

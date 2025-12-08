@@ -1,14 +1,25 @@
 package br.edu.ifpr.zoologicio.model;
 
+import java.util.ArrayList;
+
 public class AgendaFuncionario {
 
-    private Integer  id;
+    private Integer id;
     private String atividade;
     private Funcionario funcionario;
+    private ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
+
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(ArrayList<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
 
     public AgendaFuncionario() {
 
-    } 
+    }
 
     public Integer getId() {
         return id;
@@ -17,7 +28,6 @@ public class AgendaFuncionario {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public String getAtividade() {
         return atividade;
@@ -34,6 +44,5 @@ public class AgendaFuncionario {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
-
 
 }

@@ -16,7 +16,7 @@ public class AgendaFuncionarioDAO {
     public static void cadastrar(AgendaFuncionario agenda) {
         String sql = "INSERT INTO agendaFuncionario (atividade, funcionario_id) "
                 +
-                "VALUES (?,?,?,?,?)";
+                "VALUES (?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -79,7 +79,7 @@ public class AgendaFuncionarioDAO {
     public static AgendaFuncionario select(int id) {
         String sql = "SELECT af.agendaFuncionario_id, af.atividade, " +
                 " af.funcionario_id " +
-                "FROM agendaFuncionarios af " +
+                "FROM agendaFuncionario af " +
                 "WHERE af.agendaFuncionario_id = ?";
 
         AgendaFuncionario agenda = null;
@@ -129,6 +129,37 @@ public class AgendaFuncionarioDAO {
         }
 
         return agendas;
+    } 
+
+   public static ArrayList<AgendaFuncionario> listarCompleto() {
+    ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
+
+    String sql = "SELECT af.agendaFuncionario_id, af.atividade, af.funcionario_id " +
+                 "FROM agendaFuncionario af ORDER BY af.agendaFuncionario_id DESC";
+
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql);
+         ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+
+            AgendaFuncionario agenda = new AgendaFuncionario();
+            agenda.setId(rs.getInt("agendaFuncionario_id"));
+            agenda.setAtividade(rs.getString("atividade"));
+
+            // Carrega o FUNCIONÁRIO completo
+            agenda.setFuncionario(
+                FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id"))
+            );
+
+            agendas.add(agenda);
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Erro ao listar AgendaFuncionario COMPLETO: " + e.getMessage());
     }
+
+    return agendas;
+}
 
 }
