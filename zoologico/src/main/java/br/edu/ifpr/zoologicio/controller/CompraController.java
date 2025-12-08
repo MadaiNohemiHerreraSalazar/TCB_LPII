@@ -8,7 +8,7 @@ import br.edu.ifpr.zoologicio.model.dao.FuncionarioDAO;
 public class CompraController {
 
     // Cadastrar
-    public void cadastrarCompra(Compra compra, int visitante_id, int funcionario_id) {
+    public void cadastrarCompra(Compra compra, int funcionario_id) {
         if (compra == null) {
             System.out.println("Objeto Compra não pode ser nulo!");
             return;
@@ -30,7 +30,7 @@ public class CompraController {
     }
 
     // Editar
-    public void editarCompra(Compra compra, int visitante_id, int funcionario_id) {
+    public void editarCompra(Compra compra, int funcionario_id) {
         if (compra == null) {
             System.out.println("Objeto Compra não pode ser nulo!");
             return;
@@ -54,7 +54,7 @@ public class CompraController {
             return;
         }
 
-        CompraDAO.editar(compra, visitante_id, funcionarioID);
+        CompraDAO.editar(compra, funcionarioID);
     }
 
     // Deletar

@@ -28,24 +28,7 @@ public class MainFrame {
         LoginPanel.iniciarLogin();
     }
 
-    // CRIAR JANELA PRINCIPAL COM TITULO
-    // ___________________________________________________________
-    /*
-     * private static void criarJanelaPrincipal() {
-     * janela = new JFrame("Sistema do Zoológico");
-     * janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-     * janela.setSize(1200, 800);
-     * janela.setLocationRelativeTo(null);
-     * janela.setLayout(new BorderLayout());
-     * 
-     * // Painel principal com CardLayout
-     * cardLayout = new CardLayout();
-     * painelPrincipal = new JPanel(cardLayout);
-     * janela.add(painelPrincipal, BorderLayout.CENTER);
-     * 
-     * janela.setVisible(true);
-     * }
-     */
+
     // MOSTRAR TELA PRINCIPAL
     // ____________________________________________________________
     public static void mostrarTelaInicial() {

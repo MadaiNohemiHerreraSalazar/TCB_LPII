@@ -16,7 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 //import javax.swing.JFrame;
-import javax.swing.JLabel; 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -71,7 +71,7 @@ public class CompraPanel extends JPanel {
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 200, 0, 200));
 
         // Criar botões de gerenciamento
-        String[] gerenciamentos = {"Cadastro", "Editar", "Remover", "Selecionar", "Listar"};
+        String[] gerenciamentos = { "Cadastro", "Editar", "Remover", "Selecionar", "Listar" };
 
         for (String gerenciamento : gerenciamentos) {
             JButton botao = criarBotaoGerenciamento(gerenciamento);
@@ -200,8 +200,8 @@ public class CompraPanel extends JPanel {
         labelMeioPagamento.setFont(new Font("Serif", Font.BOLD, 18));
         labelMeioPagamento.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelMeioPagamento.add(labelMeioPagamento);
-        JComboBox<String> comboMeioPagamento = new JComboBox<>(new String[]{
-            "Dinheiro", "Cartão de Crédito", "Cartão de Débito", "PIX", "Transferência"
+        JComboBox<String> comboMeioPagamento = new JComboBox<>(new String[] {
+                "Dinheiro", "Cartão de Crédito", "Cartão de Débito", "PIX", "Transferência"
         });
         comboMeioPagamento.setPreferredSize(new Dimension(500, 40));
         comboMeioPagamento.setMaximumSize(new Dimension(500, 40));
@@ -255,7 +255,6 @@ public class CompraPanel extends JPanel {
         campoFuncionario.setMaximumSize(new Dimension(500, 40));
         campoFuncionario.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelFuncionario.add(campoFuncionario);
-
         painelCampos.add(panelFuncionario);
 
         painelPrincipalInterno.add(painelCampos, BorderLayout.CENTER);
@@ -285,19 +284,13 @@ public class CompraPanel extends JPanel {
                 compra.setQuantidade(campoQuantidade.getText().trim());
                 compra.setMeioPagamento((String) comboMeioPagamento.getSelectedItem());
                 compra.setPrecoTotal(campoPrecoTotal.getText().trim());
-                compra.setVisitante(campoVisitante.getText().trim());
-                
-                // Configurar funcionário (simplificado - apenas ID)
-                // Em um sistema real, você buscaria o funcionário pelo ID
-                String funcionarioId = campoFuncionario.getText().trim();
-                if (!funcionarioId.isEmpty()) {
-                    // Aqui você precisaria buscar o funcionário pelo ID
-                    // Por enquanto, apenas armazenamos o ID
-                    // compra.setFuncionario(buscarFuncionarioPorId(funcionarioId));
-                }
+
+                // ID do funcionário
+                String funcionarioIdStr = campoFuncionario.getText().trim();
+                int funcionarioId = Integer.parseInt(funcionarioIdStr);
 
                 CompraController controller = new CompraController();
-               //AQUI --> controller.cadastrarCompra(compra);
+                controller.cadastrarCompra(compra, funcionarioId);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Compra cadastrada com sucesso!",
@@ -390,8 +383,8 @@ public class CompraPanel extends JPanel {
         labelMeioPagamento.setFont(new Font("Serif", Font.BOLD, 18));
         labelMeioPagamento.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelMeioPagamento.add(labelMeioPagamento);
-        JComboBox<String> comboMeioPagamento = new JComboBox<>(new String[]{
-            "Dinheiro", "Cartão de Crédito", "Cartão de Débito", "PIX", "Transferência"
+        JComboBox<String> comboMeioPagamento = new JComboBox<>(new String[] {
+                "Dinheiro", "Cartão de Crédito", "Cartão de Débito", "PIX", "Transferência"
         });
         comboMeioPagamento.setSelectedItem(compra.getMeioPagamento());
         comboMeioPagamento.setPreferredSize(new Dimension(500, 40));
@@ -417,22 +410,6 @@ public class CompraPanel extends JPanel {
         painelCampos.add(panelPrecoTotal);
         painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // Campo Visitante
-        JPanel panelVisitante = new JPanel();
-        panelVisitante.setLayout(new BoxLayout(panelVisitante, BoxLayout.Y_AXIS));
-        panelVisitante.setAlignmentX(Component.LEFT_ALIGNMENT);
-        JLabel labelVisitante = new JLabel("Visitante (CPF ou Nome):");
-        labelVisitante.setFont(new Font("Serif", Font.BOLD, 18));
-        labelVisitante.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelVisitante.add(labelVisitante);
-        JTextField campoVisitante = new JTextField(compra.getVisitante());
-        campoVisitante.setPreferredSize(new Dimension(500, 40));
-        campoVisitante.setMaximumSize(new Dimension(500, 40));
-        campoVisitante.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelVisitante.add(campoVisitante);
-        painelCampos.add(panelVisitante);
-        painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
-
         // Campo Funcionário (ID)
         JPanel panelFuncionario = new JPanel();
         panelFuncionario.setLayout(new BoxLayout(panelFuncionario, BoxLayout.Y_AXIS));
@@ -441,8 +418,7 @@ public class CompraPanel extends JPanel {
         labelFuncionario.setFont(new Font("Serif", Font.BOLD, 18));
         labelFuncionario.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelFuncionario.add(labelFuncionario);
-        String funcionarioId = compra.getFuncionario() != null ? 
-                                String.valueOf(compra.getFuncionario().getId()) : "";
+        String funcionarioId = compra.getFuncionario() != null ? String.valueOf(compra.getFuncionario().getId()) : "";
         JTextField campoFuncionario = new JTextField(funcionarioId);
         campoFuncionario.setPreferredSize(new Dimension(500, 40));
         campoFuncionario.setMaximumSize(new Dimension(500, 40));
@@ -477,10 +453,12 @@ public class CompraPanel extends JPanel {
                 compra.setQuantidade(campoQuantidade.getText().trim());
                 compra.setMeioPagamento((String) comboMeioPagamento.getSelectedItem());
                 compra.setPrecoTotal(campoPrecoTotal.getText().trim());
-                compra.setVisitante(campoVisitante.getText().trim());
+
+                String funcionarioIdStr = campoFuncionario.getText().trim();
+                int funcionario_Id = Integer.parseInt(funcionarioIdStr);
 
                 CompraController controller = new CompraController();
-                //AQUI ---> controller.editarCompra(compra);
+                controller.editarCompra(compra, funcionario_Id);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Compra atualizada com sucesso!",
@@ -506,73 +484,73 @@ public class CompraPanel extends JPanel {
     // TELA BUSCA ID PARA EDIÇÃO
     public void telaBuscaIDEdicao() {
         criarTelaBuscaID("Editar Compra", "Digite o ID da Compra para Editar:", "Buscar",
-            (id) -> {
-                CompraController controller = new CompraController();
-                Compra compra = controller.selecionarCompra(id);
-                if (compra != null) {
-                    Editar(compra);
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhuma compra encontrada com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                (id) -> {
+                    CompraController controller = new CompraController();
+                    Compra compra = controller.selecionarCompra(id);
+                    if (compra != null) {
+                        Editar(compra);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhuma compra encontrada com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                });
     }
 
     // TELA BUSCA ID PARA REMOVER
     public void telaBuscaIDRemover_Remover() {
         criarTelaBuscaID("Remover Compra", "Digite o ID da Compra para Remover:", "Remover",
-            (id) -> {
-                CompraController controller = new CompraController();
-                Compra compra = controller.selecionarCompra(id);
-                if (compra != null) {
-                    int confirmacao = JOptionPane.showConfirmDialog(
-                            MainFrame.getJanela(),
-                            "Tem certeza que deseja remover a compra de ID: " + compra.getId() + "?",
-                            "Confirmar Remoção",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
+                (id) -> {
+                    CompraController controller = new CompraController();
+                    Compra compra = controller.selecionarCompra(id);
+                    if (compra != null) {
+                        int confirmacao = JOptionPane.showConfirmDialog(
+                                MainFrame.getJanela(),
+                                "Tem certeza que deseja remover a compra de ID: " + compra.getId() + "?",
+                                "Confirmar Remoção",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
 
-                    if (confirmacao == JOptionPane.YES_OPTION) {
-                        try {
-                            controller.deletarCompra(id);
-                            JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                                    "Compra removida com sucesso!",
-                                    "Sucesso",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            MainFrame.voltarAoMenuPrincipal();
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                                    "Erro ao remover: " + ex.getMessage(),
-                                    "Erro",
-                                    JOptionPane.ERROR_MESSAGE);
+                        if (confirmacao == JOptionPane.YES_OPTION) {
+                            try {
+                                controller.deletarCompra(id);
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                        "Compra removida com sucesso!",
+                                        "Sucesso",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                MainFrame.voltarAoMenuPrincipal();
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                        "Erro ao remover: " + ex.getMessage(),
+                                        "Erro",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhuma compra encontrada com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhuma compra encontrada com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                });
     }
 
     // TELA BUSCA ID PARA SELECIONAR/VISUALIZAR
     public void telaBuscaIDSelecionar() {
         criarTelaBuscaID("Visualizar Compra", "Digite o ID da Compra para Visualizar:", "Visualizar",
-            (id) -> {
-                CompraController controller = new CompraController();
-                Compra compra = controller.selecionarCompra(id);
-                if (compra != null) {
-                    Selecionar(compra);
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhuma compra encontrada com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                (id) -> {
+                    CompraController controller = new CompraController();
+                    Compra compra = controller.selecionarCompra(id);
+                    if (compra != null) {
+                        Selecionar(compra);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhuma compra encontrada com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                });
     }
 
     // MÉTODO GENÉRICO PARA CRIAR TELA DE BUSCA POR ID
@@ -691,10 +669,9 @@ public class CompraPanel extends JPanel {
         JTextField campoQuantidade = criarCampoReadOnly(compra.getQuantidade());
         JTextField campoMeioPagamento = criarCampoReadOnly(compra.getMeioPagamento());
         JTextField campoPrecoTotal = criarCampoReadOnly(compra.getPrecoTotal());
-        JTextField campoVisitante = criarCampoReadOnly(compra.getVisitante());
-        
-        String funcionarioInfo = compra.getFuncionario() != null ? 
-                                "ID: " + compra.getFuncionario().getId() : "Não informado";
+
+        String funcionarioInfo = compra.getFuncionario() != null ? "ID: " + compra.getFuncionario().getId()
+                : "Não informado";
         JTextField campoFuncionario = criarCampoReadOnly(funcionarioInfo);
 
         // Labels
@@ -710,8 +687,6 @@ public class CompraPanel extends JPanel {
         painelDados.add(campoMeioPagamento);
         painelDados.add(new JLabel("Preço Total:"));
         painelDados.add(campoPrecoTotal);
-        painelDados.add(new JLabel("Visitante:"));
-        painelDados.add(campoVisitante);
         painelDados.add(new JLabel("Funcionário:"));
         painelDados.add(campoFuncionario);
 
@@ -772,7 +747,7 @@ public class CompraPanel extends JPanel {
                 labelVazio.setForeground(Color.GRAY);
                 painelCentral.add(labelVazio, BorderLayout.CENTER);
             } else {
-                String[] colunas = {"ID", "Data", "Hora", "Quantidade", "Meio Pagamento", "Preço Total", "Visitante"};
+                String[] colunas = { "ID", "Data", "Hora", "Quantidade", "Meio Pagamento", "Preço Total", "Visitante" };
                 Object[][] dados = new Object[compras.size()][7];
 
                 for (int i = 0; i < compras.size(); i++) {
@@ -783,7 +758,6 @@ public class CompraPanel extends JPanel {
                     dados[i][3] = compra.getQuantidade() != null ? compra.getQuantidade() : "";
                     dados[i][4] = compra.getMeioPagamento() != null ? compra.getMeioPagamento() : "";
                     dados[i][5] = compra.getPrecoTotal() != null ? compra.getPrecoTotal() : "";
-                    dados[i][6] = compra.getVisitante() != null ? compra.getVisitante() : "";
                 }
 
                 JTable tabela = new JTable(dados, colunas);

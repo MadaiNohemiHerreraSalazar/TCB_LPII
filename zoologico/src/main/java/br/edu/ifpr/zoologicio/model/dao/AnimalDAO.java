@@ -12,7 +12,7 @@ public class AnimalDAO {
     // _______________________________________________________________________
 
     public static void cadastrar(Animal animal, int veterinarioId) {
-        String sqlAnimal = "INSERT INTO animail " +
+        String sqlAnimal = "INSERT INTO animal " +
                 "(nome, descricao, historia, especie, idade, genero, peso, altura, saude, habitat_id) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
 

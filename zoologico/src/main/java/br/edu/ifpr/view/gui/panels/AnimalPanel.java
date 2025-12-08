@@ -73,7 +73,7 @@ public class AnimalPanel extends JPanel {
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 200, 0, 200));
 
         // Criar botões de gerenciamento
-        String[] gerenciamentos = {"Cadastro", "Editar", "Remover", "Selecionar", "Listar"};
+        String[] gerenciamentos = { "Cadastro", "Editar", "Remover", "Selecionar", "Listar" };
 
         for (String gerenciamento : gerenciamentos) {
             JButton botao = criarBotaoGerenciamento(gerenciamento);
@@ -202,8 +202,8 @@ public class AnimalPanel extends JPanel {
         labelGenero.setFont(new Font("Serif", Font.BOLD, 18));
         labelGenero.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelGenero.add(labelGenero);
-        JComboBox<String> comboGenero = new JComboBox<>(new String[]{
-            "Macho", "Fêmea", "Indefinido"
+        JComboBox<String> comboGenero = new JComboBox<>(new String[] {
+                "Macho", "Fêmea", "Indefinido"
         });
         comboGenero.setPreferredSize(new Dimension(500, 40));
         comboGenero.setMaximumSize(new Dimension(500, 40));
@@ -252,8 +252,8 @@ public class AnimalPanel extends JPanel {
         labelSaude.setFont(new Font("Serif", Font.BOLD, 18));
         labelSaude.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelSaude.add(labelSaude);
-        JComboBox<String> comboSaude = new JComboBox<>(new String[]{
-            "Excelente", "Bom", "Regular", "Ruim", "Crítico"
+        JComboBox<String> comboSaude = new JComboBox<>(new String[] {
+                "Excelente", "Bom", "Regular", "Ruim", "Crítico"
         });
         comboSaude.setPreferredSize(new Dimension(500, 40));
         comboSaude.setMaximumSize(new Dimension(500, 40));
@@ -276,6 +276,25 @@ public class AnimalPanel extends JPanel {
         campoHabitat.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelHabitat.add(campoHabitat);
         painelCampos.add(panelHabitat);
+        painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        // Campo ID Veterinário
+        JPanel panelVet = new JPanel();
+        panelVet.setLayout(new BoxLayout(panelVet, BoxLayout.Y_AXIS));
+        panelVet.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel labelVet = new JLabel("ID do Veterinário:");
+        labelVet.setFont(new Font("Serif", Font.BOLD, 18));
+        labelVet.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelVet.add(labelVet);
+
+        JTextField campoVeterinario = new JTextField();
+        campoVeterinario.setPreferredSize(new Dimension(500, 40));
+        campoVeterinario.setMaximumSize(new Dimension(500, 40));
+        campoVeterinario.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelVet.add(campoVeterinario);
+
+        painelCampos.add(panelVet);
         painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
 
         // Campo Descrição
@@ -346,7 +365,7 @@ public class AnimalPanel extends JPanel {
                 animal.setSaude((String) comboSaude.getSelectedItem());
                 animal.setDescricao(campoDescricao.getText().trim());
                 animal.setHistoria(campoHistoria.getText().trim());
-                
+
                 // Configurar Habitat (apenas ID por enquanto)
                 String habitatId = campoHabitat.getText().trim();
                 if (!habitatId.isEmpty()) {
@@ -356,8 +375,12 @@ public class AnimalPanel extends JPanel {
                     animal.setHabitat(habitat);
                 }
 
+                // Ler o ID do veterinário
+                String vetIdStr = campoVeterinario.getText().trim();
+                int veterinarioId = Integer.parseInt(vetIdStr);
+
                 AnimalController controller = new AnimalController();
-               //AQUI ---> controller.cadastrarAnimal(animal, veterinarioId);
+                controller.cadastrarAnimal(animal, veterinarioId);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Animal cadastrado com sucesso!",
@@ -450,8 +473,8 @@ public class AnimalPanel extends JPanel {
         labelGenero.setFont(new Font("Serif", Font.BOLD, 18));
         labelGenero.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelGenero.add(labelGenero);
-        JComboBox<String> comboGenero = new JComboBox<>(new String[]{
-            "Macho", "Fêmea", "Indefinido"
+        JComboBox<String> comboGenero = new JComboBox<>(new String[] {
+                "Macho", "Fêmea", "Indefinido"
         });
         if (animal.getGenero() != null) {
             comboGenero.setSelectedItem(animal.getGenero());
@@ -503,8 +526,8 @@ public class AnimalPanel extends JPanel {
         labelSaude.setFont(new Font("Serif", Font.BOLD, 18));
         labelSaude.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelSaude.add(labelSaude);
-        JComboBox<String> comboSaude = new JComboBox<>(new String[]{
-            "Excelente", "Bom", "Regular", "Ruim", "Crítico"
+        JComboBox<String> comboSaude = new JComboBox<>(new String[] {
+                "Excelente", "Bom", "Regular", "Ruim", "Crítico"
         });
         if (animal.getSaude() != null) {
             comboSaude.setSelectedItem(animal.getSaude());
@@ -524,14 +547,32 @@ public class AnimalPanel extends JPanel {
         labelHabitat.setFont(new Font("Serif", Font.BOLD, 18));
         labelHabitat.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelHabitat.add(labelHabitat);
-        String habitatId = animal.getHabitat() != null ? 
-                          String.valueOf(animal.getHabitat().getId()) : "";
+        String habitatId = animal.getHabitat() != null ? String.valueOf(animal.getHabitat().getId()) : "";
         JTextField campoHabitat = new JTextField(habitatId);
         campoHabitat.setPreferredSize(new Dimension(500, 40));
         campoHabitat.setMaximumSize(new Dimension(500, 40));
         campoHabitat.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelHabitat.add(campoHabitat);
         painelCampos.add(panelHabitat);
+        painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        // Campo ID Veterinário
+        JPanel panelVet = new JPanel();
+        panelVet.setLayout(new BoxLayout(panelVet, BoxLayout.Y_AXIS));
+        panelVet.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel labelVet = new JLabel("ID do Veterinário:");
+        labelVet.setFont(new Font("Serif", Font.BOLD, 18));
+        labelVet.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelVet.add(labelVet);
+
+        JTextField campoVeterinario = new JTextField();
+        campoVeterinario.setPreferredSize(new Dimension(500, 40));
+        campoVeterinario.setMaximumSize(new Dimension(500, 40));
+        campoVeterinario.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelVet.add(campoVeterinario);
+
+        painelCampos.add(panelVet);
         painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
 
         // Campo Descrição
@@ -614,9 +655,12 @@ public class AnimalPanel extends JPanel {
                     animal.setHabitat(null);
                 }
 
+                // Ler o ID do veterinário
+                String vetIdStr = campoVeterinario.getText().trim();
+                int veterinarioId = Integer.parseInt(vetIdStr);
+
                 AnimalController controller = new AnimalController();
-              //AQUI ---> controller.editarAnimal(animal);
-                
+                controller.editarAnimal(animal, veterinarioId);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Animal atualizado com sucesso!",
@@ -642,73 +686,73 @@ public class AnimalPanel extends JPanel {
     // TELA BUSCA ID PARA EDIÇÃO
     public void telaBuscaIDEdicao() {
         criarTelaBuscaID("Editar Animal", "Digite o ID do Animal para Editar:", "Buscar",
-            (id) -> {
-                AnimalController controller = new AnimalController();
-                Animal animal = controller.selecionarAnimal(id);
-                if (animal != null) {
-                    Editar(animal);
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhum animal encontrado com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                (id) -> {
+                    AnimalController controller = new AnimalController();
+                    Animal animal = controller.selecionarAnimal(id);
+                    if (animal != null) {
+                        Editar(animal);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhum animal encontrado com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                });
     }
 
     // TELA BUSCA ID PARA REMOVER
     public void telaBuscaIDRemover_Remover() {
         criarTelaBuscaID("Remover Animal", "Digite o ID do Animal para Remover:", "Remover",
-            (id) -> {
-                AnimalController controller = new AnimalController();
-                Animal animal = controller.selecionarAnimal(id);
-                if (animal != null) {
-                    int confirmacao = JOptionPane.showConfirmDialog(
-                            MainFrame.getJanela(),
-                            "Tem certeza que deseja remover o animal: " + animal.getNome() + "?",
-                            "Confirmar Remoção",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
+                (id) -> {
+                    AnimalController controller = new AnimalController();
+                    Animal animal = controller.selecionarAnimal(id);
+                    if (animal != null) {
+                        int confirmacao = JOptionPane.showConfirmDialog(
+                                MainFrame.getJanela(),
+                                "Tem certeza que deseja remover o animal: " + animal.getNome() + "?",
+                                "Confirmar Remoção",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
 
-                    if (confirmacao == JOptionPane.YES_OPTION) {
-                        try {
-                            controller.deleteAnimal(id);
-                            JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                                    "Animal removido com sucesso!",
-                                    "Sucesso",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            MainFrame.voltarAoMenuPrincipal();
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                                    "Erro ao remover: " + ex.getMessage(),
-                                    "Erro",
-                                    JOptionPane.ERROR_MESSAGE);
+                        if (confirmacao == JOptionPane.YES_OPTION) {
+                            try {
+                                controller.deleteAnimal(id);
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                        "Animal removido com sucesso!",
+                                        "Sucesso",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                MainFrame.voltarAoMenuPrincipal();
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                        "Erro ao remover: " + ex.getMessage(),
+                                        "Erro",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhum animal encontrado com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhum animal encontrado com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                });
     }
 
     // TELA BUSCA ID PARA SELECIONAR/VISUALIZAR
     public void telaBuscaIDSelecionar() {
         criarTelaBuscaID("Visualizar Animal", "Digite o ID do Animal para Visualizar:", "Visualizar",
-            (id) -> {
-                AnimalController controller = new AnimalController();
-                Animal animal = controller.selecionarAnimal(id);
-                if (animal != null) {
-                    Selecionar(animal);
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhum animal encontrado com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                (id) -> {
+                    AnimalController controller = new AnimalController();
+                    Animal animal = controller.selecionarAnimal(id);
+                    if (animal != null) {
+                        Selecionar(animal);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhum animal encontrado com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                });
     }
 
     // MÉTODO GENÉRICO PARA CRIAR TELA DE BUSCA POR ID
@@ -823,15 +867,18 @@ public class AnimalPanel extends JPanel {
         // Campos de texto não editáveis
         JTextField campoID = criarCampoReadOnly(String.valueOf(animal.getId()));
         JTextField campoNome = criarCampoReadOnly(animal.getNome() != null ? animal.getNome() : "Não informado");
-        JTextField campoEspecie = criarCampoReadOnly(animal.getEspecie() != null ? animal.getEspecie() : "Não informado");
-        JTextField campoIdade = criarCampoReadOnly(animal.getIdade() != null ? animal.getIdade() + " anos" : "Não informado");
+        JTextField campoEspecie = criarCampoReadOnly(
+                animal.getEspecie() != null ? animal.getEspecie() : "Não informado");
+        JTextField campoIdade = criarCampoReadOnly(
+                animal.getIdade() != null ? animal.getIdade() + " anos" : "Não informado");
         JTextField campoGenero = criarCampoReadOnly(animal.getGenero() != null ? animal.getGenero() : "Não informado");
-        JTextField campoPeso = criarCampoReadOnly(animal.getPeso() != null ? animal.getPeso() + " kg" : "Não informado");
-        JTextField campoAltura = criarCampoReadOnly(animal.getAltura() != null ? animal.getAltura() + " m" : "Não informado");
+        JTextField campoPeso = criarCampoReadOnly(
+                animal.getPeso() != null ? animal.getPeso() + " kg" : "Não informado");
+        JTextField campoAltura = criarCampoReadOnly(
+                animal.getAltura() != null ? animal.getAltura() + " m" : "Não informado");
         JTextField campoSaude = criarCampoReadOnly(animal.getSaude() != null ? animal.getSaude() : "Não informado");
-        
-        String habitatInfo = animal.getHabitat() != null ? 
-                            "ID: " + animal.getHabitat().getId() : "Não informado";
+
+        String habitatInfo = animal.getHabitat() != null ? "ID: " + animal.getHabitat().getId() : "Não informado";
         JTextField campoHabitat = criarCampoReadOnly(habitatInfo);
 
         // Labels
@@ -955,7 +1002,8 @@ public class AnimalPanel extends JPanel {
                 labelVazio.setForeground(Color.GRAY);
                 painelCentral.add(labelVazio, BorderLayout.CENTER);
             } else {
-                String[] colunas = {"ID", "Nome", "Espécie", "Idade", "Gênero", "Peso", "Altura", "Saúde", "Habitat ID"};
+                String[] colunas = { "ID", "Nome", "Espécie", "Idade", "Gênero", "Peso", "Altura", "Saúde",
+                        "Habitat ID" };
                 Object[][] dados = new Object[animais.size()][9];
 
                 for (int i = 0; i < animais.size(); i++) {

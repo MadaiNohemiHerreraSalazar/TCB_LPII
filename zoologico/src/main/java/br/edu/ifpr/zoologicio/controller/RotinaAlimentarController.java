@@ -13,7 +13,7 @@ public class RotinaAlimentarController {
     private RotinaAlimentarDAO dao;
 
     public RotinaAlimentarController() {
-        this.dao = new RotinaAlimentarDAO();  
+        this.dao = new RotinaAlimentarDAO();
     }
 
     // CADASTRAR
@@ -27,13 +27,14 @@ public class RotinaAlimentarController {
             System.out.println("Data não pode ser vazia!");
             return;
         }
-        if (rotinaAlimentar.getAgendaAnimal() == null || 
-            rotinaAlimentar.getAgendaAnimal().getFuncionario() == null) {
+        if (rotinaAlimentar.getAgendaAnimal() == null ||
+                rotinaAlimentar.getAgendaAnimal().getFuncionario() == null) {
             System.out.println("AgendaAnimal e Animal devem estar cadastrados!");
             return;
         }
 
-         AgendaAnimal agenda = AgendaAnimalDAO.buscarAgendaAnimalPorID(rotinaAlimentar.getAgendaAnimal().getFuncionario().getId());
+        AgendaAnimal agenda = AgendaAnimalDAO
+                .buscarAgendaAnimalPorID(rotinaAlimentar.getAgendaAnimal().getFuncionario().getId());
 
         if (agenda.getId() <= 0) {
             System.out.println("AgendaAnimal não encontrada! Cadastre o animal primeiro.");
@@ -41,13 +42,13 @@ public class RotinaAlimentarController {
         }
 
         Integer fornecedorId = FornecedorDAO.buscaFornecedor_ID(fornecedor_id);
-        
+
         RotinaAlimentarDAO.cadastrar(rotinaAlimentar, agenda.getId(), fornecedorId);
         System.out.println("RotinaAlimentar cadastrada com sucesso!");
     }
 
     // EDITAR
-    public void editarRotinaAlimentar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) {
+    public void editarRotinaAlimentar(RotinaAlimentar rotinaAlimentar) {
 
         if (rotinaAlimentar == null) {
             System.out.println("Objeto RotinaAlimentar inválido!");
@@ -62,8 +63,9 @@ public class RotinaAlimentarController {
             return;
         }
 
-        Integer fornecedorId = FornecedorDAO.buscaFornecedor_ID(fornecedor_id);
-        if (fornecedorId == null) {
+        Integer fornecedorId = RotinaAlimentarDAO.buscaFornecedorDaRotina(rotinaAlimentar.getId());
+
+        if (fornecedorId == null || fornecedorId <= 0) {
             System.out.println("Fornecedor inválido!");
             return;
         }

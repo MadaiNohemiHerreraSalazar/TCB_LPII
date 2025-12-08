@@ -27,7 +27,6 @@ import javax.swing.JTextField;
 
 import br.edu.ifpr.view.gui.MainFrame;
 import br.edu.ifpr.zoologicio.controller.RotinaAlimentarController;
-import br.edu.ifpr.zoologicio.model.Alimento;
 import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class RotinaAlimentarPanel extends JPanel {
@@ -250,7 +249,7 @@ public class RotinaAlimentarPanel extends JPanel {
         painelPrincipalInterno.repaint();
     }
 
-   public void Editar(RotinaAlimentar rotinaAlimentar) {
+    public void Editar(RotinaAlimentar rotinaAlimentar) {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
 
@@ -303,7 +302,8 @@ public class RotinaAlimentarPanel extends JPanel {
         labelQuantidadeAlimento.setFont(new Font("Serif", Font.BOLD, 18));
         labelQuantidadeAlimento.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelQuantidadeAlimento.add(labelQuantidadeAlimento);
-        JTextField campoQuantidadeAlimento = new JTextField(rotinaAlimentar.getQuantidadeAlimento() != null ? rotinaAlimentar.getQuantidadeAlimento() : "");
+        JTextField campoQuantidadeAlimento = new JTextField(
+                rotinaAlimentar.getQuantidadeAlimento() != null ? rotinaAlimentar.getQuantidadeAlimento() : "");
         campoQuantidadeAlimento.setPreferredSize(new Dimension(500, 40));
         campoQuantidadeAlimento.setMaximumSize(new Dimension(500, 40));
         campoQuantidadeAlimento.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -319,8 +319,9 @@ public class RotinaAlimentarPanel extends JPanel {
         labelAgendaAnimal.setFont(new Font("Serif", Font.BOLD, 18));
         labelAgendaAnimal.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelAgendaAnimal.add(labelAgendaAnimal);
-        String agendaAnimalId = rotinaAlimentar.getAgendaAnimal() != null ? 
-                                String.valueOf(rotinaAlimentar.getAgendaAnimal().getId()) : "";
+        String agendaAnimalId = rotinaAlimentar.getAgendaAnimal() != null
+                ? String.valueOf(rotinaAlimentar.getAgendaAnimal().getId())
+                : "";
         JTextField campoAgendaAnimal = new JTextField(agendaAnimalId);
         campoAgendaAnimal.setPreferredSize(new Dimension(500, 40));
         campoAgendaAnimal.setMaximumSize(new Dimension(500, 40));
@@ -355,7 +356,7 @@ public class RotinaAlimentarPanel extends JPanel {
                 rotinaAlimentar.setQuantidadeAlimento(campoQuantidadeAlimento.getText().trim());
 
                 RotinaAlimentarController controller = new RotinaAlimentarController();
-              //AQUI --> controller.editarRotinaAlimentar(rotinaAlimentar);
+                controller.editarRotinaAlimentar(rotinaAlimentar);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Rotina Alimentar atualizada com sucesso!",
@@ -381,73 +382,75 @@ public class RotinaAlimentarPanel extends JPanel {
     // TELA BUSCA ID PARA EDIÇÃO
     public void telaBuscaIDEdicao() {
         criarTelaBuscaID("Editar Rotina Alimentar", "Digite o ID da Rotina Alimentar para Editar:", "Buscar",
-            (id) -> {
-                RotinaAlimentarController controller = new RotinaAlimentarController();
-                RotinaAlimentar rotinaAlimentar = controller.selecionarRotinaAlimentar(id);
-                if (rotinaAlimentar != null) {
-                    Editar(rotinaAlimentar);
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhuma rotina alimentar encontrada com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                (id) -> {
+                    RotinaAlimentarController controller = new RotinaAlimentarController();
+                    RotinaAlimentar rotinaAlimentar = controller.selecionarRotinaAlimentar(id);
+                    if (rotinaAlimentar != null) {
+                        Editar(rotinaAlimentar);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhuma rotina alimentar encontrada com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                });
     }
 
     // TELA BUSCA ID PARA REMOVER
     public void telaBuscaIDRemover_Remover() {
         criarTelaBuscaID("Remover Rotina Alimentar", "Digite o ID da Rotina Alimentar para Remover:", "Remover",
-            (id) -> {
-                RotinaAlimentarController controller = new RotinaAlimentarController();
-                RotinaAlimentar rotinaAlimentar = controller.selecionarRotinaAlimentar(id);
-                if (rotinaAlimentar != null) {
-                    int confirmacao = JOptionPane.showConfirmDialog(
-                            MainFrame.getJanela(),
-                            "Tem certeza que deseja remover a rotina alimentar de ID: " + rotinaAlimentar.getId() + "?",
-                            "Confirmar Remoção",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
+                (id) -> {
+                    RotinaAlimentarController controller = new RotinaAlimentarController();
+                    RotinaAlimentar rotinaAlimentar = controller.selecionarRotinaAlimentar(id);
+                    if (rotinaAlimentar != null) {
+                        int confirmacao = JOptionPane.showConfirmDialog(
+                                MainFrame.getJanela(),
+                                "Tem certeza que deseja remover a rotina alimentar de ID: " + rotinaAlimentar.getId()
+                                        + "?",
+                                "Confirmar Remoção",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
 
-                    if (confirmacao == JOptionPane.YES_OPTION) {
-                        try {
-                            controller.deleteRotinaAlimentar(id);
-                            JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                                    "Rotina Alimentar removida com sucesso!",
-                                    "Sucesso",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            MainFrame.voltarAoMenuPrincipal();
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                                    "Erro ao remover: " + ex.getMessage(),
-                                    "Erro",
-                                    JOptionPane.ERROR_MESSAGE);
+                        if (confirmacao == JOptionPane.YES_OPTION) {
+                            try {
+                                controller.deleteRotinaAlimentar(id);
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                        "Rotina Alimentar removida com sucesso!",
+                                        "Sucesso",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                MainFrame.voltarAoMenuPrincipal();
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                        "Erro ao remover: " + ex.getMessage(),
+                                        "Erro",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhuma rotina alimentar encontrada com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhuma rotina alimentar encontrada com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+                });
     }
 
     // TELA BUSCA ID PARA SELECIONAR/VISUALIZAR
     public void telaBuscaIDSelecionar() {
-        criarTelaBuscaID("Visualizar Rotina Alimentar", "Digite o ID da Rotina Alimentar para Visualizar:", "Visualizar",
-            (id) -> {
-                RotinaAlimentarController controller = new RotinaAlimentarController();
-                RotinaAlimentar rotinaAlimentar = controller.selecionarRotinaAlimentar(id);
-                if (rotinaAlimentar != null) {
-                    Selecionar(rotinaAlimentar);
-                } else {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
-                            "Nenhuma rotina alimentar encontrada com ID: " + id,
-                            "Não Encontrado",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            });
+        criarTelaBuscaID("Visualizar Rotina Alimentar", "Digite o ID da Rotina Alimentar para Visualizar:",
+                "Visualizar",
+                (id) -> {
+                    RotinaAlimentarController controller = new RotinaAlimentarController();
+                    RotinaAlimentar rotinaAlimentar = controller.selecionarRotinaAlimentar(id);
+                    if (rotinaAlimentar != null) {
+                        Selecionar(rotinaAlimentar);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
+                                "Nenhuma rotina alimentar encontrada com ID: " + id,
+                                "Não Encontrado",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                });
     }
 
     // MÉTODO GENÉRICO PARA CRIAR TELA DE BUSCA POR ID
@@ -561,14 +564,19 @@ public class RotinaAlimentarPanel extends JPanel {
 
         // Campos de texto não editáveis
         JTextField campoID = criarCampoReadOnly(String.valueOf(rotinaAlimentar.getId()));
-        JTextField campoData = criarCampoReadOnly(rotinaAlimentar.getData() != null ? rotinaAlimentar.getData() : "Não informado");
-        JTextField campoHora = criarCampoReadOnly(rotinaAlimentar.getHora() != null ? rotinaAlimentar.getHora() : "Não informado");
-        JTextField campoQuantidadeAlimento = criarCampoReadOnly(rotinaAlimentar.getQuantidadeAlimento() != null ? rotinaAlimentar.getQuantidadeAlimento() : "Não informado");
-        
-        String agendaAnimalInfo = rotinaAlimentar.getAgendaAnimal() != null ? 
-                                "ID: " + rotinaAlimentar.getAgendaAnimal().getId() : "Não informado";
+        JTextField campoData = criarCampoReadOnly(
+                rotinaAlimentar.getData() != null ? rotinaAlimentar.getData() : "Não informado");
+        JTextField campoHora = criarCampoReadOnly(
+                rotinaAlimentar.getHora() != null ? rotinaAlimentar.getHora() : "Não informado");
+        JTextField campoQuantidadeAlimento = criarCampoReadOnly(
+                rotinaAlimentar.getQuantidadeAlimento() != null ? rotinaAlimentar.getQuantidadeAlimento()
+                        : "Não informado");
+
+        String agendaAnimalInfo = rotinaAlimentar.getAgendaAnimal() != null
+                ? "ID: " + rotinaAlimentar.getAgendaAnimal().getId()
+                : "Não informado";
         JTextField campoAgendaAnimal = criarCampoReadOnly(agendaAnimalInfo);
-        
+
         // Construir lista de alimentos
         StringBuilder alimentosInfo = new StringBuilder();
         if (rotinaAlimentar.getAlimentos() != null && !rotinaAlimentar.getAlimentos().isEmpty()) {
@@ -649,7 +657,7 @@ public class RotinaAlimentarPanel extends JPanel {
                 labelVazio.setForeground(Color.GRAY);
                 painelCentral.add(labelVazio, BorderLayout.CENTER);
             } else {
-                String[] colunas = {"ID", "Data", "Hora", "Quantidade", "Agenda Animal ID", "Nº Alimentos"};
+                String[] colunas = { "ID", "Data", "Hora", "Quantidade", "Agenda Animal ID", "Nº Alimentos" };
                 Object[][] dados = new Object[rotinasAlimentares.size()][6];
 
                 for (int i = 0; i < rotinasAlimentares.size(); i++) {
@@ -657,11 +665,12 @@ public class RotinaAlimentarPanel extends JPanel {
                     dados[i][0] = rotinaAlimentar.getId();
                     dados[i][1] = rotinaAlimentar.getData() != null ? rotinaAlimentar.getData() : "";
                     dados[i][2] = rotinaAlimentar.getHora() != null ? rotinaAlimentar.getHora() : "";
-                    dados[i][3] = rotinaAlimentar.getQuantidadeAlimento() != null ? rotinaAlimentar.getQuantidadeAlimento() : "";
-                    dados[i][4] = rotinaAlimentar.getAgendaAnimal() != null ? 
-                                  rotinaAlimentar.getAgendaAnimal().getId() : "";
-                    dados[i][5] = rotinaAlimentar.getAlimentos() != null ? 
-                                  rotinaAlimentar.getAlimentos().size() : 0;
+                    dados[i][3] = rotinaAlimentar.getQuantidadeAlimento() != null
+                            ? rotinaAlimentar.getQuantidadeAlimento()
+                            : "";
+                    dados[i][4] = rotinaAlimentar.getAgendaAnimal() != null ? rotinaAlimentar.getAgendaAnimal().getId()
+                            : "";
+                    dados[i][5] = rotinaAlimentar.getAlimentos() != null ? rotinaAlimentar.getAlimentos().size() : 0;
                 }
 
                 JTable tabela = new JTable(dados, colunas);
@@ -681,7 +690,8 @@ public class RotinaAlimentarPanel extends JPanel {
                 scrollPane.setPreferredSize(new Dimension(1100, 500));
                 painelCentral.add(scrollPane, BorderLayout.CENTER);
 
-                JLabel labelContador = new JLabel("Total de rotinas alimentares encontradas: " + rotinasAlimentares.size());
+                JLabel labelContador = new JLabel(
+                        "Total de rotinas alimentares encontradas: " + rotinasAlimentares.size());
                 labelContador.setFont(new Font("Serif", Font.BOLD, 14));
                 labelContador.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
                 painelCentral.add(labelContador, BorderLayout.SOUTH);

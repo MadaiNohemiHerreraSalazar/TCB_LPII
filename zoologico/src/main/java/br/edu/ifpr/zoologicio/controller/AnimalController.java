@@ -23,7 +23,7 @@ public class AnimalController {
         Integer veterinario_Id = VeterinarioDAO.buscaVeterinario_ID(veterinarioId);
         
         if (veterinario_Id == null) {
-            System.out.println("Fornecedor inválido!");
+            System.out.println("Veterinário inválido!");
             return;
         }
 

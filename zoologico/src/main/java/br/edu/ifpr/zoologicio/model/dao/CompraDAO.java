@@ -10,7 +10,7 @@ public class CompraDAO {
     // ______________________________________________________
     public static void cadastrar(Compra compra, int funcionario_id) {
 
-        String sqlCompra = "INSERT INTO compra(data, hora, quantidade, meioPagamento, precoTotal, visitante_id, funcionario_id) "
+        String sqlCompra = "INSERT INTO compra(data, hora, quantidade, meioPagamento, precoTotal, funcionario_id) "
                 + "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -21,8 +21,7 @@ public class CompraDAO {
             pst.setString(3, compra.getQuantidade());
             pst.setString(4, compra.getMeioPagamento());
             pst.setString(5, compra.getPrecoTotal());
-            pst.setString(6, compra.getVisitante());
-            pst.setInt(7, funcionario_id);
+            pst.setInt(6, funcionario_id);
 
             pst.executeUpdate();
 
@@ -71,7 +70,7 @@ public class CompraDAO {
 
     // EDITAR COMPRA
     // ______________________________________________________
-    public static void editar(Compra compra, int visitante_id, int funcionario_id) {
+    public static void editar(Compra compra, int funcionario_id) {
 
         String sqlUpdate = "UPDATE compra SET data=?, hora=?, quantidade=?, meioPagamento=?, precoTotal=?, "
                 + "visitante_id=?, funcionario_id=? WHERE compra_id=?";
@@ -87,9 +86,8 @@ public class CompraDAO {
                 pst.setString(3, compra.getQuantidade());
                 pst.setString(4, compra.getMeioPagamento());
                 pst.setString(5, compra.getPrecoTotal());
-                pst.setInt(6, visitante_id);
-                pst.setInt(7, funcionario_id);
-                pst.setInt(8, compra.getId());
+                pst.setInt(6, funcionario_id);
+                pst.setInt(7, compra.getId());
                 pst.executeUpdate();
             }
 
@@ -144,7 +142,7 @@ public class CompraDAO {
     public static Compra select(int id) {
 
         String sql = "SELECT c.compra_id, c.data, c.hora, c.quantidade, c.meioPagamento, c.precoTotal, "
-                + "c.visitante_id, c.funcionario_id "
+                + "c.funcionario_id "
                 + "FROM compra c WHERE c.compra_id = ?";
 
         Compra compra = null;
@@ -163,7 +161,6 @@ public class CompraDAO {
                 compra.setQuantidade(rs.getString("quantidade"));
                 compra.setMeioPagamento(rs.getString("meioPagamento"));
                 compra.setPrecoTotal(rs.getString("precoTotal"));
-                compra.setVisitante(rs.getString("cpf"));
 
                 compra.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
                 compra.setTickets(TicketDAO.buscarTicketsPorCompra(id));

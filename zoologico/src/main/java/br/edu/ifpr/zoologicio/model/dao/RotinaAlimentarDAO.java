@@ -291,4 +291,28 @@ public class RotinaAlimentarDAO {
         return alimentos;
     }
 
+    //METODOS AUXILIARES
+    //__________________________________________________________
+
+    public static Integer buscaFornecedorDaRotina(int rotinaId) {
+    String sql = "SELECT fornecedor_id FROM alimento_rotina WHERE rotinaAlimentar_id = ? LIMIT 1";
+
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
+
+        pst.setInt(1, rotinaId);
+
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("fornecedor_id");
+            }
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
+
 }
