@@ -15,7 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -357,7 +357,7 @@ public class AnimalPanel extends JPanel {
                 }
 
                 AnimalController controller = new AnimalController();
-               //controller.cadastrarAnimal(animal, veterinarioId);
+               //AQUI ---> controller.cadastrarAnimal(animal, veterinarioId);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Animal cadastrado com sucesso!",
@@ -615,7 +615,7 @@ public class AnimalPanel extends JPanel {
                 }
 
                 AnimalController controller = new AnimalController();
-               // controller.editarAnimal(animal);
+              //AQUI ---> controller.editarAnimal(animal);
                 
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),

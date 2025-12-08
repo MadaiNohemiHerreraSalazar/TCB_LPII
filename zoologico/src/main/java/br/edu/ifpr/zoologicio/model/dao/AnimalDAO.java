@@ -12,7 +12,7 @@ public class AnimalDAO {
     // _______________________________________________________________________
 
     public static void cadastrar(Animal animal, int veterinarioId) {
-        String sqlAnimal = "INSERT INTO animais " +
+        String sqlAnimal = "INSERT INTO animail " +
                 "(nome, descricao, historia, especie, idade, genero, peso, altura, saude, habitat_id) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
@@ -64,7 +64,7 @@ public class AnimalDAO {
     // ______________________________________________________________________
 
     public static void editar(Animal animal, int veterinarioId) {
-        String sqlUpdateAnimal = "UPDATE animais SET nome=?, descricao=?, historia=?, especie=?, idade=?, " +
+        String sqlUpdateAnimal = "UPDATE animail SET nome=?, descricao=?, historia=?, especie=?, idade=?, " +
                 "genero=?, peso=?, altura=?, saude=?, habitat_id=? WHERE id=?";
         String sqlDeleteAV = "DELETE FROM animal_veterinario WHERE animal_id=?";
 
@@ -105,7 +105,7 @@ public class AnimalDAO {
 
     public static void delete(int id) {
         String sqlDeleteAV = "DELETE FROM animal_veterinario WHERE animal_id=?";
-        String sqlDeleteAnimal = "DELETE FROM animais WHERE id=?";
+        String sqlDeleteAnimal = "DELETE FROM animail WHERE animal_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -130,11 +130,11 @@ public class AnimalDAO {
     public static Animal select(int id) {
         String sql = "SELECT a.*, h.id AS habitat_id, h.nome AS habitat_nome, " +
                 "v.id AS vet_id, v.nome AS vet_nome " +
-                "FROM animais a " +
-                "LEFT JOIN habitats h ON a.habitat_id = h.id " +
-                "LEFT JOIN animal_veterinario av ON a.id = av.animal_id " +
-                "LEFT JOIN veterinarios v ON av.veterinario_id = v.id " +
-                "WHERE a.id = ?";
+                "FROM animail a " +
+                "LEFT JOIN habitat h ON a.habitat_id = h.id " +
+                "LEFT JOIN animal_veterinario av ON a.animal_id = av.animal_id " +
+                "LEFT JOIN veterinario v ON av.veterinario_id = v.id " +
+                "WHERE a.animal_id = ?";
 
         Animal animal = null;
 
@@ -182,10 +182,10 @@ public class AnimalDAO {
     public static ArrayList<Animal> listar() {
         ArrayList<Animal> animais = new ArrayList<>();
 
-        String sql = "SELECT a.id, a.nome, a.descricao, a.historia, a.especie, a.idade, " +
+        String sql = "SELECT a.animal_id, a.nome, a.descricao, a.historia, a.especie, a.idade, " +
                 "a.genero, a.peso, a.altura, a.saude, h.id AS habitat_id, h.nome AS habitat_nome " +
-                "FROM animais a " +
-                "LEFT JOIN habitats h ON a.habitat_id = h.id " +
+                "FROM animail a " +
+                "LEFT JOIN habitat h ON a.habitat_id = h.habitat_id " +
                 "ORDER BY a.nome";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -194,7 +194,7 @@ public class AnimalDAO {
 
             while (rs.next()) {
                 Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
+                animal.setId(rs.getInt("animal_id"));
                 animal.setNome(rs.getString("nome"));
                 animal.setDescricao(rs.getString("descricao"));
                 animal.setHistoria(rs.getString("historia"));
@@ -230,8 +230,8 @@ public class AnimalDAO {
     public static ArrayList<Animal> buscarAnimaisPorVeterinario(int veterinarioId) {
         ArrayList<Animal> animais = new ArrayList<>();
 
-        String sql = "SELECT a.id, a.nome, a.especie FROM animais a " +
-                "JOIN animal_veterinario av ON a.id = av.animal_id " +
+        String sql = "SELECT a.animal_id, a.nome, a.especie FROM animail a " +
+                "JOIN animal_veterinario av ON a.animal_id = av.animal_id " +
                 "WHERE av.veterinario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -242,7 +242,7 @@ public class AnimalDAO {
 
             while (rs.next()) {
                 Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
+                animal.setId(rs.getInt("animal_id"));
                 animal.setNome(rs.getString("nome"));
                 animal.setEspecie(rs.getString("especie"));
                 animais.add(animal);
@@ -261,8 +261,8 @@ public class AnimalDAO {
     public static ArrayList<Animal> buscarAnimaisPorHabitat(int habitatId) {
         ArrayList<Animal> animais = new ArrayList<>();
 
-        String sql = "SELECT a.id, a.nome FROM animais a " +
-                "JOIN animal_habitat ah ON a.id = ah.animal_id " +
+        String sql = "SELECT a.animal_id, a.nome FROM animail a " +
+                "JOIN animal_habitat ah ON a.animal_id = ah.animal_id " +
                 "WHERE ah.habitat_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -273,7 +273,7 @@ public class AnimalDAO {
 
             while (rs.next()) {
                 Animal animal = new Animal();
-                animal.setId(rs.getInt("id"));
+                animal.setId(rs.getInt("animal_id"));
                 animal.setNome(rs.getString("nome"));
                 animais.add(animal);
             }
@@ -290,7 +290,7 @@ public class AnimalDAO {
 
     public static Animal buscarAnimalPorId(int id) {
         Animal animal = null;
-        String sql = "SELECT id, nome FROM animais WHERE id=?";
+        String sql = "SELECT animal_id, nome FROM animail WHERE animal_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -300,7 +300,7 @@ public class AnimalDAO {
 
             if (rs.next()) {
                 animal = new Animal();
-                animal.setId(rs.getInt("id"));
+                animal.setId(rs.getInt("animal_id"));
                 animal.setNome(rs.getString("nome"));
             }
 

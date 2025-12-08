@@ -16,8 +16,8 @@ public class FuncionarioDAO {
 
     public static void cadastrar(Funcionario funcionario) {
 
-        String sqlFuncionario = "INSERT INTO funcionarios(nome, cpf, email, telefone, cargo_id, area_id) VALUES (?,?,?,?,?,?)";
-        String sqlAgenda = "INSERT INTO agendasFuncionario(criadoPor, ultimaAtualizacao, atividade, cargo_id, funcionario_id) VALUES (?,?,?,?,?)";
+        String sqlFuncionario = "INSERT INTO funcionario(nome, cpf, email, telefone, cargo_id, area_id) VALUES (?,?,?,?,?,?)";
+        String sqlAgenda = "INSERT INTO agendaFuncionario( ultimaAtualizacao, atividade, cargo_id, funcionario_id) VALUES (?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlFuncionario, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -57,8 +57,8 @@ public class FuncionarioDAO {
 
     public static void editar(Funcionario funcionario) {
 
-        String sqlFuncionario = "UPDATE funcionarios SET nome=?, cpf=?, email=?, telefone=?, cargo_id=?, area_id=? WHERE id=?";
-        String sqlAgenda = "UPDATE agendasFuncionario SET criadoPor=?, ultimaAtualizacao=?, atividade=?, cargo_id=? WHERE funcionario_id=?";
+        String sqlFuncionario = "UPDATE funcionario SET nome=?, cpf=?, email=?, telefone=?, cargo_id=?, area_id=? WHERE id=?";
+        String sqlAgenda = "UPDATE agendaFuncionario SET ultimaAtualizacao=?, atividade=?, cargo_id=? WHERE funcionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -91,8 +91,8 @@ public class FuncionarioDAO {
 
     public static void delete(int id) {
 
-        String sqlDeleteAgenda = "DELETE FROM agendasFuncionario WHERE funcionario_id=?";
-        String sqlDeleteFuncionario = "DELETE FROM funcionarios WHERE id=?";
+        String sqlDeleteAgenda = "DELETE FROM agendaFuncionario WHERE funcionario_id=?";
+        String sqlDeleteFuncionario = "DELETE FROM funcionario WHERE funcionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -116,13 +116,13 @@ public class FuncionarioDAO {
 
     public static Funcionario select(int id) {
 
-        String sql = "SELECT f.id, f.nome, " +
+        String sql = "SELECT f.funcionario_id, f.nome, " +
                 "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
                 "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
-                "FROM funcionarios f " +
-                "LEFT JOIN cargos c ON f.cargo_id = c.id " +
-                "LEFT JOIN agendasFuncionario a ON f.id = a.funcionario_id " +
-                "WHERE f.id = ?";
+                "FROM funcionario f " +
+                "LEFT JOIN cargo c ON f.cargo_id = c.id " +
+                "LEFT JOIN agendaFuncionario a ON f.funcionario_id = a.funcionario_id " +
+                "WHERE f.funcionario_id = ?";
 
         Funcionario funcionario = null;
 
@@ -134,7 +134,7 @@ public class FuncionarioDAO {
 
             if (rs.next()) {
                 funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
+                funcionario.setId(rs.getInt("funcionario_id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setEmail(rs.getString("email"));
@@ -173,7 +173,7 @@ public class FuncionarioDAO {
     public static ArrayList<Funcionario> listar() {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios ORDER BY nome";
+        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM funcionario ORDER BY nome";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -181,7 +181,7 @@ public class FuncionarioDAO {
 
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
+                funcionario.setId(rs.getInt("funcionario_id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setEmail(rs.getString("email"));
@@ -203,12 +203,12 @@ public class FuncionarioDAO {
     public static ArrayList<Funcionario> listarCompleto() {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-        String sql = "SELECT f.id, f.nome, " +
+        String sql = "SELECT f.funcionario_id, f.nome, " +
                 "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
                 "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
-                "FROM funcionarios f " +
-                "LEFT JOIN cargos c ON f.cargo_id = c.id " +
-                "LEFT JOIN agendasFuncionario a ON f.id = a.funcionario_id " +
+                "FROM funcionario f " +
+                "LEFT JOIN cargo c ON f.cargo_id = c.id " +
+                "LEFT JOIN agendaFuncionario a ON f.id = a.funcionario_id " +
                 "ORDER BY f.nome";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -217,7 +217,7 @@ public class FuncionarioDAO {
 
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
+                funcionario.setId(rs.getInt("funcionario_id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setEmail(rs.getString("email"));
@@ -262,7 +262,7 @@ public class FuncionarioDAO {
 
     public static ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
-        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE cargo_id = ?";
+        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM funcionario WHERE cargo_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -272,7 +272,7 @@ public class FuncionarioDAO {
 
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
+                funcionario.setId(rs.getInt("funcionario_id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setEmail(rs.getString("email"));
@@ -293,7 +293,7 @@ public class FuncionarioDAO {
     public static ArrayList<Funcionario> buscarFuncionariosPorArea(int areaId) {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, cpf, email, telefone FROM funcionarios WHERE area_id=?";
+        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM funcionario WHERE area_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -303,7 +303,7 @@ public class FuncionarioDAO {
 
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
+                funcionario.setId(rs.getInt("funcionario_id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setEmail(rs.getString("email"));
@@ -321,7 +321,7 @@ public class FuncionarioDAO {
     //___________________________________________________________________
     public static Funcionario buscarFuncionarioPor_ID(int id) {
         Funcionario funcionario = null;
-        String sql = "SELECT id, nome, cpf, telefone, email FROM funcionarios WHERE id=?";
+        String sql = "SELECT funcionario_id, nome, cpf, telefone, email FROM funcionario WHERE id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -331,7 +331,7 @@ public class FuncionarioDAO {
 
             if (rs.next()) {
                 funcionario = new Funcionario();
-                funcionario.setId(rs.getInt("id"));
+                funcionario.setId(rs.getInt("funcionario_id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setCpf(rs.getString("cpf"));
                 funcionario.setTelefone(rs.getString("telefone"));
@@ -350,7 +350,7 @@ public class FuncionarioDAO {
 
     public static int buscaFuncionario_ID(int funcionario_id) {
 
-        String sqlFuncionario = "SELECT from funcionarios WHERE nome= ?";
+        String sqlFuncionario = "SELECT from funcionario WHERE nome= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -359,7 +359,7 @@ public class FuncionarioDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                id = rs.getInt("id");
+                id = rs.getInt("funcionario_id");
             }
 
         } catch (Exception e) {

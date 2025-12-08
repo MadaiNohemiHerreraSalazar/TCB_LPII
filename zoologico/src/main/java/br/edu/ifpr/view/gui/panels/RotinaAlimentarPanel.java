@@ -9,14 +9,14 @@ import java.awt.FlowLayout;
 //import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,11 +26,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import br.edu.ifpr.view.gui.MainFrame;
-import br.edu.ifpr.zoologicio.controller.AgendaFuncionarioController;
 import br.edu.ifpr.zoologicio.controller.RotinaAlimentarController;
-import br.edu.ifpr.zoologicio.model.AgendaFuncionario;
 import br.edu.ifpr.zoologicio.model.Alimento;
-import br.edu.ifpr.zoologicio.model.Funcionario;
 import br.edu.ifpr.zoologicio.model.RotinaAlimentar;
 
 public class RotinaAlimentarPanel extends JPanel {
@@ -358,7 +355,7 @@ public class RotinaAlimentarPanel extends JPanel {
                 rotinaAlimentar.setQuantidadeAlimento(campoQuantidadeAlimento.getText().trim());
 
                 RotinaAlimentarController controller = new RotinaAlimentarController();
-               //controller.editarRotinaAlimentar(rotinaAlimentar);
+              //AQUI --> controller.editarRotinaAlimentar(rotinaAlimentar);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Rotina Alimentar atualizada com sucesso!",

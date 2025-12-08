@@ -15,7 +15,7 @@ public class RotinaAlimentarDAO {
 
     public static void cadastrar(RotinaAlimentar rotinaAlimentar, int agendaAnimal_id, int fornecedor_id) {
 
-        String sqlRotinaAlimentar = "INSERT INTO rotinasAlimentares(data, hora, quantidadeAlimento, agendaAnimal_id) VALUES (?,?,?,?)";
+        String sqlRotinaAlimentar = "INSERT INTO rotinaAlimentar(data, hora, quantidadeAlimento, agendaAnimal_id) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlRotinaAlimentar,
@@ -81,7 +81,7 @@ public class RotinaAlimentarDAO {
 
     public static void editar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) {
 
-        String sqlUpdateRotina = "UPDATE rotinasAlimentares SET data=?, hora=?, quantidadeAlimento=? WHERE id=?";
+        String sqlUpdateRotina = "UPDATE rotinaAlimentar SET data=?, hora=?, quantidadeAlimento=? WHERE rotinaAlimentar_id=?";
         String sqlDeleteAlimentos = "DELETE FROM alimento_rotina WHERE rotinaAlimentar_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
@@ -117,7 +117,7 @@ public class RotinaAlimentarDAO {
     public static void delete(int id) {
 
         String sqlDeleteAlimentos = "DELETE FROM alimento_rotina WHERE rotinaAlimentar_id=?";
-        String sqlDeleteRotina = "DELETE FROM rotinasAlimentares WHERE id=?";
+        String sqlDeleteRotina = "DELETE FROM rotinaAlimentar WHERE rotinaAlimentar_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -143,9 +143,9 @@ public class RotinaAlimentarDAO {
 
     public RotinaAlimentar select(int id) {
 
-        String sql = "SELECT r.id, r.data, r.hora, r.quantidadeAlimento " +
-                "FROM rotinasAlimentares r " +
-                "WHERE r.id = ?";
+        String sql = "SELECT r.rotinaAlimentar_id, r.data, r.hora, r.quantidadeAlimento " +
+                "FROM rotinaAlimentar r " +
+                "WHERE r.rotinaAlimentar_id = ?";
 
         RotinaAlimentar rotina = null;
 
@@ -157,7 +157,7 @@ public class RotinaAlimentarDAO {
 
             if (rs.next()) {
                 rotina = new RotinaAlimentar();
-                rotina.setId(rs.getInt("id"));
+                rotina.setId(rs.getInt("rotinaAlimentar_id"));
                 rotina.setData(rs.getString("data"));
                 rotina.setHora(rs.getString("hora"));
                 rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
@@ -179,7 +179,7 @@ public class RotinaAlimentarDAO {
     // ______________________________________________________
 
     public ArrayList<RotinaAlimentar> listar() {
-        String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares ORDER BY data, hora";
+        String sql = "SELECT rotinaAlimentar_id, data, hora, quantidadeAlimento FROM rotinasAlimentares ORDER BY data, hora";
         ArrayList<RotinaAlimentar> rotinas = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -188,7 +188,7 @@ public class RotinaAlimentarDAO {
 
             while (rs.next()) {
                 RotinaAlimentar rotina = new RotinaAlimentar();
-                rotina.setId(rs.getInt("id"));
+                rotina.setId(rs.getInt("rotinaAlimentar_id"));
                 rotina.setData(rs.getString("data"));
                 rotina.setHora(rs.getString("hora"));
                 rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
@@ -212,7 +212,7 @@ public class RotinaAlimentarDAO {
 
     public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
 
-        String sqlAgendaAnimal = "SELECT from rotinasAlimentares WHERE id= ?";
+        String sqlAgendaAnimal = "SELECT from rotinaAlimentar WHERE rotinaAlimentar_id= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -222,7 +222,7 @@ public class RotinaAlimentarDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                id = rs.getInt("id");
+                id = rs.getInt("rotinaAlimentar_id");
             }
 
         } catch (Exception e) {
@@ -238,7 +238,7 @@ public class RotinaAlimentarDAO {
 
     public static RotinaAlimentar buscarRotinaPorId(int id) {
         RotinaAlimentar rotina = null;
-        String sql = "SELECT id, data, hora, quantidadeAlimento FROM rotinasAlimentares WHERE id=?";
+        String sql = "SELECT rotinaAlimentar_id, data, hora, quantidadeAlimento FROM rotinaAlimentar WHERE rotinaAlimentar_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -248,7 +248,7 @@ public class RotinaAlimentarDAO {
 
             if (rs.next()) {
                 rotina = new RotinaAlimentar();
-                rotina.setId(rs.getInt("id"));
+                rotina.setId(rs.getInt("rotinaAlimentar_id"));
                 rotina.setData(rs.getString("data"));
                 rotina.setHora(rs.getString("hora"));
                 rotina.setQuantidadeAlimento(rs.getString("quantidadeAlimento"));
@@ -267,8 +267,8 @@ public class RotinaAlimentarDAO {
     public static ArrayList<Alimento> buscarAlimentosPorRotina(int rotinaId) {
         ArrayList<Alimento> alimentos = new ArrayList<>();
 
-        String sql = "SELECT a.id, a.nome FROM alimentos a " +
-                "JOIN alimento_rotina ar ON a.id = ar.alimento_id " +
+        String sql = "SELECT a.rotinaAlimentar_id, a.nome FROM alimentos a " +
+                "JOIN alimento_rotina ar ON a.rotinaAlimentar_id = ar.alimento_id " +
                 "WHERE ar.rotinaAlimentar_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -279,7 +279,7 @@ public class RotinaAlimentarDAO {
 
             while (rs.next()) {
                 Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("id"));
+                alimento.setId(rs.getInt("rotinaAlimentar_id"));
                 alimento.setNome(rs.getString("nome"));
                 alimentos.add(alimento);
             }

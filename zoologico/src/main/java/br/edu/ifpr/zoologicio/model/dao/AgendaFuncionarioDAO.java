@@ -14,7 +14,7 @@ public class AgendaFuncionarioDAO {
     // ____________________________________________________________
 
     public static void cadastrar(AgendaFuncionario agenda) {
-        String sql = "INSERT INTO agendaFuncionarios (criadoPor, ultimaAtualizacao, atividade, cargo_id, funcionario_id) "
+        String sql = "INSERT INTO agendaFuncionario (ultimaAtualizacao, atividade, cargo_id, funcionario_id) "
                 +
                 "VALUES (?,?,?,?,?)";
 
@@ -42,7 +42,7 @@ public class AgendaFuncionarioDAO {
     // EDITAR
     // ______________________________________________________
     public static void editar(AgendaFuncionario agenda) {
-        String sql = "UPDATE agendaFuncionarios SET criadoPor=?, ultimaAtualizacao=?, atividade=?, cargo_id=?, funcionario_id=? WHERE id=?";
+        String sql = "UPDATE agendaFuncionario SET ultimaAtualizacao=?, atividade=?, cargo_id=?, funcionario_id=? WHERE agendaFuncionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -61,7 +61,7 @@ public class AgendaFuncionarioDAO {
     // DELETE
     // ______________________________________________________
     public static void delete(int id) {
-        String sql = "DELETE FROM agendaFuncionarios WHERE id=?";
+        String sql = "DELETE FROM agendaFuncionario WHERE  agendaFuncionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -77,10 +77,10 @@ public class AgendaFuncionarioDAO {
     // SELECT COMPLETO AgendaFuncionario + Cargo + Funcionario
     // ______________________________________________________
     public static AgendaFuncionario select(int id) {
-        String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, " +
+        String sql = "SELECT af.agendaFuncionario_id, af.ultimaAtualizacao, af.atividade, " +
                 "af.cargo_id, af.funcionario_id " +
                 "FROM agendaFuncionarios af " +
-                "WHERE af.id = ?";
+                "WHERE af.agendaFuncionario_id = ?";
 
         AgendaFuncionario agenda = null;
 
@@ -111,7 +111,7 @@ public class AgendaFuncionarioDAO {
     // ______________________________________________________
     public static ArrayList<AgendaFuncionario> listar() {
         ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
-        String sql = "SELECT id, criadoPor, ultimaAtualizacao, atividade FROM agendaFuncionarios ORDER BY id DESC";
+        String sql = "SELECT agendaFuncionario_id, ultimaAtualizacao, atividade FROM agendaFuncionario ORDER BY agendaFuncionario_id DESC";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -119,7 +119,7 @@ public class AgendaFuncionarioDAO {
 
             while (rs.next()) {
                 AgendaFuncionario agenda = new AgendaFuncionario();
-                agenda.setId(rs.getInt("id"));
+                agenda.setId(rs.getInt("agendaFuncionario_id"));
                 agenda.setAtividade(rs.getString("atividade"));
                 agendas.add(agenda);
             }
@@ -136,9 +136,9 @@ public class AgendaFuncionarioDAO {
 
     public static ArrayList<AgendaFuncionario> listarCompleto() {
         ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
-        String sql = "SELECT af.id, af.criadoPor, af.ultimaAtualizacao, af.atividade, af.cargo_id, af.funcionario_id " +
-                "FROM agendaFuncionarios af " +
-                "ORDER BY af.id DESC";
+        String sql = "SELECT af.agendaFuncionario_id, af.ultimaAtualizacao, af.atividade, af.cargo_id, af.funcionario_id " +
+                "FROM agendaFuncionario af " +
+                "ORDER BY af.agendaFuncionario_id DESC";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -146,7 +146,7 @@ public class AgendaFuncionarioDAO {
 
             while (rs.next()) {
                 AgendaFuncionario agenda = new AgendaFuncionario();
-                agenda.setId(rs.getInt("id"));
+                agenda.setId(rs.getInt("agendaFuncionario_id"));
                 agenda.setAtividade(rs.getString("atividade"));
 
                 agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));

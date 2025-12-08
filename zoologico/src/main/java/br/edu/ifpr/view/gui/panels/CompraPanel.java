@@ -15,7 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JLabel; 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -297,7 +297,7 @@ public class CompraPanel extends JPanel {
                 }
 
                 CompraController controller = new CompraController();
-               //controller.cadastrarCompra(compra);
+               //AQUI --> controller.cadastrarCompra(compra);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Compra cadastrada com sucesso!",
@@ -480,7 +480,7 @@ public class CompraPanel extends JPanel {
                 compra.setVisitante(campoVisitante.getText().trim());
 
                 CompraController controller = new CompraController();
-                //controller.editarCompra(compra);
+                //AQUI ---> controller.editarCompra(compra);
 
                 JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Compra atualizada com sucesso!",

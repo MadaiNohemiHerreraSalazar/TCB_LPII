@@ -15,7 +15,7 @@ public class CargoPermissaoDAO {
     // ______________________________________________________
     public static void cadastrar(CargoPermissao CargoPermissao) {
 
-        String sqlPermissao = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
+        String sqlPermissao = "INSERT INTO permissao (nome, descricao) VALUES (?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
 
@@ -40,7 +40,7 @@ public class CargoPermissaoDAO {
     // ______________________________________________________
     public static void editar(CargoPermissao CargoPermissao) {
 
-        String sqlCargoPermissao = "UPDATE permissoes SET nome=?, descricao=? WHERE id=?";
+        String sqlCargoPermissao = "UPDATE permissao SET nome=?, descricao=? WHERE permissao_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlCargoPermissao)) {
@@ -62,7 +62,7 @@ public class CargoPermissaoDAO {
     // ______________________________________________________
     public void delete(int id) {
 
-        String sqlCargoPermissao = "DELETE FROM permissoes WHERE id=?";
+        String sqlCargoPermissao = "DELETE FROM permissao WHERE permissao_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlCargoPermissao)) {
@@ -78,7 +78,7 @@ public class CargoPermissaoDAO {
     }
 
     public ArrayList<CargoPermissao> select(int id) {
-        String sqlCargoPermissao = "SELECT * FROM permissoes WHERE id=?";
+        String sqlCargoPermissao = "SELECT * FROM permissao WHERE permissao_id=?";
 
         ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class CargoPermissaoDAO {
             while (rs.next()) {
 
                 CargoPermissao CargopPermissao = new CargoPermissao();
-                CargopPermissao.setId(rs.getInt("id"));
+                CargopPermissao.setId(rs.getInt("permissao_id"));
                 CargopPermissao.setNome(rs.getString("nome"));
                 CargopPermissao.setDescricao(rs.getString("descricao"));
 
@@ -107,7 +107,7 @@ public class CargoPermissaoDAO {
     }
 
     public ArrayList<CargoPermissao> listar() {
-        String sqlCargoPermissao = "SELECT * FROM permissoes";
+        String sqlCargoPermissao = "SELECT * FROM permissao";
 
         ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
@@ -119,7 +119,7 @@ public class CargoPermissaoDAO {
             while (rs.next()) {
 
                 CargoPermissao CargoPermissao = new CargoPermissao();
-                CargoPermissao.setId(rs.getInt("id"));
+                CargoPermissao.setId(rs.getInt("permissao_id"));
                 CargoPermissao.setNome(rs.getString("nome"));
                 CargoPermissao.setDescricao(rs.getString("descricao"));
 
@@ -138,7 +138,7 @@ public class CargoPermissaoDAO {
 
     public static void cadastrarPermissao(CargoPermissao permissao) {
 
-        String sqlPermissao = "INSERT INTO permissoes (nome, descricao) VALUES (?,?)";
+        String sqlPermissao = "INSERT INTO permissao (nome, descricao) VALUES (?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlPermissao)) {

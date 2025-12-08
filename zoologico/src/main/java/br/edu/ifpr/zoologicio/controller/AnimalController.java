@@ -27,7 +27,7 @@ public class AnimalController {
             return;
         }
 
-        AnimalDAO.cadastrar(animal, veterinario_Id);
+        AnimalDAO.cadastrar(animal, veterinario_Id); 
     }
 
     public void editarAnimal(Animal animal, int veterinarioId) {

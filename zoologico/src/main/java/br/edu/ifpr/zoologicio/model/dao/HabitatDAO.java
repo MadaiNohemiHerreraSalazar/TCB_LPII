@@ -18,7 +18,7 @@ public class HabitatDAO {
     public static ArrayList<Habitat> buscarHabitatsPorArea(int areaId) {
         ArrayList<Habitat> habitats = new ArrayList<>();
 
-        String sql = "SELECT id, nome, descricao, capacidade FROM habitats WHERE area_id=?";
+        String sql = "SELECT habitat_id, nome, descricao, capacidade FROM habitats WHERE area_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -28,7 +28,7 @@ public class HabitatDAO {
 
             while (rs.next()) {
                 Habitat habitat = new Habitat();
-                habitat.setId(rs.getInt("id"));
+                habitat.setId(rs.getInt("habitat_id"));
                 habitat.setNome(rs.getString("nome"));
                 habitat.setDescricao(rs.getString("descricao"));
                 habitat.setCapacidade(rs.getString("capacidade"));
@@ -46,7 +46,7 @@ public class HabitatDAO {
 
     public static int buscaHabitat_ID(int habitat_id) {
 
-        String sqlHabitat = "SELECT from habitats WHERE id= ?";
+        String sqlHabitat = "SELECT from habitat WHERE habitat_id= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -55,7 +55,7 @@ public class HabitatDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                id = rs.getInt("id");
+                id = rs.getInt("habitat_id");
             }
 
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class HabitatDAO {
     // ______________________________________________________
 
     public static void cadastrar(Habitat habitat) {
-        String sqlHabitat = "INSERT INTO habitats(nome, descricao, capacidade, area_id) VALUES (?,?,?,?)";
+        String sqlHabitat = "INSERT INTO habitat(nome, descricao, capacidade, area_id) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlHabitat, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -127,7 +127,7 @@ public class HabitatDAO {
     // ______________________________________________________
 
     public static void editar(Habitat habitat) {
-        String sqlHabitat = "UPDATE habitats SET nome=?, descricao=?, capacidade=?, area_id=? WHERE id=?";
+        String sqlHabitat = "UPDATE habitat SET nome=?, descricao=?, capacidade=?, area_id=? WHERE habitat_id=?";
         String sqlDeleteAnimais = "DELETE FROM animal_habitat WHERE habitat_id=?";
         String sqlInsertAnimais = "INSERT INTO animal_habitat(animal_id, habitat_id) VALUES (?, ?)";
 
@@ -172,7 +172,7 @@ public class HabitatDAO {
 
     public static void delete(int id) {
         String sqlDeleteAnimais = "DELETE FROM animal_habitat WHERE habitat_id=?";
-        String sqlDeleteHabitat = "DELETE FROM habitats WHERE id=?";
+        String sqlDeleteHabitat = "DELETE FROM habitat WHERE habitat_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -199,7 +199,7 @@ public class HabitatDAO {
     public static Habitat select(int id) {
         Habitat habitat = null;
 
-        String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats WHERE id=?";
+        String sql = "SELECT habitat_id, nome, descricao, capacidade, area_id FROM habitats WHERE habitat_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -209,7 +209,7 @@ public class HabitatDAO {
 
             if (rs.next()) {
                 habitat = new Habitat();
-                habitat.setId(rs.getInt("id"));
+                habitat.setId(rs.getInt("habitat_id"));
                 habitat.setNome(rs.getString("nome"));
                 habitat.setDescricao(rs.getString("descricao"));
                 habitat.setCapacidade(rs.getString("capacidade"));
@@ -238,7 +238,7 @@ public class HabitatDAO {
 
     public static ArrayList<Habitat> listar() {
         ArrayList<Habitat> habitats = new ArrayList<>();
-        String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
+        String sql = "SELECT habitat_id, nome, descricao, capacidade, area_id FROM habitat";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -246,7 +246,7 @@ public class HabitatDAO {
 
             while (rs.next()) {
                 Habitat habitat = new Habitat();
-                habitat.setId(rs.getInt("id"));
+                habitat.setId(rs.getInt("habitat_id"));
                 habitat.setNome(rs.getString("nome"));
                 habitat.setDescricao(rs.getString("descricao"));
                 habitat.setCapacidade(rs.getString("capacidade"));
@@ -269,7 +269,7 @@ public class HabitatDAO {
 
     public static ArrayList<Habitat> listarCompleto() {
         ArrayList<Habitat> habitats = new ArrayList<>();
-        String sql = "SELECT id, nome, descricao, capacidade, area_id FROM habitats";
+        String sql = "SELECT habitat_id, nome, descricao, capacidade, area_id FROM habitat";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -277,7 +277,7 @@ public class HabitatDAO {
 
             while (rs.next()) {
                 Habitat habitat = new Habitat();
-                habitat.setId(rs.getInt("id"));
+                habitat.setId(rs.getInt("habitat_id"));
                 habitat.setNome(rs.getString("nome"));
                 habitat.setDescricao(rs.getString("descricao"));
                 habitat.setCapacidade(rs.getString("capacidade"));

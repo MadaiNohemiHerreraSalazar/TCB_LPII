@@ -15,7 +15,7 @@ public class VeterinarioDAO {
 
     public static void cadastrar(Veterinario veterinario) {
 
-        String sqlVeterinario = "INSERT INTO veterinarios(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
+        String sqlVeterinario = "INSERT INTO veterinario(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
         
@@ -72,7 +72,7 @@ public class VeterinarioDAO {
 
     public static void editar(Veterinario veterinario) {
 
-        String sqlUpdateVet = "UPDATE veterinarios SET nome=?, cpf=?, email=?, especializacao=? WHERE id=?";
+        String sqlUpdateVet = "UPDATE veterinario SET nome=?, cpf=?, email=?, especializacao=? WHERE id=?";
         String sqlDeleteAnimais = "DELETE FROM animal_veterinario WHERE veterinario_id=?";
         String sqlInsertAnimais = "INSERT INTO animal_veterinario(animal_id, veterinario_id) VALUES (?,?)";
 
@@ -115,7 +115,7 @@ public class VeterinarioDAO {
 
     public static void delete(int id) {
 
-        String sqlDelete = "DELETE FROM veterinarios WHERE id=?";
+        String sqlDelete = "DELETE FROM veterinario WHERE veterinario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlDelete)) {
@@ -135,7 +135,7 @@ public class VeterinarioDAO {
 
     public static Veterinario select(int id) {
 
-        String sql = "SELECT * FROM veterinarios WHERE id=?";
+        String sql = "SELECT * FROM veterinario WHERE veterinario_id=?";
         Veterinario veterinario = null;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -166,7 +166,7 @@ public class VeterinarioDAO {
     public static ArrayList<Veterinario> listar() {
         ArrayList<Veterinario> veterinarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, cpf, email, especializacao FROM veterinarios";
+        String sql = "SELECT id, nome, cpf, email, especializacao FROM veterinario";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -194,7 +194,7 @@ public class VeterinarioDAO {
 
     public static ArrayList<Veterinario> listarCompleto() {
         ArrayList<Veterinario> veterinarios = new ArrayList<>();
-        String sql = "SELECT * FROM veterinarios";
+        String sql = "SELECT * FROM veterinario";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -225,7 +225,7 @@ public class VeterinarioDAO {
 
     public static Veterinario buscarVeterinarioPorId(int id) {
         Veterinario vet = null;
-        String sql = "SELECT id, nome, email FROM veterinarios WHERE id=?";
+        String sql = "SELECT id, nome, email FROM veterinarios WHERE veterinario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -252,7 +252,7 @@ public class VeterinarioDAO {
 
     public static int buscaVeterinario_ID(int veterinario_id) {
 
-        String sqlVeterinario = "SELECT from veterinarios WHERE nome= ?";
+        String sqlVeterinario = "SELECT from veterinario WHERE nome= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();

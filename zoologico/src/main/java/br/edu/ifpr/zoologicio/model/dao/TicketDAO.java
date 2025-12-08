@@ -15,7 +15,7 @@ public class TicketDAO {
     public static ArrayList<Ticket> buscarTicketsPorCompra(int compraId) {
         ArrayList<Ticket> tickets = new ArrayList<>();
 
-        String sql = "SELECT id, data, hora, preco FROM tickets WHERE compra_id=?";
+        String sql = "SELECT ticket_id, data, hora, preco FROM tickets WHERE compra_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -25,7 +25,7 @@ public class TicketDAO {
 
             while (rs.next()) {
                 Ticket ticket = new Ticket();
-                ticket.setId(rs.getInt("id"));
+                ticket.setId(rs.getInt("ticket_id_id"));
                 ticket.setData(rs.getString("data"));
                 ticket.setHora(rs.getString("hora"));
                 ticket.setPreco(rs.getString("preco"));
@@ -46,14 +46,14 @@ public class TicketDAO {
 
         try {
 
-            String sql = "SELECT * FROM tickets WHERE id=?";
+            String sql = "SELECT * FROM ticket WHERE ticket_id=?";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
 
                 Ticket ticket = new Ticket();
-                ticket.setId(rs.getInt("id"));
+                ticket.setId(rs.getInt("ticket_id"));
                 ticket.setData("data");
                 ticket.setHora("hora");
                 ticket.setPreco("preco");
@@ -80,14 +80,14 @@ public class TicketDAO {
 
         try {
 
-            String sql = "SELECT * FROM tickets";
+            String sql = "SELECT * FROM ticket";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
 
                 Ticket ticket = new Ticket();
-                ticket.setId(rs.getInt("id"));
+                ticket.setId(rs.getInt("ticket_id"));
                 ticket.setData("data");
                 ticket.setHora("hora");
                 ticket.setPreco("preco");
