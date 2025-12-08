@@ -10,36 +10,6 @@ import java.util.ArrayList;
 
 public class CargoDAO {
 
-    //BUSCAR CARGO POR ID
-    //______________________________________________________________________
-
-    public static Cargo buscarCargoPorId(int id) {
-        Cargo cargo = null;
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM cargo WHERE cargo_id = ?";
-
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                cargo = new Cargo();
-                cargo.setId(rs.getInt("id"));
-                cargo.setNome(rs.getString("nome"));
-                cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
-                cargo.setSenha(rs.getString("senha"));
-                // não carrega lista de funcionarios aqui (evita recursão pesada)
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return cargo;
-    }
-
     // CADASTRAR CARGO
     // ______________________________________________________
     public static void cadastrar(Cargo cargo) {
@@ -75,7 +45,7 @@ public class CargoDAO {
     public static void editar(Cargo cargo) {
 
         String sqlUpdateCargo = "UPDATE cargo SET nome=?, salario=?, cargaHoraroia=?, senha=? WHERE cargo_id=?";
-      
+
         try (Connection con = ConnectionFactory.getConnection()) {
 
             // Atualizar dados do Cargo
@@ -209,6 +179,39 @@ public class CargoDAO {
         }
 
         return cargos;
+    }
+
+    // MÉTODOS AUXILIARES
+    // ----------------------------------------------------------------------
+
+    // BUSCAR CARGO POR ID
+    // ______________________________________________________________________
+
+    public static Cargo buscarCargoPorId(int id) {
+        Cargo cargo = null;
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM cargo WHERE cargo_id = ?";
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                cargo = new Cargo();
+                cargo.setId(rs.getInt("id"));
+                cargo.setNome(rs.getString("nome"));
+                cargo.setSalario(rs.getString("salario"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setSenha(rs.getString("senha"));
+                // não carrega lista de funcionarios aqui (evita recursão pesada)
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cargo;
     }
 
 }

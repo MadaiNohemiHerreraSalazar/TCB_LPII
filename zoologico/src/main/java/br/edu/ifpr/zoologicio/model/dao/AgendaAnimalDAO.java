@@ -155,9 +155,11 @@ public class AgendaAnimalDAO {
         return agendas;
     }
 
-    // METODOS AUXILIARES
-    //____________________________________________________________________
+    // MÉTODOS AUXILIARES
+    // -------------------------------------------------------------------------------
 
+    // BUSCAR AGENDA DO ANIMAL POR ID
+    //_______________________________________________________________________________
 
     public static AgendaAnimal buscarAgendaAnimalPorID(int id) {
         String sql = "SELECT agendaAnimal_id FROM AgendaAnimais WHERE agendaAnimal_id = ?";

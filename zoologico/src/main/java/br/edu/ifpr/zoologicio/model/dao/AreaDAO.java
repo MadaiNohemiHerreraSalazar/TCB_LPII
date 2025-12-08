@@ -12,33 +12,6 @@ import java.util.ArrayList;
 
 public class AreaDAO {
 
-    // BUSCAR AREA
-    // ___________________________________________________________________
-
-    public static Area buscarAreaPorId(int id) {
-        String sql = "SELECT area_id, nome, descricao FROM area WHERE area_id = ?";
-        Area area = null;
-
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                area = new Area();
-                area.setId(rs.getInt("id"));
-                area.setNome(rs.getString("nome"));
-                area.setDescricao(rs.getString("descricao"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return area;
-    }
-
     // CADASTRAR AREA
     // ______________________________________________________
     public static void cadastrar(Area area) {
@@ -120,7 +93,7 @@ public class AreaDAO {
         }
     }
 
-    // SELECT COMPLETO (com Funcionários e Habitats)
+    // SELECT 
     // ______________________________________________________
     public static Area select(int id) {
         Area area = null;
@@ -205,6 +178,36 @@ public class AreaDAO {
         }
 
         return areas;
+    }
+
+    // MÉTODOS AUXILIARES
+    // -------------------------------------------------------------------
+
+    // BUSCAR AREA
+    // ___________________________________________________________________
+
+    public static Area buscarAreaPorId(int id) {
+        String sql = "SELECT area_id, nome, descricao FROM area WHERE area_id = ?";
+        Area area = null;
+
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                area = new Area();
+                area.setId(rs.getInt("id"));
+                area.setNome(rs.getString("nome"));
+                area.setDescricao(rs.getString("descricao"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return area;
     }
 
 }

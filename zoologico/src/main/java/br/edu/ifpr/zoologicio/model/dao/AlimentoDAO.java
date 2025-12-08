@@ -125,7 +125,12 @@ public class AlimentoDAO {
         return alimentos;
     }
 
-    // MÉTODO AUXILIAR
+    // MÉTODOS AUXILIARES
+    // -------------------------------------------------------------------------------
+
+    //BUSCAR ALIMENTO POR ID
+    //________________________________________________________________________________
+
     public static Alimento buscarAlimentoPor_ID(int alimentoId) {
         Connection con = ConnectionFactory.getConnection();
         Alimento alimento = null;

@@ -176,7 +176,7 @@ public class AnimalDAO {
         return animal;
     }
 
-    // LISTAR SIMPLES
+    // LISTAR 
     // ______________________________________________________________________________
 
     public static ArrayList<Animal> listar() {
@@ -221,7 +221,7 @@ public class AnimalDAO {
         return animais;
     }
 
-    // METODOS AUXILIARES
+    // MÉTODOS AUXILIARES
     // -------------------------------------------------------------------------------
 
     // BUSCAR ANIMAIS POR VETERINARIO
