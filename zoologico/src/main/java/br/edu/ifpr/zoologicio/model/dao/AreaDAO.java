@@ -93,32 +93,35 @@ public class AreaDAO {
         }
     }
 
-    // SELECT 
+    // SELECT
     // ______________________________________________________
+
     public static Area select(int id) {
         Area area = null;
-        String sql = "SELECT area_id, nome, descricao FROM area WHERE area_id=?";
+        String sql = "SELECT area_id, nome, descricao FROM area WHERE area_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
 
-            if (rs.next()) {
-                area = new Area();
-                area.setId(rs.getInt("area_id"));
-                area.setNome(rs.getString("nome"));
-                area.setDescricao(rs.getString("descricao"));
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    area = new Area();
+                    area.setId(rs.getInt("area_id"));
+                    area.setNome(rs.getString("nome"));
+                    area.setDescricao(rs.getString("descricao"));
 
-                // carregar funcionários e habitats vinculados
-                area.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorArea(area.getId()));
-                area.setHabitats(HabitatDAO.buscarHabitatsPorArea(area.getId()));
+                    // carregar funcionários e habitats vinculados
+                    area.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorArea(area.getId()));
+                    area.setHabitats(HabitatDAO.buscarHabitatsPorArea(area.getId()));
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return area;
     }
 
@@ -157,7 +160,7 @@ public class AreaDAO {
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery()) {
- 
+
             while (rs.next()) {
                 Area area = new Area();
                 area.setId(rs.getInt("area_id"));
@@ -194,13 +197,14 @@ public class AreaDAO {
                 PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
 
-            if (rs.next()) {
-                area = new Area();
-                area.setId(rs.getInt("area_id"));
-                area.setNome(rs.getString("nome"));
-                area.setDescricao(rs.getString("descricao"));
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    area = new Area();
+                    area.setId(rs.getInt("area_id"));
+                    area.setNome(rs.getString("nome"));
+                    area.setDescricao(rs.getString("descricao"));
+                }
             }
 
         } catch (SQLException e) {

@@ -197,7 +197,7 @@ public class CargoPanel extends JPanel {
         painelCampos.add(panelSenha);
         painelCampos.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // Campo IDs Funcionários (separados por vírgula)
+        // Campo IDs Funcionários 
         JPanel panelFuncionarios = new JPanel();
         panelFuncionarios.setLayout(new BoxLayout(panelFuncionarios, BoxLayout.Y_AXIS));
         panelFuncionarios.setAlignmentX(Component.LEFT_ALIGNMENT);

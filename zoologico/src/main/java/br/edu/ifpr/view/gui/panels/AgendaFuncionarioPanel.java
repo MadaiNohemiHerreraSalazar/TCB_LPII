@@ -81,7 +81,6 @@ public class AgendaFuncionarioPanel extends JPanel {
 
         painelPrincipalInterno.add(painelBotoes, BorderLayout.CENTER);
 
-
     }
 
     // CRIAR BOTÕES DE GERENCIAMENTO
@@ -187,7 +186,7 @@ public class AgendaFuncionarioPanel extends JPanel {
         painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
         // ACTION
-botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();
@@ -209,14 +208,14 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
         // PANEIS DOS ATRIBUTOS COM ETIQUETA E CAMPOS
         JPanel panelAtividade = new JPanel();
         panelAtividade.setLayout(new BoxLayout(panelAtividade, BoxLayout.Y_AXIS));
-        panelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelAtividade = new JLabel("Atividade:");
         labelAtividade.setFont(new Font("Serif", Font.BOLD, 18));
-        labelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoAtividade = new JTextField(agenda.getAtividade());
         campoAtividade.setPreferredSize(new Dimension(500, 50));
         campoAtividade.setMaximumSize(new Dimension(500, 50));
-        campoAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoAtividade.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelAtividade.add(labelAtividade);
         panelAtividade.add(campoAtividade);
         painelCampos.add(panelAtividade);
@@ -224,17 +223,17 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         JPanel panelFuncionario = new JPanel();
         panelFuncionario.setLayout(new BoxLayout(panelFuncionario, BoxLayout.Y_AXIS));
-        panelFuncionario.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
-        JLabel labelFuncionarioId = new JLabel("ID Funcionario:"); // CORRIGIDO nome da variável
+        panelFuncionario.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JLabel labelFuncionarioId = new JLabel("ID Funcionario:");
         labelFuncionarioId.setFont(new Font("Serif", Font.BOLD, 18));
-        labelFuncionarioId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelFuncionarioId.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoFuncionarioId = new JTextField(
                 agenda.getFuncionario() != null && agenda.getFuncionario().getId() != null
                         ? String.valueOf(agenda.getFuncionario().getId())
                         : "");
         campoFuncionarioId.setPreferredSize(new Dimension(500, 25));
         campoFuncionarioId.setMaximumSize(new Dimension(500, 25));
-        campoFuncionarioId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoFuncionarioId.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelFuncionario.add(labelFuncionarioId);
         panelFuncionario.add(campoFuncionarioId);
         painelCampos.add(panelFuncionario);
@@ -360,8 +359,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
-                            "Por favor, digite um ID válido!",
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
                     return;
@@ -374,21 +372,20 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                     AgendaFuncionario agenda = controller.selecionarAgendaFuncionario(id);
 
                     if (agenda != null) {
-                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
-                                "Agenda carregada com sucesso!",
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, "Agenda carregada com sucesso!",
                                 "Sucesso",
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         Editar(agenda); // Abre a tela com os dados preenchidos
                     } else {
-                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -396,7 +393,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
             }
         });
 
-botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVerificar.doClick());
 
@@ -463,8 +460,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
-                            "Por favor, digite um ID válido!",
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
                     return;
@@ -478,7 +474,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
                     if (agenda != null) {
                         int confirmacao = JOptionPane.showConfirmDialog(
-                                AgendaFuncionarioPanel.this, // CORRIGIDO
+                                AgendaFuncionarioPanel.this,
                                 "Tem certeza que deseja remover a agenda com ID: " + id + "?",
                                 "Confirmar Remoção",
                                 JOptionPane.YES_NO_OPTION,
@@ -487,27 +483,27 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                         if (confirmacao == JOptionPane.YES_OPTION) {
                             try {
                                 controller.deletarAgendaFuncionario(id);
-                                JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                                JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                                         "Agenda removida com sucesso!",
                                         "Sucesso",
                                         JOptionPane.INFORMATION_MESSAGE);
                                 mostrarMenuPrincipal(); // VOLTAR AO MENU APÓS REMOVER
                             } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                                JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                                         "Erro ao remover a agenda: " + ex.getMessage(),
                                         "Erro",
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -515,7 +511,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
             }
         });
 
-botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoRemover.doClick());
 
@@ -529,8 +525,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
         painelPrincipalInterno.setLayout(new BorderLayout());
 
         if (agenda == null) {
-            JOptionPane.showMessageDialog(this, // CORRIGIDO
-                    "Agenda não encontrada!",
+            JOptionPane.showMessageDialog(this, "Agenda não encontrada!",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
             mostrarMenuPrincipal();
@@ -562,7 +557,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
         campoAtividade.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         // Para objetos complexos, mostrar toString() a informação relevante
-        String funcionarioInfo = agenda.getFuncionario() != null ? agenda.getFuncionario().toString() : "Não informado";
+        String funcionarioInfo = agenda.getFuncionario() != null ? agenda.getFuncionario().getNome() : "Não informado";
         JTextField campoFuncionario = new JTextField(funcionarioInfo);
         campoFuncionario.setFont(new Font("Serif", Font.PLAIN, 14));
         campoFuncionario.setEditable(false);
@@ -638,7 +633,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
         campoID.setFont(new Font("Serif", Font.PLAIN, 18));
 
         // BOTÕES
-        JButton botaoVisualizar = new JButton("Visualizar"); // CORRIGIDO nome da variável
+        JButton botaoVisualizar = new JButton("Visualizar");
         botaoVisualizar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVisualizar.setBackground(Color.BLUE);
         botaoVisualizar.setForeground(Color.WHITE);
@@ -665,8 +660,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
-                            "Por favor, digite um ID válido!",
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
                     return;
@@ -681,14 +675,14 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                     if (agenda != null) {
                         Selecionar(agenda); // Chama ao metodo selecionar
                     } else {
-                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                        JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
+                    JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this,
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -696,7 +690,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
             }
         });
 
-botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVisualizar.doClick());
 
@@ -704,7 +698,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
         painelPrincipalInterno.repaint();
     }
 
-    // Listar - REMOVER "static"
+    // Listar
     public void Listar() {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
@@ -733,8 +727,8 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
                 labelVazio.setForeground(Color.GRAY);
                 painelCentral.add(labelVazio, BorderLayout.CENTER);
             } else {
-                // CORRIGIDO: Colunas da tabela - ajustadas para AgendaFuncionario
-                String[] colunas = { "ID", "Atividade", "Funcionario" }; // CORRIGIDO: só 3 colunas relevantes
+
+                String[] colunas = { "ID", "Atividade", "Funcionario" };
                 Object[][] dados = new Object[agendas.size()][3];
 
                 for (int i = 0; i < agendas.size(); i++) {
@@ -791,7 +785,7 @@ botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVoltar.setBackground(Color.GRAY);
         botaoVoltar.setForeground(Color.WHITE);
-        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelBotoes.add(botaoAtualizar);
         painelBotoes.add(Box.createRigidArea(new Dimension(20, 0)));

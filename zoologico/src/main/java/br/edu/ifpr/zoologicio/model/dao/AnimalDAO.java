@@ -127,23 +127,23 @@ public class AnimalDAO {
     // SELECT COMPLETO
     // ____________________________________________________________________________
 
-    public static Animal select(int id) {
-        String sql = "SELECT a.*, h.habitat_id AS habitat_id, h.nome AS habitat_nome, " +
-                "v.veterinario_id AS vet_id, v.nome AS vet_nome " +
-                "FROM Animal a " +
-                "LEFT JOIN Habitat h ON a.habitat_id = h.id " +
-                "LEFT JOIN Animal_Veterinario av ON a.animal_id = av.animal_id " +
-                "LEFT JOIN Veterinario v ON av.veterinario_id = v.id " +
-                "WHERE a.animal_id = ?";
+   public static Animal select(int id) {
+    String sql = "SELECT a.*, h.habitat_id AS habitat_id, h.nome AS habitat_nome, " +
+                 "v.veterinario_id AS vet_id, v.nome AS vet_nome " +
+                 "FROM Animal a " +
+                 "LEFT JOIN Habitat h ON a.habitat_id = h.id " +
+                 "LEFT JOIN Animal_Veterinario av ON a.animal_id = av.animal_id " +
+                 "LEFT JOIN Veterinario v ON av.veterinario_id = v.id " +
+                 "WHERE a.animal_id = ?";
 
-        Animal animal = null;
+    Animal animal = null;
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
+        pst.setInt(1, id);
 
+        try (ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 animal = new Animal();
                 animal.setId(rs.getInt("animal_id"));
@@ -162,19 +162,20 @@ public class AnimalDAO {
                 habitat.setNome(rs.getString("habitat_nome"));
                 animal.setHabitat(habitat);
 
-                // Apenas exibe dados do veterinário (se existir)
-                if (rs.getInt("vet_id") != 0) {
-                    System.out.println("Veterinário responsável: " +
-                            rs.getInt("vet_id") + " - " + rs.getString("vet_nome"));
+                int vetId = rs.getInt("vet_id");
+                if (!rs.wasNull()) {
+                    System.out.println("Veterinário responsável: " + vetId + " - " + rs.getString("vet_nome"));
                 }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return animal;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return animal;
+}
+
 
     // LISTAR 
     // ______________________________________________________________________________
@@ -289,26 +290,28 @@ public class AnimalDAO {
     // ___________________________________________________________________________
 
     public static Animal buscarAnimalPorId(int id) {
-        Animal animal = null;
-        String sql = "SELECT animal_id, nome FROM Animal WHERE animal_id=?";
+    Animal animal = null;
+    String sql = "SELECT animal_id, nome FROM Animal WHERE animal_id = ?";
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
+        pst.setInt(1, id);
 
+        try (ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 animal = new Animal();
                 animal.setId(rs.getInt("animal_id"));
                 animal.setNome(rs.getString("nome"));
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return animal;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return animal;
+}
+
 
 }

@@ -1,3 +1,5 @@
+//Arrumar Listar
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import br.edu.ifpr.zoologicio.model.Alimento;
@@ -269,7 +271,7 @@ public class RotinaAlimentarDAO {
 
         String sql = "SELECT a.alimento_id, a.nome FROM Alimento a" +
                 "JOIN Alimento_Rotina ar ON a.alimento_id = ar.alimento_id" +
-                "WHERE ar.rotinaAlimentar_id = ?;";
+                " WHERE ar.rotinaAlimentar_id = ?;";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {

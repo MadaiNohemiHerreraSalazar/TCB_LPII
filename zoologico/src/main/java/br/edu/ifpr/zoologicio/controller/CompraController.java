@@ -19,7 +19,7 @@ public class CompraController {
             return;
         }
 
-        Integer funcionarioID = FuncionarioDAO.buscaFuncionario_ID(funcionario_id);
+        Integer funcionarioID = FuncionarioDAO.buscarFuncionarioID(funcionario_id);
         
         if (funcionarioID <= 0 ) {
             System.out.println("Fornecedor inválido!");
@@ -47,7 +47,7 @@ public class CompraController {
         }
 
 
-        Integer funcionarioID = FuncionarioDAO.buscaFuncionario_ID(funcionario_id);
+        Integer funcionarioID = FuncionarioDAO.buscarFuncionarioID(funcionario_id);
         
         if (funcionarioID <= 0 ) {
             System.out.println("Fornecedor inválido!");

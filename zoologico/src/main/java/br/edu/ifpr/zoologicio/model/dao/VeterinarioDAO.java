@@ -18,7 +18,7 @@ public class VeterinarioDAO {
         String sqlVeterinario = "INSERT INTO Veterinario(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-        
+
                 PreparedStatement pst = con.prepareStatement(sqlVeterinario, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pst.setString(1, veterinario.getNome());
@@ -133,17 +133,17 @@ public class VeterinarioDAO {
     // SELECT COMPLETO (com animais)
     // ______________________________________________________
 
-    public static Veterinario select(int id) {
+   public static Veterinario select(int id) {
 
-        String sql = "SELECT veterinario_id * FROM Veterinario WHERE veterinario_id=?";
-        Veterinario veterinario = null;
+    String sql = "SELECT * FROM Veterinario WHERE veterinario_id = ?";
+    Veterinario veterinario = null;
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
+        pst.setInt(1, id);
 
+        try (ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 veterinario = new Veterinario();
                 veterinario.setId(rs.getInt("veterinario_id"));
@@ -153,12 +153,16 @@ public class VeterinarioDAO {
                 veterinario.setEspecializacao(rs.getString("especializacao"));
                 veterinario.setAnimais(AnimalDAO.buscarAnimaisPorVeterinario(veterinario.getId()));
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return veterinario;
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+
+    return veterinario;
+}
+
+
 
     // LISTAR
     // ______________________________________________________
@@ -189,7 +193,7 @@ public class VeterinarioDAO {
         return veterinarios;
     }
 
-    // LISTAR COMPLETO COM ANIMAIS 
+    // LISTAR COMPLETO COM ANIMAIS
     // _________________________________________________________
 
     public static ArrayList<Veterinario> listarCompleto() {
@@ -225,19 +229,22 @@ public class VeterinarioDAO {
 
     public static Veterinario buscarVeterinarioPorId(int id) {
         Veterinario vet = null;
-        String sql = "SELECT veterinario_id, nome, email FROM veterinario WHERE veterinario_id=?";
+        String sql = "SELECT * FROM Veterinario WHERE veterinario_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
 
-            if (rs.next()) {
-                vet = new Veterinario();
-                vet.setId(rs.getInt("veterinario_id"));
-                vet.setNome(rs.getString("nome"));
-                vet.setEmail(rs.getString("email"));
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    vet = new Veterinario();
+                    vet.setId(rs.getInt("veterinario_id"));
+                    vet.setCpf(rs.getString("cpf"));
+                    vet.setNome(rs.getString("nome"));
+                    vet.setEmail(rs.getString("email"));
+                    vet.setEspecializacao(rs.getString("especializacao"));
+                }
             }
 
         } catch (SQLException e) {
@@ -247,21 +254,22 @@ public class VeterinarioDAO {
         return vet;
     }
 
-    // BUSCA VETERINARIO POR NOME - DEVOLVE NOME
+    // BUSCA VETERINARIO POR ID - RETORNA ID
     // _______________________________________________________________________
 
     public static int buscaVeterinario_ID(int veterinario_id) {
-
-        String sqlVeterinario = "SELECT from Veterinario WHERE nome= ?";
+        String sql = "SELECT veterinario_id FROM Veterinario WHERE veterinario_id = ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlVeterinario)) {
-            ps.setInt(1, veterinario_id);
-            ResultSet rs = ps.executeQuery();
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                id = rs.getInt("veterinario_id");
+            ps.setInt(1, veterinario_id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("veterinario_id");
+                }
             }
 
         } catch (Exception e) {
@@ -269,7 +277,6 @@ public class VeterinarioDAO {
         }
 
         return id;
-
     }
 
 }

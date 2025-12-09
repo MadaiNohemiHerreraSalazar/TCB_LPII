@@ -1,3 +1,5 @@
+//Arrumar Listar
+
 package br.edu.ifpr.zoologicio.model.dao;
 
 import br.edu.ifpr.zoologicio.model.Alimento;
@@ -232,7 +234,7 @@ public class FornecedorDAO {
         String sql = "SELECT a.alimento_id, a.nome, a.validade, a.estoque " +
                 "FROM Alimento a " +
                 "JOIN Fornecedor_Alimento fa ON a.alimento_id = fa.alimento_id " +
-                "WHERE fa.fornecedor_id = ?";
+                " WHERE fa.fornecedor_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -242,7 +244,7 @@ public class FornecedorDAO {
 
             while (rs.next()) {
                 Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("fornecedor_id"));
+                alimento.setId(rs.getInt("alimento_id"));
                 alimento.setNome(rs.getString("nome"));
                 alimento.setValidade(rs.getString("validade"));
                 alimento.setEstoque(rs.getString("estoque"));

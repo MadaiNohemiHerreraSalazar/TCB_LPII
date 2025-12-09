@@ -131,26 +131,31 @@ public class AlimentoDAO {
     //BUSCAR ALIMENTO POR ID
     //________________________________________________________________________________
 
-    public static Alimento buscarAlimentoPor_ID(int alimentoId) {
-        Connection con = ConnectionFactory.getConnection();
-        Alimento alimento = null;
+   public static Alimento buscarAlimentoPor_ID(int alimentoId) {
+    String sql = "SELECT * FROM Alimento WHERE alimento_id = ?";
+    Alimento alimento = null;
 
-        try {
-            String sql = "SELECT alimento_id, nome FROM Alimento WHERE alimento_id=?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, alimentoId);
-            ResultSet rs = pst.executeQuery();
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
 
+        pst.setInt(1, alimentoId);
+
+        try (ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 alimento = new Alimento();
                 alimento.setId(rs.getInt("alimento_id"));
                 alimento.setNome(rs.getString("nome"));
+                alimento.setEstoque(rs.getInt("estoque"));
+                alimento.setValidade(rs.getString("validade"));
+                // adicione os outros campos do seu modelo
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return alimento;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+
+    return alimento;
+}
+
 }

@@ -347,26 +347,27 @@ public class FuncionarioDAO {
     // BUSCA FUNCIONARIO POR ID - DEVOLVE ID
     // ______________________________________________________________________
 
-    public static int buscaFuncionario_ID(int funcionario_id) {
+   public static int buscarFuncionarioID(int funcionario_id) {
+    String sql = "SELECT funcionario_id FROM Funcionario WHERE funcionario_id = ?";
+    int id = -1;
 
-String sqlFuncionario = "SELECT funcionario_id FROM Funcionario WHERE funcionario_id = ?";
-        int id = -1;
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement ps = con.prepareStatement(sqlFuncionario)) {
-            ps.setInt(1, funcionario_id);
-            ResultSet rs = ps.executeQuery();
+        ps.setInt(1, funcionario_id);
 
+        try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 id = rs.getInt("funcionario_id");
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return id;
-
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return id;
+}
+
 
 }

@@ -13,7 +13,7 @@ public class CargoDAO {
     // CADASTRAR CARGO
     // ______________________________________________________
     public static void cadastrar(Cargo cargo) {
-        String sql = "INSERT INTO Cargo(nome, salario, cargaHoraroia, senha) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Cargo(nome, salario, cargaHoraria, senha) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -44,7 +44,7 @@ public class CargoDAO {
 
     public static void editar(Cargo cargo) {
 
-        String sqlUpdateCargo = "UPDATE Cargo SET nome=?, salario=?, cargaHoraroia=?, senha=? WHERE cargo_id=?";
+        String sqlUpdateCargo = "UPDATE Cargo SET nome=?, salario=?, cargaHoraria=?, senha=? WHERE cargo_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -91,43 +91,46 @@ public class CargoDAO {
         }
     }
 
-    // SELECT COMPLETO (COM FUNCIONÁRIOS)
+    // SELECT COMPLETO 
     // ______________________________________________________
-    public static Cargo select(int id) {
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo WHERE cargo_id = ?";
-        Cargo cargo = null;
+  public static Cargo select(int id) {
+    String sql = "SELECT cargo_id, nome, salario, cargaHoraria, senha FROM Cargo WHERE cargo_id = ?";
+    Cargo cargo = null;
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
+        pst.setInt(1, id);
 
+        try (ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 cargo = new Cargo();
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraria"));
                 cargo.setSenha(rs.getString("senha"));
             }
-
-            if (cargo != null) {
-                cargo.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorCargo(cargo.getId()));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return cargo;
+        // só busca os funcionários se o cargo existir
+        if (cargo != null) {
+            cargo.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorCargo(cargo.getId()));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+
+    return cargo;
+}
+
 
     // LISTAR SIMPLES
     // ______________________________________________________________________
 
     public static ArrayList<Cargo> listar() {
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo";
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraria, senha FROM Cargo";
         ArrayList<Cargo> cargos = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -139,7 +142,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraria"));
                 cargo.setSenha(rs.getString("senha"));
 
                 cargos.add(cargo);
@@ -152,11 +155,11 @@ public class CargoDAO {
         return cargos;
     }
 
-    // LISTAR COMPLETO (COM FUNCIONÁRIOS)
+    // LISTAR COMPLETO 
     // ______________________________________________________
     public static ArrayList<Cargo> listarCompleto() {
         ArrayList<Cargo> cargos = new ArrayList<>();
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo";
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraria, senha FROM Cargo";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -167,7 +170,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraria"));
                 cargo.setSenha(rs.getString("senha"));
                 cargo.setFuncionarios(FuncionarioDAO.buscarFuncionariosPorCargo(cargo.getId()));
 
@@ -187,31 +190,33 @@ public class CargoDAO {
     // BUSCAR CARGO POR ID
     // ______________________________________________________________________
 
-    public static Cargo buscarCargoPorId(int id) {
-        Cargo cargo = null;
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo WHERE cargo_id = ?";
+   public static Cargo buscarCargoPorId(int id) {
+    Cargo cargo = null;
+    String sql = "SELECT cargo_id, nome, salario, cargaHoraria, senha FROM Cargo WHERE cargo_id = ?";
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement pst = con.prepareStatement(sql)) {
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
+        pst.setInt(1, id);
 
+        try (ResultSet rs = pst.executeQuery()) {
             if (rs.next()) {
                 cargo = new Cargo();
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraria"));
                 cargo.setSenha(rs.getString("senha"));
-                // não carrega lista de funcionarios aqui (evita recursão pesada)
+                // não carrega lista de funcionários aqui (evita recursão pesada)
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return cargo;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return cargo;
+}
+
 
 }
