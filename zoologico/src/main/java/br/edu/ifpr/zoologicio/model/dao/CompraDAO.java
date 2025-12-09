@@ -215,7 +215,7 @@ public class CompraDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlCOmpra = "SELECT from Compra WHERE compra_id= ?";
+        String sqlCOmpra = "SELECT * from Compra WHERE compra_id= ?";
         int id = -1;
 
         try {
