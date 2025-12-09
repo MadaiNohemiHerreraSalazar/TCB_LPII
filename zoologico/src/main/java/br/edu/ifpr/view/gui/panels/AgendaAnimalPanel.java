@@ -39,12 +39,12 @@ public class AgendaAnimalPanel extends JPanel {
         painelPrincipalInterno = new JPanel(new BorderLayout());
         add(painelPrincipalInterno, BorderLayout.CENTER);
 
-        mostrarLogin();
+        mostrarMenuPrincipal();
     }
 
     // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
-    private void mostrarLogin() {
+    private void mostrarMenuPrincipal() {
         painelPrincipalInterno.removeAll();
 
         // Título do menu principal
@@ -70,7 +70,7 @@ public class AgendaAnimalPanel extends JPanel {
 
         // Painel central com os botões de gerenciamento
         JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(5, 1, 20, 20)); // 5 linhas, 1 coluna
+        painelBotoes.setLayout(new GridLayout(5, 1, 20, 20));
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 200, 0, 200));
 
         // Criar botões de gerenciamento
@@ -81,20 +81,30 @@ public class AgendaAnimalPanel extends JPanel {
             painelBotoes.add(botao);
         }
 
+        JPanel painelInferior = new JPanel();
+        painelInferior.setBorder(BorderFactory.createEmptyBorder(20, 0, 30, 0));
+
+        JButton botaoSair = new JButton("Sair do Sistema");
+        botaoSair.setFont(new Font("Serif", Font.BOLD, 18));
+        botaoSair.setBackground(Color.RED);
+        botaoSair.setForeground(Color.WHITE);
+
+        botaoSair.addActionListener(e -> {
+            int escolha = JOptionPane.showConfirmDialog(
+                    this,
+                    "Deseja realmente sair do sistema?",
+                    "Confirmar saída",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (escolha == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+
+        painelInferior.add(botaoSair);
+
         painelPrincipalInterno.add(painelBotoes, BorderLayout.CENTER);
 
-        // Painel inferior com botão de voltar
-        JPanel painelInferior = new JPanel();
-        JButton btnVoltar = new JButton("Voltar ao Menu Principal");
-        btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnVoltar.setBackground(Color.BLACK);
-        btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e -> MainFrame.mostrarLogin()); // CORRIGIDO
-        painelInferior.add(btnVoltar);
-        painelPrincipalInterno.add(painelInferior, BorderLayout.SOUTH);
-
-        painelPrincipalInterno.revalidate();
-        painelPrincipalInterno.repaint();
     }
 
     // CRIAR BOTÕES DE GERENCIAMENTO
@@ -108,7 +118,6 @@ public class AgendaAnimalPanel extends JPanel {
         botao.setForeground(Color.WHITE);
         botao.setFocusPainted(false);
 
-        // Ação correspondente a cada botão
         botao.addActionListener(e -> {
             switch (texto.trim()) {
                 case "Cadastro":
@@ -134,10 +143,9 @@ public class AgendaAnimalPanel extends JPanel {
         return botao;
     }
 
-
     // MÉTODOS CRUD PARA AgendaAnimalPanel
 
-    // Cadastro - REMOVER "static" e usar painelPrincipalInterno
+    // Cadastro
     public void Cadastro() {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
@@ -308,33 +316,32 @@ public class AgendaAnimalPanel extends JPanel {
                 AgendaAnimalController controller = new AgendaAnimalController();
                 controller.cadastrarAgendaAnimal(agenda);
 
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Agenda cadastrada com sucesso!",
                         "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
 
-                MainFrame.voltarAoMenuPrincipal(); // VOLTAR AO MENU APÓS SALVAR
-
+                MainFrame.voltarAoMenuPrincipal();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "IDs devem conter apenas números!",
                         "Erro",
                         JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Erro ao salvar: " + ex.getMessage(),
                         "Erro",
                         JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();
     }
 
-    // Editar - REMOVER "static" e usar painelPrincipalInterno
+    // Editar
     public void Editar(AgendaAnimal agenda) {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
@@ -351,14 +358,14 @@ public class AgendaAnimalPanel extends JPanel {
         // PANEIS DOS ATRIBUTOS COM ETIQUETA E CAMPOS
         JPanel panelConsulta = new JPanel();
         panelConsulta.setLayout(new BoxLayout(panelConsulta, BoxLayout.Y_AXIS));
-        panelConsulta.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelConsulta.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelConsulta = new JLabel("Consulta:");
         labelConsulta.setFont(new Font("Serif", Font.BOLD, 18));
-        labelConsulta.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelConsulta.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoConsulta = new JTextField(agenda.getConsulta());
         campoConsulta.setPreferredSize(new Dimension(500, 50));
         campoConsulta.setMaximumSize(new Dimension(500, 50));
-        campoConsulta.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoConsulta.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelConsulta.add(labelConsulta);
         panelConsulta.add(campoConsulta);
         painelCampos.add(panelConsulta);
@@ -366,14 +373,14 @@ public class AgendaAnimalPanel extends JPanel {
 
         JPanel panelBanho = new JPanel();
         panelBanho.setLayout(new BoxLayout(panelBanho, BoxLayout.Y_AXIS));
-        panelBanho.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelBanho.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelBanho = new JLabel("Banho:");
         labelBanho.setFont(new Font("Serif", Font.BOLD, 18));
-        labelBanho.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelBanho.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoBanho = new JTextField(agenda.getBanho());
         campoBanho.setPreferredSize(new Dimension(500, 50));
         campoBanho.setMaximumSize(new Dimension(500, 50));
-        campoBanho.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoBanho.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelBanho.add(labelBanho);
         panelBanho.add(campoBanho);
         painelCampos.add(panelBanho);
@@ -381,14 +388,14 @@ public class AgendaAnimalPanel extends JPanel {
 
         JPanel panelMedicacao = new JPanel();
         panelMedicacao.setLayout(new BoxLayout(panelMedicacao, BoxLayout.Y_AXIS));
-        panelMedicacao.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelMedicacao.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelMedicacao = new JLabel("Medicação:");
         labelMedicacao.setFont(new Font("Serif", Font.BOLD, 18));
-        labelMedicacao.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelMedicacao.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoMedicacao = new JTextField(agenda.getMedicacao());
         campoMedicacao.setPreferredSize(new Dimension(500, 50));
         campoMedicacao.setMaximumSize(new Dimension(500, 50));
-        campoMedicacao.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoMedicacao.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelMedicacao.add(labelMedicacao);
         panelMedicacao.add(campoMedicacao);
         painelCampos.add(panelMedicacao);
@@ -396,14 +403,14 @@ public class AgendaAnimalPanel extends JPanel {
 
         JPanel panelAtividade = new JPanel();
         panelAtividade.setLayout(new BoxLayout(panelAtividade, BoxLayout.Y_AXIS));
-        panelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelAtividade = new JLabel("Atividade:");
         labelAtividade.setFont(new Font("Serif", Font.BOLD, 18));
-        labelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelAtividade.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoAtividade = new JTextField(agenda.getAtividade());
         campoAtividade.setPreferredSize(new Dimension(500, 50));
         campoAtividade.setMaximumSize(new Dimension(500, 50));
-        campoAtividade.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoAtividade.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelAtividade.add(labelAtividade);
         panelAtividade.add(campoAtividade);
         painelCampos.add(panelAtividade);
@@ -411,18 +418,18 @@ public class AgendaAnimalPanel extends JPanel {
 
         JPanel panelAnimal = new JPanel();
         panelAnimal.setLayout(new BoxLayout(panelAnimal, BoxLayout.Y_AXIS));
-        panelAnimal.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelAnimal.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelAnimalId = new JLabel("ID Animal:");
         labelAnimalId.setFont(new Font("Serif", Font.BOLD, 18));
-        labelAnimalId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelAnimalId.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoAnimalId = new JTextField(
-                agenda.getAnimal() != null && agenda.getAnimal().getId() != null // CORRIGIDO: getAnimal() não
-                                                                                 // getFuncionario()
+                agenda.getAnimal() != null && agenda.getAnimal().getId() != null
+
                         ? String.valueOf(agenda.getAnimal().getId())
                         : "");
         campoAnimalId.setPreferredSize(new Dimension(500, 25));
         campoAnimalId.setMaximumSize(new Dimension(500, 25));
-        campoAnimalId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoAnimalId.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelAnimal.add(labelAnimalId);
         panelAnimal.add(campoAnimalId);
         painelCampos.add(panelAnimal);
@@ -430,17 +437,17 @@ public class AgendaAnimalPanel extends JPanel {
 
         JPanel panelVeterinario = new JPanel();
         panelVeterinario.setLayout(new BoxLayout(panelVeterinario, BoxLayout.Y_AXIS));
-        panelVeterinario.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelVeterinario.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelVeterinarioId = new JLabel("ID Veterinário:");
         labelVeterinarioId.setFont(new Font("Serif", Font.BOLD, 18));
-        labelVeterinarioId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelVeterinarioId.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoVeterinarioId = new JTextField(
                 agenda.getVeterinario() != null && agenda.getVeterinario().getId() != null
                         ? String.valueOf(agenda.getVeterinario().getId())
                         : "");
         campoVeterinarioId.setPreferredSize(new Dimension(500, 25));
         campoVeterinarioId.setMaximumSize(new Dimension(500, 25));
-        campoVeterinarioId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoVeterinarioId.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelVeterinario.add(labelVeterinarioId);
         panelVeterinario.add(campoVeterinarioId);
         painelCampos.add(panelVeterinario);
@@ -448,17 +455,17 @@ public class AgendaAnimalPanel extends JPanel {
 
         JPanel panelRotina = new JPanel();
         panelRotina.setLayout(new BoxLayout(panelRotina, BoxLayout.Y_AXIS));
-        panelRotina.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        panelRotina.setAlignmentX(Component.LEFT_ALIGNMENT);
         JLabel labelRotinaId = new JLabel("ID Rotina Alimentar:");
         labelRotinaId.setFont(new Font("Serif", Font.BOLD, 18));
-        labelRotinaId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        labelRotinaId.setAlignmentX(Component.LEFT_ALIGNMENT);
         JTextField campoRotinaId = new JTextField(
                 agenda.getRotinaAlimentar() != null && agenda.getRotinaAlimentar().getId() != null
                         ? String.valueOf(agenda.getRotinaAlimentar().getId())
                         : "");
         campoRotinaId.setPreferredSize(new Dimension(500, 25));
         campoRotinaId.setMaximumSize(new Dimension(500, 25));
-        campoRotinaId.setAlignmentX(Component.LEFT_ALIGNMENT); // ADICIONADO
+        campoRotinaId.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelRotina.add(labelRotinaId);
         panelRotina.add(campoRotinaId);
         painelCampos.add(panelRotina);
@@ -487,18 +494,18 @@ public class AgendaAnimalPanel extends JPanel {
             agenda.setMedicacao(campoMedicacao.getText());
             agenda.setAtividade(campoAtividade.getText());
 
-            // Atualizar Animal - CORRIGIDO: agenda.getAnimal() não getFuncionario()
+            // Atualizar Animal
             try {
                 String animalIdTexto = campoAnimalId.getText().trim();
                 if (!animalIdTexto.isEmpty()) {
-                    if (agenda.getAnimal() == null) // CORRIGIDO
-                        agenda.setAnimal(new Animal()); // CORRIGIDO
-                    agenda.getAnimal().setId(Integer.parseInt(animalIdTexto)); // CORRIGIDO
+                    if (agenda.getAnimal() == null)
+                        agenda.setAnimal(new Animal());
+                    agenda.getAnimal().setId(Integer.parseInt(animalIdTexto));
                 } else {
-                    agenda.setAnimal(null); // CORRIGIDO
+                    agenda.setAnimal(null);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "ID do Animal inválido! Digite apenas números.",
                         "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -515,7 +522,7 @@ public class AgendaAnimalPanel extends JPanel {
                     agenda.setVeterinario(null);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "ID do Veterinário inválido! Digite apenas números.",
                         "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -532,7 +539,7 @@ public class AgendaAnimalPanel extends JPanel {
                     agenda.setRotinaAlimentar(null);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "ID da Rotina Alimentar inválido! Digite apenas números.",
                         "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -540,23 +547,23 @@ public class AgendaAnimalPanel extends JPanel {
 
             try {
                 AgendaAnimalController.editarAgendaAnimal(agenda);
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Registro atualizado com sucesso!",
                         "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 MainFrame.voltarAoMenuPrincipal(); // VOLTAR AO MENU APÓS ATUALIZAR
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                         "Erro ao atualizar no banco de dados!",
                         "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        botaoCancelar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoCancelar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();
     }
-    // BUSCAR AGENDA POR ID - PARA A EDIÇÃO
+    // BUSCAR AGENDA POR ID - EDIÇÃO
     // ________________________________________________________________
 
     public void telaBuscaIDEdicao() {
@@ -617,7 +624,7 @@ public class AgendaAnimalPanel extends JPanel {
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
                             "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
@@ -631,21 +638,21 @@ public class AgendaAnimalPanel extends JPanel {
                     AgendaAnimal agenda = controller.selecionarAgendaAnimal(id);
 
                     if (agenda != null) {
-                        JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
                                 "Agenda carregada com sucesso!",
                                 "Sucesso",
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         Editar(agenda); // Abre a tela com os dados preenchidos
                     } else {
-                        JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
                                 "Nenhuma agenda encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -653,7 +660,7 @@ public class AgendaAnimalPanel extends JPanel {
             }
         });
 
-        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVerificar.doClick());
 
@@ -661,7 +668,7 @@ public class AgendaAnimalPanel extends JPanel {
         painelPrincipalInterno.repaint();
     }
 
-    // telaBuscaIDRemover_Remover - REMOVER "static" e usar painelPrincipalInterno
+    // telaBuscaIDRemover_Remover
     public void telaBuscaIDRemover_Remover() {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
@@ -720,7 +727,7 @@ public class AgendaAnimalPanel extends JPanel {
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
                             "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
@@ -735,7 +742,7 @@ public class AgendaAnimalPanel extends JPanel {
 
                     if (agenda != null) {
                         int confirmacao = JOptionPane.showConfirmDialog(
-                                MainFrame.getJanela(), // CORRIGIDO
+                                MainFrame.getJanela(),
                                 "Tem certeza que deseja remover a agenda animal com ID: " + id + "?",
                                 "Confirmar Remoção",
                                 JOptionPane.YES_NO_OPTION,
@@ -744,27 +751,27 @@ public class AgendaAnimalPanel extends JPanel {
                         if (confirmacao == JOptionPane.YES_OPTION) {
                             try {
                                 controller.deletarAgendaAnimal(id);
-                                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                                         "Agenda animal removida com sucesso!",
                                         "Sucesso",
                                         JOptionPane.INFORMATION_MESSAGE);
                                 MainFrame.voltarAoMenuPrincipal(); // VOLTAR AO MENU APÓS REMOVER
                             } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                                JOptionPane.showMessageDialog(MainFrame.getJanela(),
                                         "Erro ao remover a agenda: " + ex.getMessage(),
                                         "Erro",
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
                                 "Nenhuma agenda animal encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -772,7 +779,7 @@ public class AgendaAnimalPanel extends JPanel {
             }
         });
 
-        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoRemover.doClick());
 
@@ -780,13 +787,13 @@ public class AgendaAnimalPanel extends JPanel {
         painelPrincipalInterno.repaint();
     }
 
-    // Selecionar - REMOVER "static" e usar painelPrincipalInterno
+    // Selecionar
     public void Selecionar(AgendaAnimal agenda) {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
 
         if (agenda == null) {
-            JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+            JOptionPane.showMessageDialog(MainFrame.getJanela(),
                     "Agenda não encontrada!",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
@@ -801,12 +808,9 @@ public class AgendaAnimalPanel extends JPanel {
         labelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         painelPrincipalInterno.add(labelTitulo, BorderLayout.NORTH);
 
-        // CORRIGIDO: GridLayout com 8 linhas (ID, Consulta, Banho, Medicação,
-        // Atividade, Animal, Veterinário, Rotina)
         JPanel painelDados = new JPanel(new GridLayout(8, 2, 10, 10));
         painelDados.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Criar campos de texto não editáveis para mostrar os dados
         JTextField campoID = new JTextField(String.valueOf(agenda.getId()));
         campoID.setFont(new Font("Serif", Font.PLAIN, 14));
         campoID.setEditable(false);
@@ -837,7 +841,6 @@ public class AgendaAnimalPanel extends JPanel {
         campoAtividade.setBackground(Color.WHITE);
         campoAtividade.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-        // CORRIGIDO: agenda.getAnimal() não getFuncionario()
         String animalInfo = agenda.getAnimal() != null ? agenda.getAnimal().toString() : "Não informado";
         JTextField campoAnimal = new JTextField(animalInfo);
         campoAnimal.setFont(new Font("Serif", Font.PLAIN, 14));
@@ -913,7 +916,7 @@ public class AgendaAnimalPanel extends JPanel {
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVoltar.setBackground(Color.GRAY);
         botaoVoltar.setForeground(Color.WHITE);
-        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelBotoes.add(botaoVoltar);
         painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
@@ -922,7 +925,7 @@ public class AgendaAnimalPanel extends JPanel {
         painelPrincipalInterno.repaint();
     }
 
-    // telaBuscaIDSelecionar - REMOVER "static" e usar painelPrincipalInterno
+    // telaBuscaIDSelecionar
     public void telaBuscaIDSelecionar() {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
@@ -981,7 +984,7 @@ public class AgendaAnimalPanel extends JPanel {
                 String idTexto = campoID.getText().trim();
 
                 if (idTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
                             "Por favor, digite um ID válido!",
                             "Erro",
                             JOptionPane.ERROR_MESSAGE);
@@ -997,14 +1000,14 @@ public class AgendaAnimalPanel extends JPanel {
                     if (agenda != null) {
                         Selecionar(agenda); // Chama ao metodo selecionar
                     } else {
-                        JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                        JOptionPane.showMessageDialog(MainFrame.getJanela(),
                                 "Nenhuma agenda animal encontrada com ID: " + id,
                                 "Não Encontrado",
                                 JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(MainFrame.getJanela(), // CORRIGIDO
+                    JOptionPane.showMessageDialog(MainFrame.getJanela(),
                             "Por favor, digite um número válido para o ID!",
                             "Erro de Formato",
                             JOptionPane.ERROR_MESSAGE);
@@ -1012,7 +1015,7 @@ public class AgendaAnimalPanel extends JPanel {
             }
         });
 
-        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVisualizar.doClick());
 
@@ -1020,7 +1023,7 @@ public class AgendaAnimalPanel extends JPanel {
         painelPrincipalInterno.repaint();
     }
 
-    // Listar - REMOVER "static" e usar painelPrincipalInterno
+    // Listar
     public void Listar() {
         painelPrincipalInterno.removeAll();
         painelPrincipalInterno.setLayout(new BorderLayout());
@@ -1049,8 +1052,7 @@ public class AgendaAnimalPanel extends JPanel {
                 labelVazio.setForeground(Color.GRAY);
                 painelCentral.add(labelVazio, BorderLayout.CENTER);
             } else {
-                // Criar tabela com os dados - CORRIGIDO: agenda.getAnimal() não
-                // getFuncionario()
+
                 String[] colunas = { "ID", "Consulta", "Banho", "Medicação", "Atividade", "Animal", "Veterinário",
                         "Rotina Alimentar" };
                 Object[][] dados = new Object[agendas.size()][8];
@@ -1062,7 +1064,7 @@ public class AgendaAnimalPanel extends JPanel {
                     dados[i][2] = agenda.getBanho() != null ? agenda.getBanho() : "";
                     dados[i][3] = agenda.getMedicacao() != null ? agenda.getMedicacao() : "";
                     dados[i][4] = agenda.getAtividade() != null ? agenda.getAtividade() : "";
-                    dados[i][5] = agenda.getAnimal() != null ? agenda.getAnimal().toString() : "Não informado"; // CORRIGIDO
+                    dados[i][5] = agenda.getAnimal() != null ? agenda.getAnimal().toString() : "Não informado";
                     dados[i][6] = agenda.getVeterinario() != null ? agenda.getVeterinario().toString()
                             : "Não informado";
                     dados[i][7] = agenda.getRotinaAlimentar() != null ? agenda.getRotinaAlimentar().toString()
@@ -1120,7 +1122,7 @@ public class AgendaAnimalPanel extends JPanel {
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVoltar.setBackground(Color.GRAY);
         botaoVoltar.setForeground(Color.WHITE);
-        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal()); // CORRIGIDO
+        botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelBotoes.add(botaoAtualizar);
         painelBotoes.add(Box.createRigidArea(new Dimension(20, 0)));

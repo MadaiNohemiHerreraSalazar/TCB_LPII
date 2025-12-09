@@ -16,8 +16,8 @@ public class FuncionarioDAO {
 
     public static void cadastrar(Funcionario funcionario) {
 
-        String sqlFuncionario = "INSERT INTO funcionario(nome, cpf, email, telefone, cargo_id, area_id) VALUES (?,?,?,?,?,?)";
-        String sqlAgenda = "INSERT INTO agendaFuncionario( ultimaAtualizacao, atividade, cargo_id, funcionario_id) VALUES (?,?,?,?,?)";
+        String sqlFuncionario = "INSERT INTO Funcionario(nome, cpf, email, telefone, cargo_id, area_id) VALUES (?,?,?,?,?,?)";
+        String sqlAgenda = "INSERT INTO AgendaFuncionario(atividade, cargo_id, funcionario_id) VALUES (?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlFuncionario, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -40,9 +40,9 @@ public class FuncionarioDAO {
             // Cadastra AgendaFuncionario (1:1)
             if (funcionario.getAgendaFuncionario() != null) {
                 try (PreparedStatement pstAgenda = con.prepareStatement(sqlAgenda)) {
-                    pstAgenda.setString(3, funcionario.getAgendaFuncionario().getAtividade());
-                    pstAgenda.setInt(4, funcionario.getCargo().getId());
-                    pstAgenda.setInt(5, funcionario.getId());
+                    pstAgenda.setString(1, funcionario.getAgendaFuncionario().getAtividade());
+                    pstAgenda.setInt(2, funcionario.getCargo().getId());
+                    pstAgenda.setInt(3, funcionario.getId());
                     pstAgenda.executeUpdate();
                 }
             }
@@ -57,8 +57,8 @@ public class FuncionarioDAO {
 
     public static void editar(Funcionario funcionario) {
 
-        String sqlFuncionario = "UPDATE funcionario SET nome=?, cpf=?, email=?, telefone=?, cargo_id=?, area_id=? WHERE id=?";
-        String sqlAgenda = "UPDATE agendaFuncionario SET ultimaAtualizacao=?, atividade=?, cargo_id=? WHERE funcionario_id=?";
+        String sqlFuncionario = "UPDATE Funcionario SET nome=?, cpf=?, email=?, telefone=?, cargo_id=?, area_id=? WHERE funcionario_id=?";
+        String sqlAgenda = "UPDATE AgendaFuncionario SET ultimaAtualizacao=?, atividade=?, cargo_id=? WHERE funcionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -91,8 +91,8 @@ public class FuncionarioDAO {
 
     public static void delete(int id) {
 
-        String sqlDeleteAgenda = "DELETE FROM agendaFuncionario WHERE funcionario_id=?";
-        String sqlDeleteFuncionario = "DELETE FROM funcionario WHERE funcionario_id=?";
+        String sqlDeleteAgenda = "DELETE FROM AgendaFuncionario WHERE funcionario_id=?";
+        String sqlDeleteFuncionario = "DELETE FROM Funcionario WHERE funcionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -117,8 +117,8 @@ public class FuncionarioDAO {
     public static Funcionario select(int id) {
 
         String sql = "SELECT f.funcionario_id, f.nome, " +
-                "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
-                "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
+                "c.cargo_id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraria, c.senha, " +
+                "a.agendaFuncionario_id AS agenda_id, a.atividade " +
                 "FROM funcionario f " +
                 "LEFT JOIN cargo c ON f.cargo_id = c.id " +
                 "LEFT JOIN agendaFuncionario a ON f.funcionario_id = a.funcionario_id " +
@@ -140,13 +140,12 @@ public class FuncionarioDAO {
                 funcionario.setEmail(rs.getString("email"));
                 funcionario.setTelefone(rs.getString("telefone"));
 
-
                 // Cargo
                 Cargo cargo = new Cargo();
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("cargo_nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraria"));
                 cargo.setSenha(rs.getString("senha"));
                 funcionario.setCargo(cargo);
 
@@ -173,7 +172,7 @@ public class FuncionarioDAO {
     public static ArrayList<Funcionario> listar() {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM funcionario ORDER BY nome";
+        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM Funcionario ORDER BY nome";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -204,11 +203,11 @@ public class FuncionarioDAO {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
         String sql = "SELECT f.funcionario_id, f.nome, " +
-                "c.id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraroia, c.senha, " +
-                "a.id AS agenda_id, a.criadoPor, a.ultimaAtualizacao, a.atividade " +
+                "c.cargo_id AS cargo_id, c.nome AS cargo_nome, c.salario, c.cargaHoraria, c.senha, " +
+                "a.agendaFuncionario_id AS agenda_id, a.atividade " +
                 "FROM funcionario f " +
                 "LEFT JOIN cargo c ON f.cargo_id = c.id " +
-                "LEFT JOIN agendaFuncionario a ON f.id = a.funcionario_id " +
+                "LEFT JOIN agendaFuncionario a ON f.funcionario_id = a.funcionario_id " +
                 "ORDER BY f.nome";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -228,7 +227,7 @@ public class FuncionarioDAO {
                 cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("cargo_nome"));
                 cargo.setSalario(rs.getString("salario"));
-                cargo.setCargaHoraria(rs.getString("cargaHoraroia"));
+                cargo.setCargaHoraria(rs.getString("cargaHoraria"));
                 cargo.setSenha(rs.getString("senha"));
                 funcionario.setCargo(cargo);
 
@@ -236,9 +235,9 @@ public class FuncionarioDAO {
                 if (rs.getInt("agenda_id") > 0) {
                     AgendaFuncionario agenda = new AgendaFuncionario();
                     agenda.setId(rs.getInt("agenda_id"));
-            
+
                     agenda.setAtividade(rs.getString("atividade"));
-         
+
                     agenda.setFuncionario(funcionario);
 
                     funcionario.setAgendaFuncionario(agenda);
@@ -262,7 +261,7 @@ public class FuncionarioDAO {
 
     public static ArrayList<Funcionario> buscarFuncionariosPorCargo(int cargoId) {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
-        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM funcionario WHERE cargo_id = ?";
+        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM Funcionario WHERE cargo_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -293,7 +292,7 @@ public class FuncionarioDAO {
     public static ArrayList<Funcionario> buscarFuncionariosPorArea(int areaId) {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();
 
-        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM funcionario WHERE area_id=?";
+        String sql = "SELECT funcionario_id, nome, cpf, email, telefone FROM Funcionario WHERE area_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -318,10 +317,10 @@ public class FuncionarioDAO {
     }
 
     // BUSCAR FUNCIONARIO POR ID - DEVOLVE FUNCIONARIO
-    //___________________________________________________________________
+    // ___________________________________________________________________
     public static Funcionario buscarFuncionarioPor_ID(int id) {
         Funcionario funcionario = null;
-        String sql = "SELECT funcionario_id, nome, cpf, telefone, email FROM funcionario WHERE id=?";
+        String sql = "SELECT funcionario_id, nome, cpf, telefone, email FROM Funcionario WHERE funcionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -345,12 +344,12 @@ public class FuncionarioDAO {
         return funcionario;
     }
 
-    //BUSCA FUNCIONARIO POR ID - DEVOLVE ID
-    //______________________________________________________________________
+    // BUSCA FUNCIONARIO POR ID - DEVOLVE ID
+    // ______________________________________________________________________
 
     public static int buscaFuncionario_ID(int funcionario_id) {
 
-        String sqlFuncionario = "SELECT from funcionario WHERE nome= ?";
+String sqlFuncionario = "SELECT funcionario_id FROM Funcionario WHERE funcionario_id = ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();

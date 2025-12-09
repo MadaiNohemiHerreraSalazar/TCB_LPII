@@ -24,22 +24,22 @@ public class MainFrame {
     private static CardLayout cardLayout;
 
     public static void main(String[] args) {
-        MainFrame.iniciar();
-mostrarTelaInicial();
 
-}
-
+        SwingUtilities.invokeLater(() -> {
+            iniciar();
+            mostrarTelaInicial();
+        });
+    }
 
     // MOSTRAR TELA PRINCIPAL
     // ____________________________________________________________
     public static void mostrarTelaInicial() {
-        painelPrincipal.removeAll();
-        cardLayout = new CardLayout();
-        painelPrincipal.setLayout(cardLayout);
 
-        // Painel da tela inicial
-        JPanel telaInicialPanel = criarTelaInicialPanel();
-        painelPrincipal.add(telaInicialPanel, "TELA_INICIAL");
+        if (!containsCard("TELA_INICIAL")) {
+            JPanel telaInicialPanel = criarTelaInicialPanel();
+            telaInicialPanel.setName("TELA_INICIAL");
+            painelPrincipal.add(telaInicialPanel, "TELA_INICIAL");
+        }
         cardLayout.show(painelPrincipal, "TELA_INICIAL");
     }
 
@@ -71,6 +71,8 @@ mostrarTelaInicial();
         btnEntrar.setForeground(Color.WHITE);
         btnEntrar.setFocusPainted(false);
 
+        
+
         // Ação do botão para ir ao menu principal
         btnEntrar.addActionListener(e -> mostrarLogin());
 
@@ -97,14 +99,21 @@ mostrarTelaInicial();
     // MOSTRAR MENU PRINCIPAL
     // _____________________________________________________________
     public static void mostrarMenuPrincipal() {
-        painelPrincipal.removeAll();
-        cardLayout = new CardLayout();
-        painelPrincipal.setLayout(cardLayout);
 
-        // Painel do menu principal
-        JPanel menuPanel = criarMenuPrincipalPanel();
-        painelPrincipal.add(menuPanel, "MENU_PRINCIPAL");
+        if (!containsCard("MENU_PRINCIPAL")) {
+            JPanel menuPanel = criarMenuPrincipalPanel();
+            menuPanel.setName("MENU_PRINCIPAL");
+            painelPrincipal.add(menuPanel, "MENU_PRINCIPAL");
+        }
         cardLayout.show(painelPrincipal, "MENU_PRINCIPAL");
+    }
+
+    private static boolean containsCard(String name) {
+        for (Component c : painelPrincipal.getComponents()) {
+            if (name.equals(c.getName()))
+                return true;
+        }
+        return false;
     }
 
     private static JPanel criarMenuPrincipalPanel() {
@@ -234,18 +243,16 @@ mostrarTelaInicial();
     // _________________________________________________________________
 
     public static void mostrarPanel(JPanel panel) {
-        painelPrincipal.removeAll();
-        cardLayout = new CardLayout();
-        painelPrincipal.setLayout(cardLayout);
-
-        painelPrincipal.add(panel, "PAINEL_CRUD");
-        cardLayout.show(painelPrincipal, "PAINEL_CRUD");
+        String uniqueName = panel.getClass().getSimpleName() + "_" + System.identityHashCode(panel);
+        panel.setName(uniqueName);
+        painelPrincipal.add(panel, uniqueName);
+        cardLayout.show(painelPrincipal, uniqueName);
 
         painelPrincipal.revalidate();
         painelPrincipal.repaint();
     }
 
-    // MÉTODO PARA VOLTAR AO MENU PRINCIPAL (será chamado pelos painéis)
+    // CRIA JANELA
     // _________________________________________________________________
     public static void iniciar() {
         if (janela != null)
@@ -256,26 +263,16 @@ mostrarTelaInicial();
         janela.setSize(1200, 800);
         janela.setLocationRelativeTo(null);
 
-        janela.setLayout(new BorderLayout());
-
-        painelPrincipal = new JPanel(new BorderLayout());
+        cardLayout = new CardLayout();
+        painelPrincipal = new JPanel(cardLayout);
         janela.add(painelPrincipal, BorderLayout.CENTER);
 
         janela.setVisible(true);
     }
 
-    // Volta ao menu principal (que deve ser outro JPanel)
+    // Volta ao menu principal
     public static void voltarAoMenuPrincipal() {
-        iniciar();
-        painelPrincipal.removeAll();
-
-        JPanel menu = new JPanel();
-        menu.add(new JLabel("Menu Principal"));
-
-        painelPrincipal.add(menu, BorderLayout.CENTER);
-
-        painelPrincipal.revalidate();
-        painelPrincipal.repaint();
+        mostrarTelaInicial();
     }
 
     // Retorna a referência da janela caso algum panel precise usar
@@ -285,7 +282,7 @@ mostrarTelaInicial();
     }
 
     public static void mostrarLogin() {
-    mostrarPanel(new LoginPanel());
-}
+        mostrarPanel(new LoginPanel());
+    }
 
 }

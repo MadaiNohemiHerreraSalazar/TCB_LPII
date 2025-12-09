@@ -37,12 +37,12 @@ public class AgendaFuncionarioPanel extends JPanel {
         painelPrincipalInterno = new JPanel(new BorderLayout());
         add(painelPrincipalInterno, BorderLayout.CENTER);
 
-        mostrarLogin();
+        mostrarMenuPrincipal();
     }
 
     // MOSTRAR MENU PRINCIPAL
     // ________________________________________________________
-    private void mostrarLogin() {
+    private void mostrarMenuPrincipal() {
         painelPrincipalInterno.removeAll();
 
         // Título do menu principal
@@ -81,15 +81,6 @@ public class AgendaFuncionarioPanel extends JPanel {
 
         painelPrincipalInterno.add(painelBotoes, BorderLayout.CENTER);
 
-        // Painel inferior com botão de voltar
-        JPanel painelInferior = new JPanel();
-        JButton btnVoltar = new JButton("Voltar ao Menu Principal");
-        btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnVoltar.setBackground(Color.BLACK);
-        btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e ->  MainFrame.mostrarLogin()); // Depois você pode trocar para voltar ao MainFrame
-        painelInferior.add(btnVoltar);
-        painelPrincipalInterno.add(painelInferior, BorderLayout.SOUTH);
 
     }
 
@@ -196,7 +187,7 @@ public class AgendaFuncionarioPanel extends JPanel {
         painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
 
         // ACTION
-botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
+botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();
@@ -295,7 +286,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
                     JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO: usar this
                             "Registro atualizado com sucesso!",
                             "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                    mostrarLogin(); // VOLTAR AO MENU APÓS SALVAR
+                    mostrarMenuPrincipal(); // VOLTAR AO MENU APÓS SALVAR
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO: usar this
                             "Erro ao atualizar no banco de dados!",
@@ -304,7 +295,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
             }
         });
 
-        botaoCancelar.addActionListener(e -> mostrarLogin());
+        botaoCancelar.addActionListener(e -> mostrarMenuPrincipal());
 
         painelPrincipalInterno.revalidate();
         painelPrincipalInterno.repaint();
@@ -405,7 +396,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
             }
         });
 
-botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
+botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVerificar.doClick());
 
@@ -500,7 +491,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
                                         "Agenda removida com sucesso!",
                                         "Sucesso",
                                         JOptionPane.INFORMATION_MESSAGE);
-                                mostrarLogin(); // VOLTAR AO MENU APÓS REMOVER
+                                mostrarMenuPrincipal(); // VOLTAR AO MENU APÓS REMOVER
                             } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(AgendaFuncionarioPanel.this, // CORRIGIDO
                                         "Erro ao remover a agenda: " + ex.getMessage(),
@@ -524,7 +515,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
             }
         });
 
-botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
+botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoRemover.doClick());
 
@@ -542,7 +533,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
                     "Agenda não encontrada!",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
-            mostrarLogin();
+            mostrarMenuPrincipal();
             return;
         }
 
@@ -606,7 +597,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVoltar.setBackground(Color.GRAY);
         botaoVoltar.setForeground(Color.WHITE);
-        botaoVoltar.addActionListener(e -> mostrarLogin());
+        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
 
         painelBotoes.add(botaoVoltar);
         painelPrincipalInterno.add(painelBotoes, BorderLayout.SOUTH);
@@ -705,7 +696,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
             }
         });
 
-botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
+botaoVoltar.addActionListener(e -> MainFrame.voltarAoMenuPrincipal());
 
         campoID.addActionListener(e -> botaoVisualizar.doClick());
 
@@ -800,7 +791,7 @@ botaoVoltar.addActionListener(e -> MainFrame.mostrarLogin());
         botaoVoltar.setFont(new Font("Serif", Font.BOLD, 16));
         botaoVoltar.setBackground(Color.GRAY);
         botaoVoltar.setForeground(Color.WHITE);
-        botaoVoltar.addActionListener(e -> mostrarLogin());
+        botaoVoltar.addActionListener(e -> mostrarMenuPrincipal());
 
         painelBotoes.add(botaoAtualizar);
         painelBotoes.add(Box.createRigidArea(new Dimension(20, 0)));

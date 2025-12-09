@@ -16,7 +16,7 @@ public class PermissaoDAO {
 
     public static void cadastrar(Permissao permissao) {
 
-        String sqlPermissao = "INSERT INTO permissao (nome, descricao) VALUES (?,?)";
+        String sqlPermissao = "INSERT INTO Permissao (nome, descricao) VALUES (?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
 
@@ -44,7 +44,7 @@ public class PermissaoDAO {
 
     public static void editar(Permissao permissao) {
 
-        String sqlUpdatePermissao = "UPDATE permissao SET nome=?, descricao=? WHERE permissao_id=?";
+        String sqlUpdatePermissao = "UPDATE Permissao SET nome=?, descricao=? WHERE permissao_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlUpdatePermissao)) {
@@ -63,7 +63,7 @@ public class PermissaoDAO {
     // DELETE PERMISSAO
     // ______________________________________________________
     public void delete(int id) {
-        String sqlDeletePermissao = "DELETE FROM permissao WHERE permissao_id=?";
+        String sqlDeletePermissao = "DELETE FROM Permissao WHERE permissao_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlDeletePermissao)) {
@@ -85,7 +85,7 @@ public class PermissaoDAO {
 
         try {
 
-            String sqlPermissao = "SELECT * FROM permissao WHERE permissao_id=?";
+            String sqlPermissao = "SELECT * FROM Permissao WHERE permissao_id=?";
             PreparedStatement pst = con.prepareStatement(sqlPermissao);
             pst.setInt(1, id);
 
@@ -109,7 +109,7 @@ public class PermissaoDAO {
     }
 
     public ArrayList<CargoPermissao> listar() {
-        String sqlPermissao = "SELECT * FROM permissao";
+        String sqlPermissao = "SELECT * FROM Permissao";
 
         ArrayList<CargoPermissao> permissoes = new ArrayList<>();
 
@@ -143,7 +143,7 @@ public class PermissaoDAO {
         CargoPermissao cargoPermissao = null;
 
         try {
-            String sql = "SELECT * FROM permissao WHERE permissao_id=?";
+            String sql = "SELECT * FROM Permissao WHERE permissao_id=?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, CargoPermissao_id);
             ResultSet rs = pst.executeQuery();

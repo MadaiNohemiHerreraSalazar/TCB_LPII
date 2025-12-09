@@ -11,7 +11,7 @@ public class AlimentoDAO {
 
     // CADASTRAR
     public static void cadastrar(Alimento alimento) {
-        String sql = "INSERT INTO alimento(nome, validade, estoque) VALUES (?,?,?)";
+        String sql = "INSERT INTO Alimento(nome, validade, estoque) VALUES (?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -38,7 +38,7 @@ public class AlimentoDAO {
 
     // EDITAR
     public static void editar(Alimento alimento) {
-        String sql = "UPDATE alimento SET nome=?, validade=?, estoque=? WHERE alimento_id=?";
+        String sql = "UPDATE Alimento SET nome=?, validade=?, estoque=? WHERE alimento_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -58,7 +58,7 @@ public class AlimentoDAO {
 
     // DELETE
     public static void delete(int id) {
-        String sql = "DELETE FROM alimento WHERE alimento_id=?";
+        String sql = "DELETE FROM Alimento WHERE alimento_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -75,7 +75,7 @@ public class AlimentoDAO {
 
     // SELECT COMPLETO (Buscar por ID)
     public static Alimento select(int id) {
-        String sql = "SELECT alimento_id, nome, validade, estoque FROM alimento WHERE alimento_id=?";
+        String sql = "SELECT alimento_id, nome, validade, estoque FROM Alimento WHERE alimento_id=?";
         Alimento alimento = null;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -101,7 +101,7 @@ public class AlimentoDAO {
 
     // LISTAR
     public static ArrayList<Alimento> listar() {
-        String sql = "SELECT alimento_id, nome, validade, estoque FROM alimento ORDER BY nome";
+        String sql = "SELECT alimento_id, nome, validade, estoque FROM Alimento ORDER BY nome";
 
         ArrayList<Alimento> alimentos = new ArrayList<>();
 
@@ -111,7 +111,7 @@ public class AlimentoDAO {
 
             while (rs.next()) {
                 Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("idAlimento"));
+                alimento.setId(rs.getInt("alimento_id"));
                 alimento.setNome(rs.getString("nome"));
                 alimento.setValidade(rs.getString("validade"));
                 alimento.setEstoque(rs.getString("estoque"));
@@ -136,7 +136,7 @@ public class AlimentoDAO {
         Alimento alimento = null;
 
         try {
-            String sql = "SELECT alimento_id, nome FROM alimento WHERE alimento_id=?";
+            String sql = "SELECT alimento_id, nome FROM Alimento WHERE alimento_id=?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, alimentoId);
             ResultSet rs = pst.executeQuery();

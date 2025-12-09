@@ -57,6 +57,7 @@ public class LoginPanel extends JPanel {
         botaoVoltar.setBackground(Color.GRAY);
         botaoVoltar.setForeground(Color.WHITE);
 
+
         painelInput.add(campoSenha);
         painelInput.add(botaoEntrar);
         painelInput.add(botaoVoltar);
@@ -141,6 +142,7 @@ public class LoginPanel extends JPanel {
             case "11":
                 MainFrame.mostrarPanel(new VeterinarioPanel());
                 break;
+
 
             default:
                 JOptionPane.showMessageDialog(this, "Senha inválida!");

@@ -12,7 +12,7 @@ public class AnimalDAO {
     // _______________________________________________________________________
 
     public static void cadastrar(Animal animal, int veterinarioId) {
-        String sqlAnimal = "INSERT INTO animal " +
+        String sqlAnimal = "INSERT INTO Animal " +
                 "(nome, descricao, historia, especie, idade, genero, peso, altura, saude, habitat_id) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
@@ -49,7 +49,7 @@ public class AnimalDAO {
     // ____________________________________________________________________
 
     private static void cadastrarAnimalVeterinario(Connection con, int animalId, int veterinarioId) {
-        String sql = "INSERT INTO animal_veterinario (animal_id, veterinario_id) VALUES (?,?)";
+        String sql = "INSERT INTO Animal_Veterinario (animal_id, veterinario_id) VALUES (?,?)";
 
         try (PreparedStatement pst = con.prepareStatement(sql)) {
             pst.setInt(1, animalId);
@@ -64,9 +64,9 @@ public class AnimalDAO {
     // ______________________________________________________________________
 
     public static void editar(Animal animal, int veterinarioId) {
-        String sqlUpdateAnimal = "UPDATE animail SET nome=?, descricao=?, historia=?, especie=?, idade=?, " +
-                "genero=?, peso=?, altura=?, saude=?, habitat_id=? WHERE id=?";
-        String sqlDeleteAV = "DELETE FROM animal_veterinario WHERE animal_id=?";
+        String sqlUpdateAnimal = "UPDATE Animal SET nome=?, descricao=?, historia=?, especie=?, idade=?, " +
+                "genero=?, peso=?, altura=?, saude=?, habitat_id=? WHERE animal_id=?";
+        String sqlDeleteAV = "DELETE FROM Animal_Veterinario WHERE animal_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -104,8 +104,8 @@ public class AnimalDAO {
     // __________________________________________________________________________
 
     public static void delete(int id) {
-        String sqlDeleteAV = "DELETE FROM animal_veterinario WHERE animal_id=?";
-        String sqlDeleteAnimal = "DELETE FROM animail WHERE animal_id=?";
+        String sqlDeleteAV = "DELETE FROM Animal_Veterinario WHERE animal_id=?";
+        String sqlDeleteAnimal = "DELETE FROM Animal WHERE animal_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -128,12 +128,12 @@ public class AnimalDAO {
     // ____________________________________________________________________________
 
     public static Animal select(int id) {
-        String sql = "SELECT a.*, h.id AS habitat_id, h.nome AS habitat_nome, " +
-                "v.id AS vet_id, v.nome AS vet_nome " +
-                "FROM animail a " +
-                "LEFT JOIN habitat h ON a.habitat_id = h.id " +
-                "LEFT JOIN animal_veterinario av ON a.animal_id = av.animal_id " +
-                "LEFT JOIN veterinario v ON av.veterinario_id = v.id " +
+        String sql = "SELECT a.*, h.habitat_id AS habitat_id, h.nome AS habitat_nome, " +
+                "v.veterinario_id AS vet_id, v.nome AS vet_nome " +
+                "FROM Animal a " +
+                "LEFT JOIN Habitat h ON a.habitat_id = h.id " +
+                "LEFT JOIN Animal_Veterinario av ON a.animal_id = av.animal_id " +
+                "LEFT JOIN Veterinario v ON av.veterinario_id = v.id " +
                 "WHERE a.animal_id = ?";
 
         Animal animal = null;
@@ -146,7 +146,7 @@ public class AnimalDAO {
 
             if (rs.next()) {
                 animal = new Animal();
-                animal.setId(rs.getInt("id"));
+                animal.setId(rs.getInt("animal_id"));
                 animal.setNome(rs.getString("nome"));
                 animal.setDescricao(rs.getString("descricao"));
                 animal.setHistoria(rs.getString("historia"));
@@ -183,9 +183,9 @@ public class AnimalDAO {
         ArrayList<Animal> animais = new ArrayList<>();
 
         String sql = "SELECT a.animal_id, a.nome, a.descricao, a.historia, a.especie, a.idade, " +
-                "a.genero, a.peso, a.altura, a.saude, h.id AS habitat_id, h.nome AS habitat_nome " +
-                "FROM animail a " +
-                "LEFT JOIN habitat h ON a.habitat_id = h.habitat_id " +
+                "a.genero, a.peso, a.altura, a.saude, h.habitat_id AS habitat_id, h.nome AS habitat_nome " +
+                "FROM Animal a " +
+                "LEFT JOIN Habitat h ON a.habitat_id = h.habitat_id " +
                 "ORDER BY a.nome";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -230,8 +230,8 @@ public class AnimalDAO {
     public static ArrayList<Animal> buscarAnimaisPorVeterinario(int veterinarioId) {
         ArrayList<Animal> animais = new ArrayList<>();
 
-        String sql = "SELECT a.animal_id, a.nome, a.especie FROM animail a " +
-                "JOIN animal_veterinario av ON a.animal_id = av.animal_id " +
+        String sql = "SELECT a.animal_id, a.nome, a.especie FROM Animal a " +
+                "JOIN Animal_Veterinario av ON a.animal_id = av.animal_id " +
                 "WHERE av.veterinario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -261,9 +261,9 @@ public class AnimalDAO {
     public static ArrayList<Animal> buscarAnimaisPorHabitat(int habitatId) {
         ArrayList<Animal> animais = new ArrayList<>();
 
-        String sql = "SELECT a.animal_id, a.nome FROM animail a " +
-                "JOIN animal_habitat ah ON a.animal_id = ah.animal_id " +
-                "WHERE ah.habitat_id = ?";
+        String sql = "SELECT a.animal_id, a.nome FROM Animal a " +
+                "JOIN Animal_Habitat ah ON a.animal_id = ah.animal_id " +
+                "WHERE ah.animal_Habitat_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -290,7 +290,7 @@ public class AnimalDAO {
 
     public static Animal buscarAnimalPorId(int id) {
         Animal animal = null;
-        String sql = "SELECT animal_id, nome FROM animail WHERE animal_id=?";
+        String sql = "SELECT animal_id, nome FROM Animal WHERE animal_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {

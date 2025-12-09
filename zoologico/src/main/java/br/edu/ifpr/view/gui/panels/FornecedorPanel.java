@@ -36,11 +36,11 @@ public class FornecedorPanel extends JPanel {
         painelPrincipalInterno = new JPanel(new BorderLayout());
         add(painelPrincipalInterno, BorderLayout.CENTER);
 
-        mostrarLogin();
+        mostrarMenuPrincipal();
     }
 
     // MOSTRAR MENU PRINCIPAL
-    private void mostrarLogin() {
+    private void mostrarMenuPrincipal() {
         painelPrincipalInterno.removeAll();
 
         // Título do menu principal
@@ -79,18 +79,7 @@ public class FornecedorPanel extends JPanel {
 
         painelPrincipalInterno.add(painelBotoes, BorderLayout.CENTER);
 
-        // Painel inferior com botão de voltar
-        JPanel painelInferior = new JPanel();
-        JButton btnVoltar = new JButton("Voltar ao Menu Principal");
-        btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnVoltar.setBackground(Color.BLACK);
-        btnVoltar.setForeground(Color.WHITE);
-        btnVoltar.addActionListener(e -> MainFrame.mostrarLogin());
-        painelInferior.add(btnVoltar);
-        painelPrincipalInterno.add(painelInferior, BorderLayout.SOUTH);
 
-        painelPrincipalInterno.revalidate();
-        painelPrincipalInterno.repaint();
     }
 
     // CRIAR BOTÕES DE GERENCIAMENTO

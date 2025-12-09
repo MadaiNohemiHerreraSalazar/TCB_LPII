@@ -15,7 +15,7 @@ public class VeterinarioDAO {
 
     public static void cadastrar(Veterinario veterinario) {
 
-        String sqlVeterinario = "INSERT INTO veterinario(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
+        String sqlVeterinario = "INSERT INTO Veterinario(nome, cpf, email, especializacao) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
         
@@ -48,7 +48,7 @@ public class VeterinarioDAO {
     // ______________________________________________________
 
     private static boolean cadastrarAnimais(Connection con, ArrayList<Animal> animais, Veterinario veterinario) {
-        String sql = "INSERT INTO animal_veterinario(animal_id, veterinario_id) VALUES (?,?)";
+        String sql = "INSERT INTO Animal_Veterinario(animal_id, veterinario_id) VALUES (?,?)";
 
         try {
             for (Animal animal : animais) {
@@ -72,9 +72,9 @@ public class VeterinarioDAO {
 
     public static void editar(Veterinario veterinario) {
 
-        String sqlUpdateVet = "UPDATE veterinario SET nome=?, cpf=?, email=?, especializacao=? WHERE id=?";
-        String sqlDeleteAnimais = "DELETE FROM animal_veterinario WHERE veterinario_id=?";
-        String sqlInsertAnimais = "INSERT INTO animal_veterinario(animal_id, veterinario_id) VALUES (?,?)";
+        String sqlUpdateVet = "UPDATE Veterinario SET nome=?, cpf=?, email=?, especializacao=? WHERE veterinario_id=?";
+        String sqlDeleteAnimais = "DELETE FROM Animal_Veterinario WHERE veterinario_id=?";
+        String sqlInsertAnimais = "INSERT INTO Animal_Veterinario(animal_id, veterinario_id) VALUES (?,?)";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -115,7 +115,7 @@ public class VeterinarioDAO {
 
     public static void delete(int id) {
 
-        String sqlDelete = "DELETE FROM veterinario WHERE veterinario_id=?";
+        String sqlDelete = "DELETE FROM Veterinario WHERE veterinario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlDelete)) {
@@ -135,7 +135,7 @@ public class VeterinarioDAO {
 
     public static Veterinario select(int id) {
 
-        String sql = "SELECT * FROM veterinario WHERE veterinario_id=?";
+        String sql = "SELECT veterinario_id * FROM Veterinario WHERE veterinario_id=?";
         Veterinario veterinario = null;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -146,7 +146,7 @@ public class VeterinarioDAO {
 
             if (rs.next()) {
                 veterinario = new Veterinario();
-                veterinario.setId(rs.getInt("id"));
+                veterinario.setId(rs.getInt("veterinario_id"));
                 veterinario.setNome(rs.getString("nome"));
                 veterinario.setCpf(rs.getString("cpf"));
                 veterinario.setEmail(rs.getString("email"));
@@ -166,7 +166,7 @@ public class VeterinarioDAO {
     public static ArrayList<Veterinario> listar() {
         ArrayList<Veterinario> veterinarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, cpf, email, especializacao FROM veterinario";
+        String sql = "SELECT Veterinario_id, nome, cpf, email, especializacao FROM Veterinario";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -174,7 +174,7 @@ public class VeterinarioDAO {
 
             while (rs.next()) {
                 Veterinario veterinario = new Veterinario();
-                veterinario.setId(rs.getInt("id"));
+                veterinario.setId(rs.getInt("veterinario_id"));
                 veterinario.setNome(rs.getString("nome"));
                 veterinario.setCpf(rs.getString("cpf"));
                 veterinario.setEmail(rs.getString("email"));
@@ -194,7 +194,7 @@ public class VeterinarioDAO {
 
     public static ArrayList<Veterinario> listarCompleto() {
         ArrayList<Veterinario> veterinarios = new ArrayList<>();
-        String sql = "SELECT * FROM veterinario";
+        String sql = "SELECT * FROM Veterinario";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -202,7 +202,7 @@ public class VeterinarioDAO {
 
             while (rs.next()) {
                 Veterinario veterinario = new Veterinario();
-                veterinario.setId(rs.getInt("id"));
+                veterinario.setId(rs.getInt("veterinario_id"));
                 veterinario.setNome(rs.getString("nome"));
                 veterinario.setCpf(rs.getString("cpf"));
                 veterinario.setEmail(rs.getString("email"));
@@ -225,7 +225,7 @@ public class VeterinarioDAO {
 
     public static Veterinario buscarVeterinarioPorId(int id) {
         Veterinario vet = null;
-        String sql = "SELECT id, nome, email FROM veterinarios WHERE veterinario_id=?";
+        String sql = "SELECT veterinario_id, nome, email FROM veterinario WHERE veterinario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -235,7 +235,7 @@ public class VeterinarioDAO {
 
             if (rs.next()) {
                 vet = new Veterinario();
-                vet.setId(rs.getInt("id"));
+                vet.setId(rs.getInt("veterinario_id"));
                 vet.setNome(rs.getString("nome"));
                 vet.setEmail(rs.getString("email"));
             }
@@ -252,7 +252,7 @@ public class VeterinarioDAO {
 
     public static int buscaVeterinario_ID(int veterinario_id) {
 
-        String sqlVeterinario = "SELECT from veterinario WHERE nome= ?";
+        String sqlVeterinario = "SELECT from Veterinario WHERE nome= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -261,7 +261,7 @@ public class VeterinarioDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                id = rs.getInt("id");
+                id = rs.getInt("veterinario_id");
             }
 
         } catch (Exception e) {

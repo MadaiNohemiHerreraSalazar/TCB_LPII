@@ -47,7 +47,6 @@ public class RotinaAlimentar {
         this.quantidadeAlimento = quantidadeAlimento;
     }
 
-
     public AgendaAnimal getAgendaAnimal() {
         return agendaAnimal;
     }

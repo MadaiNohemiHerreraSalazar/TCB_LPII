@@ -13,7 +13,7 @@ public class CargoDAO {
     // CADASTRAR CARGO
     // ______________________________________________________
     public static void cadastrar(Cargo cargo) {
-        String sql = "INSERT INTO cargo(nome, salario, cargaHoraroia, senha) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Cargo(nome, salario, cargaHoraroia, senha) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -44,7 +44,7 @@ public class CargoDAO {
 
     public static void editar(Cargo cargo) {
 
-        String sqlUpdateCargo = "UPDATE cargo SET nome=?, salario=?, cargaHoraroia=?, senha=? WHERE cargo_id=?";
+        String sqlUpdateCargo = "UPDATE Cargo SET nome=?, salario=?, cargaHoraroia=?, senha=? WHERE cargo_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -69,8 +69,8 @@ public class CargoDAO {
     // ______________________________________________________
     public static void delete(int id) {
 
-        String sqlDesvincular = "UPDATE funcionarios SET cargo_id = NULL WHERE cargo_id = ?";
-        String sqlDelete = "DELETE FROM cargo WHERE cargo_id = ?";
+        String sqlDesvincular = "UPDATE Funcionario SET cargo_id = NULL WHERE cargo_id = ?";
+        String sqlDelete = "DELETE FROM Cargo WHERE cargo_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -94,7 +94,7 @@ public class CargoDAO {
     // SELECT COMPLETO (COM FUNCIONÁRIOS)
     // ______________________________________________________
     public static Cargo select(int id) {
-        String sql = "SELECT id, nome, salario, cargaHoraroia, senha FROM cargo WHERE cargo_id = ?";
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo WHERE cargo_id = ?";
         Cargo cargo = null;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -127,7 +127,7 @@ public class CargoDAO {
     // ______________________________________________________________________
 
     public static ArrayList<Cargo> listar() {
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM cargo";
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo";
         ArrayList<Cargo> cargos = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -156,7 +156,7 @@ public class CargoDAO {
     // ______________________________________________________
     public static ArrayList<Cargo> listarCompleto() {
         ArrayList<Cargo> cargos = new ArrayList<>();
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM cargo";
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -189,7 +189,7 @@ public class CargoDAO {
 
     public static Cargo buscarCargoPorId(int id) {
         Cargo cargo = null;
-        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM cargo WHERE cargo_id = ?";
+        String sql = "SELECT cargo_id, nome, salario, cargaHoraroia, senha FROM Cargo WHERE cargo_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -199,7 +199,7 @@ public class CargoDAO {
 
             if (rs.next()) {
                 cargo = new Cargo();
-                cargo.setId(rs.getInt("id"));
+                cargo.setId(rs.getInt("cargo_id"));
                 cargo.setNome(rs.getString("nome"));
                 cargo.setSalario(rs.getString("salario"));
                 cargo.setCargaHoraria(rs.getString("cargaHoraroia"));

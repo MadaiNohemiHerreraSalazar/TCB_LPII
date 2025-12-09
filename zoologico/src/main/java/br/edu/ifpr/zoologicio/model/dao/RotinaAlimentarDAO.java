@@ -15,7 +15,7 @@ public class RotinaAlimentarDAO {
 
     public static void cadastrar(RotinaAlimentar rotinaAlimentar, int agendaAnimal_id, int fornecedor_id) {
 
-        String sqlRotinaAlimentar = "INSERT INTO rotinaAlimentar(data, hora, quantidadeAlimento, agendaAnimal_id) VALUES (?,?,?,?)";
+        String sqlRotinaAlimentar = "INSERT INTO RotinaAlimentar(data, hora, quantidadeAlimento, agendaAnimal_id) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlRotinaAlimentar,
@@ -50,7 +50,7 @@ public class RotinaAlimentarDAO {
     public static boolean cadastroAlimentos(Connection con, ArrayList<Alimento> alimentos,
             RotinaAlimentar rotinaAlimentar, int fornecedor_id) {
 
-        String sql = "INSERT INTO alimento_rotina(alimento_id, fornecedor_id, rotinaAlimentar_id) VALUES (?,?,?)";
+        String sql = "INSERT INTO Alimento_Rotina(alimento_id, fornecedor_id, rotinaAlimentar_id) VALUES (?,?,?)";
 
         try {
 
@@ -81,8 +81,8 @@ public class RotinaAlimentarDAO {
 
     public static void editar(RotinaAlimentar rotinaAlimentar, int fornecedor_id) {
 
-        String sqlUpdateRotina = "UPDATE rotinaAlimentar SET data=?, hora=?, quantidadeAlimento=? WHERE rotinaAlimentar_id=?";
-        String sqlDeleteAlimentos = "DELETE FROM alimento_rotina WHERE rotinaAlimentar_id=?";
+        String sqlUpdateRotina = "UPDATE RotinaAlimentar SET data=?, hora=?, quantidadeAlimento=? WHERE rotinaAlimentar_id=?";
+        String sqlDeleteAlimentos = "DELETE FROM Alimento_Rotina WHERE rotinaAlimentar_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -116,8 +116,8 @@ public class RotinaAlimentarDAO {
 
     public static void delete(int id) {
 
-        String sqlDeleteAlimentos = "DELETE FROM alimento_rotina WHERE rotinaAlimentar_id=?";
-        String sqlDeleteRotina = "DELETE FROM rotinaAlimentar WHERE rotinaAlimentar_id=?";
+        String sqlDeleteAlimentos = "DELETE FROM Alimento_Rotina WHERE rotinaAlimentar_id=?";
+        String sqlDeleteRotina = "DELETE FROM RotinaAlimentar WHERE rotinaAlimentar_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -179,7 +179,7 @@ public class RotinaAlimentarDAO {
     // ______________________________________________________
 
     public ArrayList<RotinaAlimentar> listar() {
-        String sql = "SELECT rotinaAlimentar_id, data, hora, quantidadeAlimento FROM rotinasAlimentares ORDER BY data, hora";
+        String sql = "SELECT RotinaAlimentar_id, data, hora, quantidadeAlimento FROM RotinaAlimentar ORDER BY data, hora";
         ArrayList<RotinaAlimentar> rotinas = new ArrayList<>();
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -212,7 +212,7 @@ public class RotinaAlimentarDAO {
 
     public static int buscaRotinaAlimentar_ID(int rotinaAlimentar_id) {
 
-        String sqlAgendaAnimal = "SELECT from rotinaAlimentar WHERE rotinaAlimentar_id= ?";
+        String sqlAgendaAnimal = "SELECT rotinaAlimentar_id from RotinaAlimentar WHERE rotinaAlimentar_id= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -238,7 +238,7 @@ public class RotinaAlimentarDAO {
 
     public static RotinaAlimentar buscarRotinaPorId(int id) {
         RotinaAlimentar rotina = null;
-        String sql = "SELECT rotinaAlimentar_id, data, hora, quantidadeAlimento FROM rotinaAlimentar WHERE rotinaAlimentar_id=?";
+        String sql = "SELECT RotinaAlimentar_id, data, hora, quantidadeAlimento FROM RotinaAlimentar WHERE rotinaAlimentar_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -261,15 +261,15 @@ public class RotinaAlimentarDAO {
         return rotina;
     }
 
-     // BUSCAR ALIMENTOS POR ROTINA
+    // BUSCAR ALIMENTOS POR ROTINA
     // ________________________________________________________
 
     public static ArrayList<Alimento> buscarAlimentosPorRotina(int rotinaId) {
         ArrayList<Alimento> alimentos = new ArrayList<>();
 
-        String sql = "SELECT a.rotinaAlimentar_id, a.nome FROM alimentos a " +
-                "JOIN alimento_rotina ar ON a.rotinaAlimentar_id = ar.alimento_id " +
-                "WHERE ar.rotinaAlimentar_id = ?";
+        String sql = "SELECT a.alimento_id, a.nome FROM Alimento a" +
+                "JOIN Alimento_Rotina ar ON a.alimento_id = ar.alimento_id" +
+                "WHERE ar.rotinaAlimentar_id = ?;";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -279,7 +279,7 @@ public class RotinaAlimentarDAO {
 
             while (rs.next()) {
                 Alimento alimento = new Alimento();
-                alimento.setId(rs.getInt("rotinaAlimentar_id"));
+                alimento.setId(rs.getInt("alimento_id"));
                 alimento.setNome(rs.getString("nome"));
                 alimentos.add(alimento);
             }
@@ -291,28 +291,28 @@ public class RotinaAlimentarDAO {
         return alimentos;
     }
 
-    //METODOS AUXILIARES
-    //__________________________________________________________
+    // METODOS AUXILIARES
+    // __________________________________________________________
 
     public static Integer buscaFornecedorDaRotina(int rotinaId) {
-    String sql = "SELECT fornecedor_id FROM alimento_rotina WHERE rotinaAlimentar_id = ? LIMIT 1";
+        String sql = "SELECT fornecedor_id FROM Alimento_Rotina WHERE rotinaAlimentar_id = ? LIMIT 1";
 
-    try (Connection con = ConnectionFactory.getConnection();
-         PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement pst = con.prepareStatement(sql)) {
 
-        pst.setInt(1, rotinaId);
+            pst.setInt(1, rotinaId);
 
-        try (ResultSet rs = pst.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("fornecedor_id");
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("fornecedor_id");
+                }
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
-
-    return null;
-}
 
 }

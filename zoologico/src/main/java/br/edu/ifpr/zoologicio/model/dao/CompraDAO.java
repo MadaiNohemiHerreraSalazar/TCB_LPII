@@ -10,7 +10,7 @@ public class CompraDAO {
     // ______________________________________________________
     public static void cadastrar(Compra compra, int funcionario_id) {
 
-        String sqlCompra = "INSERT INTO compra(data, hora, quantidade, meioPagamento, precoTotal, funcionario_id) "
+        String sqlCompra = "INSERT INTO Compra(data, hora, quantidade, meioPagamento, precoTotal, funcionario_id) "
                 + "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -46,7 +46,7 @@ public class CompraDAO {
     // ______________________________________________________
     public static boolean cadastroTickets(Connection con, ArrayList<Ticket> tickets, int compra_id) {
 
-        String sql = "INSERT INTO ticket(data, hora, preco, compra_id) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Ticket(data, hora, preco, compra_id) VALUES (?,?,?,?)";
 
         try {
             for (Ticket ticket : tickets) {
@@ -72,10 +72,10 @@ public class CompraDAO {
     // ______________________________________________________
     public static void editar(Compra compra, int funcionario_id) {
 
-        String sqlUpdate = "UPDATE compra SET data=?, hora=?, quantidade=?, meioPagamento=?, precoTotal=?, "
+        String sqlUpdate = "UPDATE Compra SET data=?, hora=?, quantidade=?, meioPagamento=?, precoTotal=?, "
                 + "visitante_id=?, funcionario_id=? WHERE compra_id=?";
-        String sqlDeleteTickets = "DELETE FROM tickets WHERE compra_id=?";
-        String sqlInsertTicket = "INSERT INTO tickets(data, hora, preco, compra_id) VALUES (?,?,?,?)";
+        String sqlDeleteTickets = "DELETE FROM Ticket WHERE compra_id=?";
+        String sqlInsertTicket = "INSERT INTO Ticket(data, hora, preco, compra_id) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -117,8 +117,8 @@ public class CompraDAO {
     // ______________________________________________________
     public static void delete(int id) {
 
-        String sqlDeleteTickets = "DELETE FROM ticket WHERE compra_id=?";
-        String sqlDeleteCompra = "DELETE FROM compra WHERE compra_id=?";
+        String sqlDeleteTickets = "DELETE FROM Ticket WHERE compra_id=?";
+        String sqlDeleteCompra = "DELETE FROM Compra WHERE compra_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -143,7 +143,7 @@ public class CompraDAO {
 
         String sql = "SELECT c.compra_id, c.data, c.hora, c.quantidade, c.meioPagamento, c.precoTotal, "
                 + "c.funcionario_id "
-                + "FROM compra c WHERE c.compra_id = ?";
+                + "FROM Compra c WHERE c.compra_id = ?";
 
         Compra compra = null;
 
@@ -155,7 +155,7 @@ public class CompraDAO {
 
             if (rs.next()) {
                 compra = new Compra();
-                compra.setId(rs.getInt("comprac_id"));
+                compra.setId(rs.getInt("compra_id"));
                 compra.setData(rs.getString("data"));
                 compra.setHora(rs.getString("hora"));
                 compra.setQuantidade(rs.getString("quantidade"));
@@ -177,7 +177,7 @@ public class CompraDAO {
     // ______________________________________________________
     public static ArrayList<Compra> listar() {
         ArrayList<Compra> compras = new ArrayList<>();
-        String sql = "SELECT compra_id, data, hora, quantidade, meioPagamento, precoTotal FROM compra";
+        String sql = "SELECT compra_id, data, hora, quantidade, meioPagamento, precoTotal FROM compra_id";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -213,7 +213,7 @@ public class CompraDAO {
 
         Connection con = ConnectionFactory.getConnection();
 
-        String sqlCOmpra = "SELECT from compra WHERE compra_id= ?";
+        String sqlCOmpra = "SELECT from Compra WHERE compra_id= ?";
         int id = -1;
 
         try {
@@ -222,7 +222,7 @@ public class CompraDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                id = rs.getInt("id");
+                id = rs.getInt("compra_id");
             }
 
         } catch (Exception e) {

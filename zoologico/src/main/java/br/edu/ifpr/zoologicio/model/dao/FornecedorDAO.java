@@ -10,14 +10,12 @@ import java.sql.SQLException;
 
 public class FornecedorDAO {
 
-    
-
     // CADASTRAR FORNECEDOR
     // ______________________________________________________
 
     public static void cadastrar(Fornecedor fornecedor) {
 
-        String sqlFornecedor = "INSERT INTO fornecedor(nome, cpf, telefone, email) VALUES (?,?,?,?)";
+        String sqlFornecedor = "INSERT INTO Fornecedor(nome, cpf, telefone, email) VALUES (?,?,?,?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sqlFornecedor, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -51,7 +49,7 @@ public class FornecedorDAO {
 
     public static boolean cadastrarAlimentos(Connection con, ArrayList<Alimento> alimentos, int fornecedor_id) {
 
-        String sql = "INSERT INTO fornecedor_alimento(fornecedor_id, alimento_id) VALUES (?,?)";
+        String sql = "INSERT INTO Fornecedor_Alimento(fornecedor_id, alimento_id) VALUES (?,?)";
 
         try {
             for (Alimento alimento : alimentos) {
@@ -75,8 +73,8 @@ public class FornecedorDAO {
 
     public static void editar(Fornecedor fornecedor) {
 
-        String sqlUpdateFornecedor = "UPDATE fornecedor SET nome=?, cpf=?, telefone=?, email=? WHERE id=?";
-        String sqlDeleteAlimentos = "DELETE FROM fornecedor_alimento WHERE fornecedor_id=?";
+        String sqlUpdateFornecedor = "UPDATE Fornecedor SET nome=?, cpf=?, telefone=?, email=? WHERE fornecedor_id=?";
+        String sqlDeleteAlimentos = "DELETE FROM Fornecedor_Alimento WHERE fornecedor_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -111,8 +109,8 @@ public class FornecedorDAO {
 
     public static void delete(int id) {
 
-        String sqlDeleteAlimentos = "DELETE FROM fornecedor_alimento WHERE fornecedor_id=?";
-        String sqlDeleteFornecedor = "DELETE FROM fornecedor WHERE fornecedor_id=?";
+        String sqlDeleteAlimentos = "DELETE FROM Fornecedor_Alimento WHERE fornecedor_id=?";
+        String sqlDeleteFornecedor = "DELETE FROM Fornecedor WHERE fornecedor_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -133,12 +131,12 @@ public class FornecedorDAO {
         }
     }
 
-    // SELECT 
+    // SELECT
     // ______________________________________________________
 
     public static Fornecedor select(int id) {
 
-        String sql = "SELECT fornecedor_id, nome, cpf, telefone, email FROM fornecedores WHERE id = ?";
+        String sql = "SELECT fornecedor_id, nome, cpf, telefone, email FROM Fornecedor WHERE fornecedor_id = ?";
         Fornecedor fornecedor = null;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -149,7 +147,7 @@ public class FornecedorDAO {
 
             if (rs.next()) {
                 fornecedor = new Fornecedor();
-                fornecedor.setId(rs.getInt("id"));
+                fornecedor.setId(rs.getInt("fornecedor_id"));
                 fornecedor.setNome(rs.getString("nome"));
                 fornecedor.setCpf(rs.getString("cpf"));
                 fornecedor.setTelefone(rs.getString("telefone"));
@@ -170,7 +168,7 @@ public class FornecedorDAO {
 
     public static ArrayList<Fornecedor> listar() {
         ArrayList<Fornecedor> fornecedores = new ArrayList<>();
-        String sql = "SELECT fornecedor_id, nome, cpf, telefone, email FROM fornecedor ORDER BY nome";
+        String sql = "SELECT fornecedor_id, nome, cpf, telefone, email FROM Fornecedor ORDER BY nome";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -178,7 +176,7 @@ public class FornecedorDAO {
 
             while (rs.next()) {
                 Fornecedor fornecedor = new Fornecedor();
-                fornecedor.setId(rs.getInt("id"));
+                fornecedor.setId(rs.getInt("fornecedor_id"));
                 fornecedor.setNome(rs.getString("nome"));
                 fornecedor.setCpf(rs.getString("cpf"));
                 fornecedor.setTelefone(rs.getString("telefone"));
@@ -198,15 +196,14 @@ public class FornecedorDAO {
     }
 
     // METODOS AUXILIARES
-    //-----------------------------------------------------------------
+    // -----------------------------------------------------------------
 
     // BUSCAR FORNECEDOR POR ID
     // ____________________________________________________________
 
-
     public static int buscaFornecedor_ID(int fornecedor_id) {
 
-        String sqlFornecedor = "SELECT from fornecedor WHERE nome= ?";
+        String sqlFornecedor = "SELECT from Fornecedor WHERE nome= ?";
         int id = -1;
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -227,14 +224,14 @@ public class FornecedorDAO {
     }
 
     // BUSCAR ALIMENTOS POR FORNECEDOR POR ID - DEVOLVE ALIMENTOS
-    //_____________________________________________________________________________-
+    // _____________________________________________________________________________-
 
     public static ArrayList<Alimento> buscarAlimentosPorFornecedor(int fornecedorId) {
         ArrayList<Alimento> alimentos = new ArrayList<>();
 
         String sql = "SELECT a.alimento_id, a.nome, a.validade, a.estoque " +
-                "FROM alimento a " +
-                "JOIN fornecedor_alimento fa ON a.alimento_id = fa.alimento_id " +
+                "FROM Alimento a " +
+                "JOIN Fornecedor_Alimento fa ON a.alimento_id = fa.alimento_id " +
                 "WHERE fa.fornecedor_id = ?";
 
         try (Connection con = ConnectionFactory.getConnection();

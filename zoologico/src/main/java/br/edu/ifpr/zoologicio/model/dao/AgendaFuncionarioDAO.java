@@ -14,7 +14,7 @@ public class AgendaFuncionarioDAO {
     // ____________________________________________________________
 
     public static void cadastrar(AgendaFuncionario agenda) {
-        String sql = "INSERT INTO agendaFuncionario (atividade, funcionario_id) "
+        String sql = "INSERT INTO AgendaFuncionario (atividade, funcionario_id) "
                 +
                 "VALUES (?,?)";
 
@@ -42,7 +42,7 @@ public class AgendaFuncionarioDAO {
     // EDITAR
     // ______________________________________________________
     public static void editar(AgendaFuncionario agenda) {
-        String sql = "UPDATE agendaFuncionario SET  atividade=?, funcionario_id=? WHERE agendaFuncionario_id=?";
+        String sql = "UPDATE AgendaFuncionario SET  atividade=?, funcionario_id=? WHERE agendaFuncionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -61,7 +61,7 @@ public class AgendaFuncionarioDAO {
     // DELETE
     // ______________________________________________________
     public static void delete(int id) {
-        String sql = "DELETE FROM agendaFuncionario WHERE  agendaFuncionario_id=?";
+        String sql = "DELETE FROM AgendaFuncionario WHERE  agendaFuncionario_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -79,7 +79,7 @@ public class AgendaFuncionarioDAO {
     public static AgendaFuncionario select(int id) {
         String sql = "SELECT af.agendaFuncionario_id, af.atividade, " +
                 " af.funcionario_id " +
-                "FROM agendaFuncionario af " +
+                "FROM AgendaFuncionario af " +
                 "WHERE af.agendaFuncionario_id = ?";
 
         AgendaFuncionario agenda = null;
@@ -92,10 +92,10 @@ public class AgendaFuncionarioDAO {
 
             if (rs.next()) {
                 agenda = new AgendaFuncionario();
-                agenda.setId(rs.getInt("id"));
+                agenda.setId(rs.getInt("agendaFuncionario_id"));
                 agenda.setAtividade(rs.getString("atividade"));
 
-                // busca cargo e funcionario por id (carrega objetos)
+                // busca cargo e funcionario por id 
                 agenda.setFuncionario(FuncionarioDAO.buscarFuncionarioPor_ID(rs.getInt("funcionario_id")));
 
             }
@@ -111,7 +111,7 @@ public class AgendaFuncionarioDAO {
     // ______________________________________________________
     public static ArrayList<AgendaFuncionario> listar() {
         ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
-        String sql = "SELECT agendaFuncionario_id, atividade FROM agendaFuncionario ORDER BY agendaFuncionario_id DESC";
+        String sql = "SELECT agendaFuncionario_id, atividade FROM AgendaFuncionario ORDER BY agendaFuncionario_id DESC";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -135,7 +135,7 @@ public class AgendaFuncionarioDAO {
     ArrayList<AgendaFuncionario> agendas = new ArrayList<>();
 
     String sql = "SELECT af.agendaFuncionario_id, af.atividade, af.funcionario_id " +
-                 "FROM agendaFuncionario af ORDER BY af.agendaFuncionario_id DESC";
+                 "FROM AgendaFuncionario af ORDER BY af.agendaFuncionario_id DESC";
 
     try (Connection con = ConnectionFactory.getConnection();
          PreparedStatement pst = con.prepareStatement(sql);

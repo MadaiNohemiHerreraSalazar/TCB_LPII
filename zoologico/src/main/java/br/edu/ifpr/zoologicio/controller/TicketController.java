@@ -9,14 +9,14 @@ public class TicketController {
 
     private TicketDAO dao;
 
-    public TicketController(){
+    public TicketController() {
         this.dao = new TicketDAO();
     }
 
+    // Selecionar
+    public void selecionarTicket(int id) {
 
-    public void selecionarTicket(int id){
-
-        if(id <= 0){
+        if (id <= 0) {
 
             System.out.println("id invalido");
             return;
@@ -25,8 +25,9 @@ public class TicketController {
         dao.select(id);
     }
 
+    // Listar
     public ArrayList<Ticket> listarTickets() {
         return dao.listar();
     }
-    
+
 }

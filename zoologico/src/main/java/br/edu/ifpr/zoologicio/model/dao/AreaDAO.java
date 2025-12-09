@@ -15,7 +15,7 @@ public class AreaDAO {
     // CADASTRAR AREA
     // ______________________________________________________
     public static void cadastrar(Area area) {
-        String sql = "INSERT INTO area(nome, descricao) VALUES (?, ?)";
+        String sql = "INSERT INTO Area(nome, descricao) VALUES (?, ?)";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -42,7 +42,7 @@ public class AreaDAO {
     // EDITAR AREA
     // ______________________________________________________
     public static void editar(Area area) {
-        String sql = "UPDATE area SET nome=?, descricao=? WHERE area_id=?";
+        String sql = "UPDATE Area SET nome=?, descricao=? WHERE area_id=?";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql)) {
@@ -62,9 +62,9 @@ public class AreaDAO {
     // DELETE AREA
     // ______________________________________________________
     public static void delete(int id) {
-        String sqlDeleteFuncionarios = "UPDATE funcionario SET area_id=NULL WHERE area_id=?";
-        String sqlDeleteHabitats = "DELETE FROM habitatsWHERE area_id=?";
-        String sqlDeleteArea = "DELETE FROM area WHERE area_id=?";
+        String sqlDeleteFuncionarios = "UPDATE Funcionario SET area_id=NULL WHERE area_id=?";
+        String sqlDeleteHabitats = "DELETE FROM Habitat WHERE area_id=?";
+        String sqlDeleteArea = "DELETE FROM Area WHERE area_id=?";
 
         try (Connection con = ConnectionFactory.getConnection()) {
 
@@ -126,7 +126,7 @@ public class AreaDAO {
     // ______________________________________________________
     public static ArrayList<Area> listar() {
         ArrayList<Area> areas = new ArrayList<>();
-        String sql = "SELECT area_id, nome, descricao FROM area";
+        String sql = "SELECT area_id, nome, descricao FROM Area";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -152,7 +152,7 @@ public class AreaDAO {
     public static ArrayList<Area> listarCompleto() {
         ArrayList<Area> areas = new ArrayList<>();
 
-        String sql = "SELECT area_id, nome, descricao FROM area";
+        String sql = "SELECT area_id, nome, descricao FROM Area";
 
         try (Connection con = ConnectionFactory.getConnection();
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -198,7 +198,7 @@ public class AreaDAO {
 
             if (rs.next()) {
                 area = new Area();
-                area.setId(rs.getInt("id"));
+                area.setId(rs.getInt("area_id"));
                 area.setNome(rs.getString("nome"));
                 area.setDescricao(rs.getString("descricao"));
             }
