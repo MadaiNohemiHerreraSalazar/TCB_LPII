@@ -212,19 +212,17 @@ public class CompraDAO {
     // _________________________________________________________________
 
     public static int buscaCompra_ID(int compra_id) {
-
-        Connection con = ConnectionFactory.getConnection();
-
-        String sqlCOmpra = "SELECT * from Compra WHERE compra_id= ?";
+        String sqlCompra = "SELECT * FROM Compra WHERE compra_id = ?";
         int id = -1;
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sqlCOmpra);
-            ps.setInt(1, compra_id);
-            ResultSet rs = ps.executeQuery();
+        try (Connection con = ConnectionFactory.getConnection();
+                PreparedStatement ps = con.prepareStatement(sqlCompra)) {
 
-            if (rs.next()) {
-                id = rs.getInt("compra_id");
+            ps.setInt(1, compra_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("compra_id");
+                }
             }
 
         } catch (Exception e) {
@@ -232,7 +230,6 @@ public class CompraDAO {
         }
 
         return id;
-
     }
 
 }
