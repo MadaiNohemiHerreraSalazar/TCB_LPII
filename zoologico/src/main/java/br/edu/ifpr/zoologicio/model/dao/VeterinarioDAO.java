@@ -189,7 +189,7 @@ public class VeterinarioDAO {
         return veterinarios;
     }
 
-    // LISTAR COMPLETO COM ANIMAIS
+    // LISTAR COMPLETO COM ANIMAIS 
     // _________________________________________________________
 
     public static ArrayList<Veterinario> listarCompleto() {
@@ -247,7 +247,7 @@ public class VeterinarioDAO {
         return vet;
     }
 
-    // BUSCA VETERINARIO POR ID - DEVOLVE ID
+    // BUSCA VETERINARIO POR NOME - DEVOLVE NOME
     // _______________________________________________________________________
 
     public static int buscaVeterinario_ID(int veterinario_id) {
